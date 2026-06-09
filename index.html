@@ -649,6 +649,153 @@ text-align:center;
 .aviso-item.normal{background:linear-gradient(90deg,#f9c31f,#ffb300);color:#1e3d2a;}
 .aviso-item button{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:1.1rem;cursor:pointer;color:inherit;font-weight:900;}
 
+
+/* ── UPGRADE VISUAL PREMIUM (CARA DA RIQUEZA) ───────────────────────── */
+/* Seção Sobre (Cards) */
+.cgrid .card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 168, 120, 0.15);
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  padding: 30px 22px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.cgrid .card::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, var(--esmeralda), var(--pistache));
+  opacity: 0; transition: 0.3s;
+}
+.cgrid .card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 168, 120, 0.1);
+  border-color: rgba(0, 168, 120, 0.3);
+}
+.cgrid .card:hover::after { opacity: 1; }
+.card .ico {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, rgba(0,168,120,0.1), rgba(181,201,154,0.2));
+  color: var(--esmeralda); font-size: 1.8rem; margin: 0 auto 16px;
+}
+
+/* Seção Projetos (pcard) */
+.pcard {
+  border-radius: 20px;
+  border: 1px solid rgba(0, 168, 120, 0.1);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+}
+.pcard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px rgba(0, 168, 120, 0.12);
+}
+.ptop { height: 110px; font-size: 3.2rem; }
+
+/* Próximos Eventos (ev) */
+.ev {
+  border-radius: 16px;
+  border: 1px solid rgba(0, 168, 120, 0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+  padding: 16px 20px;
+  background: #ffffff;
+}
+.ev:hover {
+  transform: translateX(6px) scale(1.01);
+  box-shadow: 0 8px 24px rgba(0,168,120,0.08);
+  border-left: 4px solid var(--accent);
+}
+.ev-date { border-radius: 12px; padding: 10px 8px; box-shadow: 0 4px 10px rgba(0,168,120,0.2); }
+
+/* Nossa Equipe (membro) */
+.membro {
+  border-radius: 20px;
+  border: 1px solid rgba(0, 168, 120, 0.1);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+  padding: 24px 16px;
+  background: #ffffff;
+}
+.membro:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0, 168, 120, 0.1);
+}
+.av {
+  width: 72px; height: 72px; font-size: 2.2rem;
+  box-shadow: 0 6px 15px rgba(0, 168, 120, 0.2);
+  border: 3px solid #fff; outline: 2px solid var(--esmeralda);
+}
+
+/* Fale Conosco (icard) - Dark theme glassmorphism */
+.icard {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+.icard:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(249, 195, 31, 0.4);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(249, 195, 31, 0.15);
+}
+.icard .ico {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 60px; height: 60px; border-radius: 50%;
+  background: linear-gradient(135deg, rgba(249,195,31,0.2), rgba(249,195,31,0.05));
+  margin-bottom: 16px; font-size: 1.6rem;
+}
+
+/* Subtitulos mais elegantes */
+.ssub {
+  font-size: 1rem;
+  opacity: 0.9;
+  letter-spacing: 0.3px;
+}
+
+/* Backgrounds sutis para as seções claras */
+#sobre { background: linear-gradient(to bottom, #ffffff, #f4f9f4) !important; }
+#eventos { background: linear-gradient(to bottom, #f4f9f4, #ffffff) !important; }
+
+/* Ajuste do botão CTA principal para ficar mais premium (Dourado vibrante) */
+.btn-v {
+  background: linear-gradient(135deg, var(--accent), #e8c430) !important;
+  color: #1a3d28 !important;
+  border: none !important;
+  box-shadow: 0 4px 15px rgba(249, 195, 31, 0.3) !important;
+  font-weight: 800 !important;
+  border-radius: 50px !important;
+}
+.btn-v:hover {
+  transform: scale(1.04) !important;
+  box-shadow: 0 6px 20px rgba(249, 195, 31, 0.5) !important;
+  background: linear-gradient(135deg, #f9d54f, var(--accent)) !important;
+}
+.btn-v::before { display: none !important; }
+
+/* Section Divisao suave */
+.div {
+  width: 60px; height: 5px; border-radius: 5px;
+  background: linear-gradient(90deg, var(--esmeralda), var(--accent));
+}
+
+/* Galeria/Videos (vcard e vbox) */
+.vcard {
+  border-radius: 20px;
+  border: 1px solid rgba(0, 168, 120, 0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+.vcard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 30px rgba(0,168,120,0.15);
+}
+.vbox {
+  border: 2px dashed rgba(0, 168, 120, 0.4);
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+}
+
 </style>
 </head>
 <body>
