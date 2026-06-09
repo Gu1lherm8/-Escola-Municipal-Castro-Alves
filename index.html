@@ -263,6 +263,34 @@ transition:all .25s ease;
 .dcc .btn-doc:hover{background:var(--esmeralda);}
 .doc-note{text-align:center;color:var(--pistache);font-size:.78rem;margin-top:18px;}
 
+/* SECRETARIA DIGITAL — NOVO LAYOUT */
+.sec-secretaria{background:linear-gradient(160deg,#0a2e1a 0%,#1b3d2f 50%,#0d3320 100%);padding:72px 20px;}
+.sec-header-secretaria{text-align:center;margin-bottom:48px;}
+.sec-badge-secretaria{display:inline-block;background:rgba(255,255,255,.1);border:1px solid rgba(181,201,154,.3);
+  color:var(--pistache);font-size:.8rem;font-weight:700;padding:8px 20px;border-radius:50px;
+  letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;}
+.stitle-secretaria{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;color:#fff;margin-bottom:12px;}
+.stitle-secretaria span{color:var(--accent);}
+.ssub-secretaria{color:var(--pistache);font-size:.95rem;max-width:520px;margin:0 auto;line-height:1.6;}
+.doc-grid-new{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:24px;max-width:960px;margin:0 auto;}
+.doc-loading{color:var(--pistache);text-align:center;width:100%;padding:40px;font-size:1rem;}
+.dcc-new{background:rgba(255,255,255,.06);backdrop-filter:blur(10px);
+  border:1px solid rgba(181,201,154,.2);border-radius:20px;padding:32px 24px;
+  text-align:center;transition:.3s;position:relative;overflow:hidden;cursor:pointer;}
+.dcc-new::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.04),transparent);pointer-events:none;}
+.dcc-new:hover{transform:translateY(-8px);border-color:var(--esmeralda);
+  background:rgba(255,255,255,.1);box-shadow:0 20px 40px rgba(0,0,0,.3);}
+.dcc-new .ico-wrap{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--esmeralda),#2d8a60);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 18px;
+  font-size:2rem;box-shadow:0 6px 20px rgba(0,168,120,.35);}
+.dcc-new h3{color:#fff;font-weight:800;font-size:1rem;margin-bottom:8px;line-height:1.3;}
+.dcc-new p{color:var(--pistache);font-size:.82rem;line-height:1.5;margin-bottom:20px;}
+.dcc-new .btn-baixar{display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,var(--accent),#e8c430);color:#1a3d28;
+  padding:11px 24px;border-radius:50px;text-decoration:none;
+  font-weight:800;font-size:.85rem;transition:.25s;box-shadow:0 4px 15px rgba(247,215,72,.3);}
+.dcc-new .btn-baixar:hover{transform:scale(1.06);box-shadow:0 6px 22px rgba(247,215,72,.5);}
+
 .rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;}
 .rcard{background:#fff;border-radius:16px;padding:22px 16px;text-align:center;
   border:1px solid var(--pistache);border-bottom:3px solid var(--esmeralda);}
@@ -953,16 +981,17 @@ text-align:center;
   </div>
 </section>
 
-<section style="background:var(--bg2);padding:56px 20px;" id="secretaria">
+<section class="sec-secretaria" id="secretaria">
   <div class="container">
-    <h2 class="stitle">📂 Secretaria <span>Digital</span></h2>
-    <p class="ssub">Documentos, listas de materiais e formulários para download</p>
-    <div class="div"></div>
-    <div id="secretaria-grid" class="doc-grid" style="margin-top:28px;">
-      <!-- Documents will be loaded here via JS -->
-      <div style="text-align:center;width:100%;color:var(--floresta);">Carregando documentos...</div>
+    <div class="sec-header-secretaria">
+      <div class="sec-badge-secretaria">📂 Secretaria Digital</div>
+      <h2 class="stitle-secretaria">Documentos para <span>Download</span></h2>
+      <p class="ssub-secretaria">Acesse os materiais, listas e formulários da escola de forma rápida e fácil</p>
     </div>
-    <p class="doc-note" style="text-align:center; margin-top:20px; font-size: 0.9em; color: var(--pistache);">Dica para a equipe: Para adicionar ou remover documentos, atualize a planilha do Google Sheets.</p>
+    <div id="secretaria-grid" class="doc-grid-new">
+      <div class="doc-loading">⏳ Carregando documentos...</div>
+    </div>
+    <p class="doc-note">Dica para a equipe: Para adicionar ou remover documentos, atualize a planilha do Google Sheets.</p>
   </div>
 </section>
 
@@ -1837,11 +1866,11 @@ document.addEventListener("DOMContentLoaded", function() {
       var nome = cols[0] ? cols[0].replace(/"/g, '').trim() : "Documento";
       var link = cols[1] ? cols[1].replace(/"/g, '').trim() : "#";
       
-      var docHTML = '<div class="dcc" style="background:#fff; border-radius:12px; padding:20px; text-align:center; box-shadow:0 4px 10px rgba(0,0,0,0.05);">' +
-                    '<div class="ico" style="font-size:2rem; margin-bottom:10px;">📄</div>' +
-                    '<h3 style="color:#1b3d2f; font-size:1.1rem; margin-bottom:8px;">' + nome + '</h3>' +
-                    '<p style="color:#555; font-size:0.85rem; margin-bottom:16px;">Clique para visualizar ou baixar o documento.</p>' +
-                    '<a href="' + link + '" target="_blank" class="btn-doc">Baixar PDF</a>' +
+      var docHTML = '<div class="dcc-new">' +
+                    '<div class="ico-wrap">📄</div>' +
+                    '<h3>' + nome + '</h3>' +
+                    '<p>Clique para visualizar ou baixar o documento em PDF.</p>' +
+                    '<a href="' + link + '" target="_blank" class="btn-baixar">⬇️ Baixar PDF</a>' +
                     '</div>';
       grid.innerHTML += docHTML;
     }
