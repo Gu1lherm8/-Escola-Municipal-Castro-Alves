@@ -247,13 +247,20 @@ transition:all .25s ease;
 .turma{background:transparent;border:2px solid var(--esmeralda);border-radius:50px;
   padding:9px 22px;font-weight:800;color:#1a3d28;font-size:.88rem;}
 
-.doc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;}
-.dcc{background:#fff;border-radius:16px;padding:22px 16px;text-align:center;
-  border:1px solid var(--pistache);border-top:3px solid var(--esmeralda);transition:.25s;}
-.dcc:hover{transform:translateY(-4px);}
-.dcc .ico{font-size:2.2rem;margin-bottom:10px;}
-.dcc h3{font-weight:800;font-size:.88rem;color:#1a3d28;margin-bottom:5px;}
-.dcc p{font-size:.76rem;color:#2d5a3d;line-height:1.45;margin-bottom:12px;}
+.doc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+.dcc{background:#fff;border-radius:18px;padding:28px 20px;text-align:center;
+  border:1px solid var(--pistache);border-top:4px solid var(--esmeralda);transition:.3s;
+  box-shadow:0 2px 12px rgba(0,0,0,0.06);position:relative;overflow:hidden;}
+.dcc::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--esmeralda),var(--accent));}
+.dcc:hover{transform:translateY(-6px);box-shadow:0 12px 28px rgba(0,0,0,0.12);}
+.dcc .ico{font-size:2.8rem;margin-bottom:12px;display:block;}
+.dcc h3{font-weight:800;font-size:.95rem;color:#1a3d28;margin-bottom:6px;}
+.dcc p{font-size:.78rem;color:#2d5a3d;line-height:1.5;margin-bottom:16px;}
+.dcc .btn-doc{display:inline-flex;align-items:center;gap:6px;background:var(--floresta);
+  color:#fff;padding:9px 20px;border-radius:50px;text-decoration:none;
+  font-weight:700;font-size:.82rem;transition:.2s;}
+.dcc .btn-doc:hover{background:var(--esmeralda);}
 .doc-note{text-align:center;color:var(--pistache);font-size:.78rem;margin-top:18px;}
 
 .rgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;}
@@ -716,10 +723,10 @@ text-align:center;
       </div>
       <div id="proj-tab" class="tab-panel">
         <div class="pgrid">
-          <div class="pcard"><div class="ptop">📖</div><div class="pbody"><h3>Projeto de Leitura</h3><p>Incentivo à leitura desde os primeiros anos.</p></div></div>
-          <div class="pcard"><div class="ptop">🌿</div><div class="pbody"><h3>Projeto Ambiental</h3><p>Consciência ecológica, horta escolar e preservação do meio ambiente.</p></div></div>
-          <div class="pcard"><div class="ptop">🎭</div><div class="pbody"><h3>Expressão Cultural</h3><p>Teatro, danças folclóricas e apresentações culturais.</p></div></div>
-          <div class="pcard"><div class="ptop">🤝</div><div class="pbody"><h3>Projeto de Valores</h3><p>Respeito, amizade, cidadania e empatia no dia a dia.</p></div></div>
+          <div class="pcard"><div class="ptop" style="background:linear-gradient(135deg,#fde8d8,#f9c5a0);">🎪</div><div class="pbody"><h3>Festa da Família</h3><p>Um momento especial para reunir alunos, pais e toda a comunidade escolar em celebração.</p></div></div>
+          <div class="pcard"><div class="ptop" style="background:linear-gradient(135deg,#e8f0fe,#b8ccf8);">📚</div><div class="pbody"><h3>Sarau Literário</h3><p>Apresentações de poesias, contos e músicas que celebram o amor pela leitura e escrita.</p></div></div>
+          <div class="pcard"><div class="ptop" style="background:linear-gradient(135deg,#fef4e8,#f9dfa0);">🌸</div><div class="pbody"><h3>Festa Setembrina</h3><p>Celebração da chegada da primavera com flores, cores e apresentações culturais.</p></div></div>
+          <div class="pcard"><div class="ptop" style="background:linear-gradient(135deg,#e8f5e9,#c8f0d8);">🎄</div><div class="pbody"><h3>Cantata de Natal</h3><p>Apresentação musical encantadora com canções natalinas para encerrar o ano com alegria.</p></div></div>
         </div>
       </div>
     </div>
@@ -1834,7 +1841,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     '<div class="ico" style="font-size:2rem; margin-bottom:10px;">📄</div>' +
                     '<h3 style="color:#1b3d2f; font-size:1.1rem; margin-bottom:8px;">' + nome + '</h3>' +
                     '<p style="color:#555; font-size:0.85rem; margin-bottom:16px;">Clique para visualizar ou baixar o documento.</p>' +
-                    '<a href="' + link + '" target="_blank" class="btn1" style="display:inline-block; background:#1b3d2f; color:#fff; padding:8px 16px; border-radius:20px; text-decoration:none; font-weight:bold; font-size:0.85rem;">Baixar PDF</a>' +
+                    '<a href="' + link + '" target="_blank" class="btn-doc">Baixar PDF</a>' +
                     '</div>';
       grid.innerHTML += docHTML;
     }
