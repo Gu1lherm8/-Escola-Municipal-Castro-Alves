@@ -8,9 +8,22 @@
     :root { --verde: #0d2318; --dourado: #f9c31f; --branco: #ffffff; --fundo: #f4f6f5; }
     body { font-family: 'Inter', sans-serif; background: var(--fundo); margin: 0; padding: 20px; display: flex; justify-content: center; }
     .caixa { background: var(--branco); padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); max-width: 800px; width: 100%; }
-    .header { text-align: center; margin-bottom: 30px; }
-    .header h1 { color: var(--verde); margin: 0; font-size: 28px;}
-    .header p { color: #666; margin-top: 5px; }
+    
+    /* Shader Animado */
+    @keyframes animatedGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .hero-header {
+      text-align: center; margin-bottom: 40px; padding: 50px 20px; 
+      border-radius: 16px; color: white; position: relative; overflow: hidden; 
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      background: linear-gradient(-45deg, #0d2318, #1a3d28, #0a1f14, #123321);
+      background-size: 400% 400%;
+      animation: animatedGradient 12s ease infinite;
+    }
+
     .btn-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
     .btn-cat { background: #f8f9fa; border: 2px solid #e0e0e0; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: bold; color: var(--verde); cursor: pointer; transition: 0.2s; }
     .btn-cat:hover { border-color: var(--dourado); background: #fffdf5; }
@@ -29,9 +42,25 @@
 <body>
 
   <div class="caixa">
-    <div class="header">
-      <h1>Portal do Servidor</h1>
-      <p>Selecione sua categoria para preencher a ficha cadastral</p>
+    <div class="hero-header">
+      <!-- Background Glow -->
+      <div style="position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:radial-gradient(circle, rgba(249,195,31,0.15) 0%, transparent 60%); pointer-events:none;"></div>
+      
+      <!-- Trust Badge -->
+      <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); padding:6px 16px; border-radius:50px; font-size:14px; font-weight:600; color:#f9c31f; margin-bottom:24px; backdrop-filter:blur(4px);">
+        <span>🚀</span> <span>Acesso Exclusivo para Servidores</span> <span>✨</span>
+      </div>
+      
+      <!-- Headline -->
+      <h1 style="font-size:clamp(28px, 5vw, 42px); font-weight:900; line-height:1.2; margin:0 0 16px 0; color:#ffffff;">
+        Portal do <span style="color:#f9c31f;">Servidor</span><br/>
+        <span style="font-size:clamp(20px, 3vw, 26px); opacity:0.9;">Escola Municipal Castro Alves</span>
+      </h1>
+      
+      <!-- Subtitle -->
+      <p style="font-size:16px; color:#b5c99a; max-width:500px; margin:0 auto; line-height:1.6;">
+        Selecione a sua categoria abaixo para acessar o seu formulário de cadastro administrativo com segurança e rapidez.
+      </p>
     </div>
 
     <!-- Botões de Seleção -->
