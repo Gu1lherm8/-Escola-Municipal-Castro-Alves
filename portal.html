@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal do Servidor</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase_config.js" type="module"></script>
+  <style>
+    :root { --verde: #0d2318; --dourado: #f9c31f; --branco: #ffffff; --fundo: #f4f6f5; }
+    body { font-family: 'Inter', sans-serif; background: var(--fundo); margin: 0; padding: 20px; display: flex; justify-content: center; }
+    .caixa { background: var(--branco); padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); max-width: 600px; width: 100%; }
+    .header { text-align: center; margin-bottom: 30px; }
+    .header h1 { color: var(--verde); margin: 0; }
+    .header p { color: #666; }
+    label { font-weight: bold; color: var(--verde); display: block; margin-top: 15px; margin-bottom: 5px; }
+    input, select, textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
+    button { width: 100%; padding: 15px; background: var(--dourado); color: var(--verde); font-weight: bold; font-size: 18px; border: none; border-radius: 8px; cursor: pointer; margin-top: 25px; transition: 0.3s; }
+    button:hover { background: #e0b01a; }
+    #form-container { display: none; }
+    .voltar { background: transparent; color: var(--verde); border: 2px solid var(--verde); margin-top: 10px; }
+    .sucesso { display: none; text-align: center; color: green; font-weight: bold; font-size: 20px; padding: 40px 0; }
+  </style>
+</head>
+<body>
+
+  <div class="caixa">
+    <div class="header">
+      <h1>Portal do Servidor</h1>
+      <p>Preencha sua ficha cadastral online</p>
+    </div>
+
+    <!-- Etapa 1: Escolher a Categoria -->
+    <div id="step-1">
+      <label>1. Escolha sua função/categoria:</label>
+      <select id="categoria-select">
+        <option value="">Carregando opções...</option>
+      </select>
+      <button onclick="avancarParaForm()">Avançar ➡️</button>
+    </div>
+
+    <!-- Etapa 2: Preencher o Formulário -->
+    <div id="form-container">
+      <div id="campos-dinamicos"></div>
+      <button onclick="enviarFormulario()" id="btn-enviar">✅ Enviar Cadastro</button>
+      <button class="voltar" onclick="voltarParaEtapa1()">⬅️ Voltar</button>
+    </div>
+
+    <!-- Etapa 3: Sucesso -->
+    <div id="tela-sucesso" class="sucesso">
+      ✅ Ficha enviada com sucesso para a Secretaria!<br><br>
+      <span style="font-size:14px; color:#666; font-weight:normal;">A Secretaria já recebeu seus dados e irá imprimir a via física para assinatura. Você pode fechar esta tela.</span>
+    </div>
+  </div>
+
+  <script type="module">
+    import { supabase, EMAIL_SECRETARIA } from './supabase_config.js';
+
+    let categoriasCache = [];
+
+    async function carregarCategorias() {
+      const { data } = await supabase.from('categorias').select('*').order('nome');
+      categoriasCache = data;
+      const sel = document.getElementById('categoria-select');
+      sel.innerHTML = '<option value="">Selecione sua função...</option>';
+      data.forEach(c => {
+        sel.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
+      });
+    }
+
+    window.avancarParaForm = async function() {
+      const cat_id = document.getElementById('categoria-select').value;
+      if(!cat_id) return alert("Por favor, selecione uma categoria.");
+
+      document.getElementById('step-1').style.display = 'none';
+      document.getElementById('form-container').style.display = 'block';
+
+      const container = document.getElementById('campos-dinamicos');
+      container.innerHTML = '<p>Carregando campos...</p>';
+
+      const { data } = await supabase.from('campos').select('*').eq('categoria_id', cat_id).order('id');
+      
+      container.innerHTML = '';
+      if(data.length === 0) {
+        container.innerHTML = '<p style="color:red">Esta categoria ainda não possui campos cadastrados pela secretaria.</p>';
+        document.getElementById('btn-enviar').style.display = 'none';
+        return;
+      }
+      document.getElementById('btn-enviar').style.display = 'block';
+
+      data.forEach(campo => {
+        const req = campo.obrigatorio ? "required" : "";
+        const id_campo = `campo_${campo.id}`;
+        let html = `<label>${campo.nome} ${campo.obrigatorio ? '*' : ''}</label>`;
+        
+        if (campo.tipo === 'longo') {
+          html += `<textarea id="${id_campo}" rows="3" ${req} data-nome="${campo.nome}"></textarea>`;
+        } else if (campo.tipo === 'selecao') {
+          html += `<select id="${id_campo}" ${req} data-nome="${campo.nome}"><option value="">Selecione...</option>`;
+          const ops = campo.opcoes ? campo.opcoes.split(',') : [];
+          ops.forEach(o => html += `<option value="${o.trim()}">${o.trim()}</option>`);
+          html += `</select>`;
+        } else if (campo.tipo === 'data') {
+          html += `<input type="date" id="${id_campo}" ${req} data-nome="${campo.nome}">`;
+        } else {
+          // Tipos: texto, cpf, telefone, email, numero
+          let inputType = 'text';
+          if(campo.tipo === 'email') inputType = 'email';
+          if(campo.tipo === 'numero') inputType = 'number';
+          html += `<input type="${inputType}" id="${id_campo}" ${req} data-nome="${campo.nome}" class="input-dinamico">`;
+        }
+        container.innerHTML += `<div style="margin-bottom:10px;">${html}</div>`;
+      });
+    }
+
+    window.voltarParaEtapa1 = function() {
+      document.getElementById('form-container').style.display = 'none';
+      document.getElementById('step-1').style.display = 'block';
+    }
+
+    window.enviarFormulario = async function() {
+      const cat_id = document.getElementById('categoria-select').value;
+      const inputs = document.querySelectorAll('#campos-dinamicos input, #campos-dinamicos select, #campos-dinamicos textarea');
+      
+      let dados_json = {};
+      let emailBody = "Novo cadastro recebido no Portal do Servidor:\\n\\n";
+      let temErro = false;
+
+      inputs.forEach(input => {
+        const nomeCampo = input.getAttribute('data-nome');
+        const valor = input.value.trim();
+        if(input.hasAttribute('required') && !valor) {
+          input.style.borderColor = 'red';
+          temErro = true;
+        } else {
+          input.style.borderColor = '#ccc';
+        }
+        dados_json[nomeCampo] = valor;
+        emailBody += `${nomeCampo}: ${valor}\\n`;
+      });
+
+      if(temErro) return alert("Por favor, preencha todos os campos obrigatórios em vermelho.");
+
+      document.getElementById('btn-enviar').innerText = "Enviando...";
+      document.getElementById('btn-enviar').disabled = true;
+
+      // 1. Salvar no Supabase
+      const { error } = await supabase.from('respostas').insert([{ categoria_id: cat_id, dados_json }]);
+      
+      if(error) {
+        alert("Erro ao enviar. Tente novamente.");
+        document.getElementById('btn-enviar').innerText = "✅ Enviar Cadastro";
+        document.getElementById('btn-enviar').disabled = false;
+        return;
+      }
+
+      // 2. Enviar E-mail silencioso via FormSubmit (Gratuito e sem login)
+      if (EMAIL_SECRETARIA && EMAIL_SECRETARIA !== "COLOQUE_O_EMAIL_AQUI@escola.com") {
+        fetch(`https://formsubmit.co/ajax/${EMAIL_SECRETARIA}`, {
+          method: "POST",
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            _subject: "Novo Cadastro no Portal do Servidor",
+            _template: "table",
+            ...dados_json
+          })
+        }).catch(err => console.log("Erro ao enviar email", err));
+      }
+
+      // 3. Backup automático no Google Sheets (via Google Apps Script da escola)
+      const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbwAvgt72jEMrMZ2vHN-b5GLBtY754y2NL6ODTq-w3yOFLUXJz9AzaRdB8JlMw149Ktw3w/exec";
+      fetch(GOOGLE_SHEETS_URL, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...dados_json, _categoria: document.getElementById('categoria-select').options[document.getElementById('categoria-select').selectedIndex].text })
+      }).catch(err => console.log("Erro no backup Google Sheets", err));
+      
+      document.getElementById('form-container').style.display = 'none';
+      document.getElementById('tela-sucesso').style.display = 'block';
+    }
+
+    setTimeout(carregarCategorias, 1000);
+  </script>
+</body>
+</html>
