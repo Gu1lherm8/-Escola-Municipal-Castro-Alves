@@ -1017,70 +1017,15 @@ text-align:center;
         <button class="tab-btn" data-target="proj-tab">📚 Projetos</button>
       </div>
       <div id="sobre-tab" class="tab-panel active">
-        <div class="sobre-in">
-          <div class="sobre-txt">
-            <p>A <strong>Escola Municipal Castro Alves</strong> é uma instituição pública de ensino localizada no Setor Sul de Planaltina, Goiás. Com muito carinho e dedicação, atendemos crianças da <strong>Educação Infantil (G04 e G05)</strong> ao <strong>2º Ano do Ensino Fundamental</strong>.</p>
-            <p>Nossa missão é proporcionar um ambiente seguro, acolhedor e estimulante, onde cada criança possa se desenvolver plenamente — cognitiva, social e emocionalmente.</p>
-            <p>Contamos com uma equipe comprometida, projetos pedagógicos inovadores e estrutura em constante melhoria para oferecer o melhor à nossa comunidade.</p>
-          </div>
-          <div class="sobre-img-3d" style="flex:1; min-width:300px; display:flex; justify-content:center; align-items:center; perspective:1000px; padding: 20px;">
-  <div class="card-container-3d" style="position:relative; width:100%; max-width:450px; transform-style:preserve-3d; transition:transform 0.1s ease; border-radius:16px;">
-    <div class="card-body-3d" style="background:#fff; border:1px solid rgba(0,168,120,0.1); border-radius:16px; padding:24px; transform-style:preserve-3d; transition:box-shadow 0.3s ease;">
-      <div style="transform:translateZ(50px); font-size:1.4rem; font-weight:800; color:var(--floresta); margin-bottom:8px; display:inline-block; will-change:transform;">
-        Nossa Estrutura
-      </div>
-      <p style="transform:translateZ(60px); color:var(--esmeralda); font-size:0.9rem; margin-bottom:16px; display:inline-block; will-change:transform;">
-        ✨ Passe o mouse na imagem para ver em 3D
-      </p>
-      <div style="transform:translateZ(100px); width:100%; height:260px; margin-top:10px; display:inline-block; will-change:transform;">
-        <!-- SUBSTITUA O SRC ABAIXO PELO CAMINHO DA SUA IMAGEM, EX: ./fachada.jpg -->
-        <img src="./fachada.jpg" alt="Fachada da Escola" style="width:100%; height:100%; object-fit:cover; border-radius:12px; box-shadow:0 15px 30px rgba(0,0,0,0.15); pointer-events:none;">
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  (function() {
-    const container = document.querySelector('.card-container-3d');
-    const body = document.querySelector('.card-body-3d');
-    
-    if(!container) return;
-
-    container.addEventListener('mousemove', (e) => {
-      const rect = container.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      
-      // Calculate rotation based on mouse position
-      const rotateX = ((y - centerY) / centerY) * -12; // Max 12 degrees
-      const rotateY = ((x - centerX) / centerX) * 12;
-      
-      container.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-      body.style.boxShadow = `0 30px 60px -12px rgba(0,168,120,0.25)`;
-      body.style.border = `1px solid rgba(0,168,120,0.3)`;
-    });
-
-    container.addEventListener('mouseleave', () => {
-      container.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
-      container.style.transform = `rotateX(0deg) rotateY(0deg)`;
-      body.style.boxShadow = `none`;
-      body.style.border = `1px solid rgba(0,168,120,0.1)`;
-      
-      setTimeout(() => {
-        container.style.transition = 'transform 0.1s ease';
-      }, 500);
-    });
-
-    container.addEventListener('mouseenter', () => {
-      container.style.transition = 'transform 0.1s ease';
-    });
-  })();
-</script>
+        <div class="sobre-txt" style="text-align:center; max-width:750px; margin:0 auto 32px;">
+          <p>A <strong>Escola Municipal Castro Alves</strong> é uma instituição pública de ensino localizada no Setor Sul de Planaltina, Goiás. Com muito carinho e dedicação, atendemos crianças da <strong>Educação Infantil (G04 e G05)</strong> ao <strong>2º Ano do Ensino Fundamental</strong>.</p>
+          <p>Nossa missão é proporcionar um ambiente seguro, acolhedor e estimulante, onde cada criança possa se desenvolver plenamente — cognitiva, social e emocionalmente.</p>
+          <p>Contamos com uma equipe comprometida, projetos pedagógicos inovadores e estrutura em constante melhoria para oferecer o melhor à nossa comunidade.</p>
         </div>
+        <div style="width:100%; text-align:center;">
+          <img src="./fachada.jpg" alt="Fachada da Escola Municipal Castro Alves" style="width:100%; max-height:420px; object-fit:cover; display:block;">
+        </div>
+      </div>
       </div>
       <div id="oferece-tab" class="tab-panel">
         <div class="cgrid">
@@ -2124,19 +2069,8 @@ body.high-contrast .sd-admin-panel {
     </div>
 
     <!-- Filtros -->
-    <div class="sd-filters" role="group" aria-label="Filtrar por categoria">
+    <div class="sd-filters" role="group" aria-label="Filtrar por categoria" id="sd-filters-container">
       <button class="sd-filter-btn active" data-cat="todos" onclick="sdSetCat('todos',this)">📋 Todos</button>
-      <button class="sd-filter-btn" data-cat="Matrículas" onclick="sdSetCat('Matrículas',this)">📝 Matrículas</button>
-      <button class="sd-filter-btn" data-cat="Lista de Materiais" onclick="sdSetCat('Lista de Materiais',this)">🎒 Materiais</button>
-      <button class="sd-filter-btn" data-cat="Regimento Escolar" onclick="sdSetCat('Regimento Escolar',this)">📜 Regimento</button>
-      <button class="sd-filter-btn" data-cat="Calendário Escolar" onclick="sdSetCat('Calendário Escolar',this)">📅 Calendário</button>
-      <button class="sd-filter-btn" data-cat="Comunicados" onclick="sdSetCat('Comunicados',this)">📣 Comunicados</button>
-      <button class="sd-filter-btn" data-cat="Projetos" onclick="sdSetCat('Projetos',this)">🔬 Projetos</button>
-      <button class="sd-filter-btn" data-cat="Uniforme Escolar" onclick="sdSetCat('Uniforme Escolar',this)">👕 Uniforme</button>
-      <button class="sd-filter-btn" data-cat="Formulários" onclick="sdSetCat('Formulários',this)">📄 Formulários</button>
-      <button class="sd-filter-btn" data-cat="Transporte Escolar" onclick="sdSetCat('Transporte Escolar',this)">🚌 Transporte</button>
-      <button class="sd-filter-btn" data-cat="Revistas" onclick="sdSetCat('Revistas',this)">📰 Revistas</button>
-      <button class="sd-filter-btn" data-cat="Outros" onclick="sdSetCat('Outros',this)">📦 Outros</button>
     </div>
 
     <!-- Grid -->
@@ -2163,33 +2097,7 @@ body.high-contrast .sd-admin-panel {
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- SEÇÃO: BIBLIOTECA DIGITAL                               -->
 <!-- ════════════════════════════════════════════════════════ -->
-<section id="sd-biblioteca" aria-label="Biblioteca Digital">
-  <h3 class="sd-sec-title light">📚 Biblioteca <span>Digital</span></h3>
-  <p class="sd-sec-sub light">Revistas, projetos e produções dos alunos</p>
-  <div class="sd-divider yellow"></div>
-  <div class="sd-bib-grid" id="sd-bib-grid">
-    <div class="sd-bib-card" onclick="sdSetCat('Revistas',document.querySelector('[data-cat=Revistas]'))">
-      <span class="sd-bib-ico">📰</span>
-      <div class="sd-bib-label">Revistas Digitais</div>
-      <div class="sd-bib-count" id="bib-revistas">0 publicações</div>
-    </div>
-    <div class="sd-bib-card" onclick="sdSetCat('Projetos',document.querySelector('[data-cat=Projetos]'))">
-      <span class="sd-bib-ico">🔬</span>
-      <div class="sd-bib-label">Projetos Escolares</div>
-      <div class="sd-bib-count" id="bib-projetos">0 publicações</div>
-    </div>
-    <div class="sd-bib-card" onclick="sdSetCat('Comunicados',document.querySelector('[data-cat=Comunicados]'))">
-      <span class="sd-bib-ico">📣</span>
-      <div class="sd-bib-label">Informativos</div>
-      <div class="sd-bib-count" id="bib-comunicados">0 publicações</div>
-    </div>
-    <div class="sd-bib-card" onclick="sdSetCat('Outros',document.querySelector('[data-cat=Outros]'))">
-      <span class="sd-bib-ico">📖</span>
-      <div class="sd-bib-label">Produções dos Alunos</div>
-      <div class="sd-bib-count" id="bib-outros">0 publicações</div>
-    </div>
-  </div>
-</section>
+
 
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- MODAL PDF VIEWER                                         -->
@@ -3173,7 +3081,6 @@ document.addEventListener("DOMContentLoaded", function(){
     document.getElementById('sd-total').textContent = total;
     document.getElementById('sd-novos').textContent = novos;
     sdRenderDestaques();
-    sdRenderBiblioteca();
     sdRender();
   }
 
