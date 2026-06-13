@@ -1023,7 +1023,63 @@ text-align:center;
             <p>Nossa missão é proporcionar um ambiente seguro, acolhedor e estimulante, onde cada criança possa se desenvolver plenamente — cognitiva, social e emocionalmente.</p>
             <p>Contamos com uma equipe comprometida, projetos pedagógicos inovadores e estrutura em constante melhoria para oferecer o melhor à nossa comunidade.</p>
           </div>
-          <div class="sobre-img">🏫</div>
+          <div class="sobre-img-3d" style="flex:1; min-width:300px; display:flex; justify-content:center; align-items:center; perspective:1000px; padding: 20px;">
+  <div class="card-container-3d" style="position:relative; width:100%; max-width:450px; transform-style:preserve-3d; transition:transform 0.1s ease; border-radius:16px;">
+    <div class="card-body-3d" style="background:#fff; border:1px solid rgba(0,168,120,0.1); border-radius:16px; padding:24px; transform-style:preserve-3d; transition:box-shadow 0.3s ease;">
+      <div style="transform:translateZ(50px); font-size:1.4rem; font-weight:800; color:var(--floresta); margin-bottom:8px; display:inline-block; will-change:transform;">
+        Nossa Estrutura
+      </div>
+      <p style="transform:translateZ(60px); color:var(--esmeralda); font-size:0.9rem; margin-bottom:16px; display:inline-block; will-change:transform;">
+        ✨ Passe o mouse na imagem para ver em 3D
+      </p>
+      <div style="transform:translateZ(100px); width:100%; height:260px; margin-top:10px; display:inline-block; will-change:transform;">
+        <!-- SUBSTITUA O SRC ABAIXO PELO CAMINHO DA SUA IMAGEM, EX: ./fachada.jpg -->
+        <img src="./fachada.jpg" alt="Fachada da Escola" style="width:100%; height:100%; object-fit:cover; border-radius:12px; box-shadow:0 15px 30px rgba(0,0,0,0.15); pointer-events:none;">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    const container = document.querySelector('.card-container-3d');
+    const body = document.querySelector('.card-body-3d');
+    
+    if(!container) return;
+
+    container.addEventListener('mousemove', (e) => {
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      // Calculate rotation based on mouse position
+      const rotateX = ((y - centerY) / centerY) * -12; // Max 12 degrees
+      const rotateY = ((x - centerX) / centerX) * 12;
+      
+      container.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      body.style.boxShadow = `0 30px 60px -12px rgba(0,168,120,0.25)`;
+      body.style.border = `1px solid rgba(0,168,120,0.3)`;
+    });
+
+    container.addEventListener('mouseleave', () => {
+      container.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
+      container.style.transform = `rotateX(0deg) rotateY(0deg)`;
+      body.style.boxShadow = `none`;
+      body.style.border = `1px solid rgba(0,168,120,0.1)`;
+      
+      setTimeout(() => {
+        container.style.transition = 'transform 0.1s ease';
+      }, 500);
+    });
+
+    container.addEventListener('mouseenter', () => {
+      container.style.transition = 'transform 0.1s ease';
+    });
+  })();
+</script>
         </div>
       </div>
       <div id="oferece-tab" class="tab-panel">
@@ -1301,19 +1357,866 @@ text-align:center;
   </div>
 </section>
 
-<section class="sec-secretaria" id="secretaria">
-  <div class="container">
-    <div class="sec-header-secretaria">
-      <div class="sec-badge-secretaria">📂 Secretaria Digital</div>
-      <h2 class="stitle-secretaria">Documentos para <span>Download</span></h2>
-      <p class="ssub-secretaria">Acesse os materiais, listas e formulários da escola de forma rápida e fácil</p>
+<!-- ── ESTILOS DA SECRETARIA DIGITAL ── -->
+<style>
+/* ─── Paleta da Secretaria ─────────────────────────────────────────── */
+:root {
+  --sd-bg: #0d2318;
+  --sd-bg2: #f0f7f2;
+  --sd-green: #00a878;
+  --sd-dark: #1e4d35;
+  --sd-accent: #f9c31f;
+  --sd-pistache: #b5c99a;
+  --sd-card: #ffffff;
+  --sd-border: #c8e6c9;
+  --sd-text: #1a3a2a;
+  --sd-text2: #2d5a3d;
+  --sd-red: #c0392b;
+  --sd-shadow: 0 4px 24px rgba(0,168,120,.12);
+  --sd-radius: 16px;
+}
+
+/* ─── Modo Alto Contraste ──────────────────────────────────────────── */
+body.high-contrast {
+  filter: contrast(1.6) brightness(0.9);
+}
+body.high-contrast .sd-card,
+body.high-contrast .sd-modal-box,
+body.high-contrast .sd-admin-panel {
+  border: 2px solid #fff !important;
+}
+
+/* ─── Botões flutuantes de Acessibilidade ──────────────────────────── */
+#sd-a11y-bar {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 9990;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sd-a11y-btn {
+  background: var(--sd-dark);
+  color: #fff;
+  border: 2px solid var(--sd-green);
+  border-right: none;
+  padding: 8px 10px;
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 8px 0 0 8px;
+  transition: background .2s;
+  min-width: 42px;
+  text-align: center;
+}
+.sd-a11y-btn:hover { background: var(--sd-green); }
+
+/* ─── Seção Principal ──────────────────────────────────────────────── */
+#secretaria-digital {
+  background: var(--sd-bg2);
+  padding: 0;
+}
+
+/* ─── Hero da Secretaria ───────────────────────────────────────────── */
+.sd-hero {
+  background: linear-gradient(135deg, #051a0e 0%, #0d2318 50%, #1e4d35 100%);
+  padding: 60px 20px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.sd-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(0,168,120,.18), transparent 60%),
+              radial-gradient(ellipse at 80% 30%, rgba(249,195,31,.08), transparent 50%);
+}
+.sd-hero-content { position: relative; z-index: 2; }
+.sd-hero h2 {
+  color: #fff;
+  font-size: clamp(1.6rem,4vw,2.8rem);
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+.sd-hero h2 span { color: var(--sd-accent); }
+.sd-hero p {
+  color: var(--sd-pistache);
+  font-size: clamp(.85rem,2vw,1rem);
+  max-width: 560px;
+  margin: 0 auto 24px;
+  line-height: 1.7;
+}
+.sd-stats-row {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+.sd-stat {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(0,168,120,.3);
+  border-radius: 12px;
+  padding: 14px 24px;
+  text-align: center;
+  min-width: 110px;
+}
+.sd-stat .num {
+  display: block;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--sd-accent);
+}
+.sd-stat .lbl {
+  font-size: .72rem;
+  color: var(--sd-pistache);
+  font-weight: 600;
+}
+
+/* ─── Carrossel de Destaques ───────────────────────────────────────── */
+.sd-destaques {
+  background: var(--sd-dark);
+  padding: 40px 20px;
+}
+.sd-destaques-title {
+  text-align: center;
+  color: var(--sd-accent);
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.sd-carousel-wrap {
+  position: relative;
+  max-width: 1060px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.sd-carousel {
+  display: flex;
+  gap: 16px;
+  transition: transform .5s ease;
+  will-change: transform;
+}
+.sd-dest-card {
+  min-width: 280px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(0,168,120,.3);
+  border-radius: var(--sd-radius);
+  overflow: hidden;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform .25s, border-color .25s;
+}
+.sd-dest-card:hover { transform: translateY(-4px); border-color: var(--sd-green); }
+.sd-dest-img {
+  height: 140px;
+  background: linear-gradient(135deg, #0d2318, #1e4d35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  position: relative;
+}
+.sd-dest-img img {
+  width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0;
+}
+.sd-dest-body { padding: 14px; }
+.sd-dest-cat {
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--sd-green);
+  letter-spacing: .08em;
+  margin-bottom: 5px;
+}
+.sd-dest-title {
+  color: #fff;
+  font-size: .9rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.sd-dest-desc {
+  color: rgba(255,255,255,.6);
+  font-size: .75rem;
+  line-height: 1.4;
+}
+.sd-carousel-dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 16px;
+}
+.sd-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.25);
+  cursor: pointer;
+  border: none;
+  transition: background .2s, transform .2s;
+}
+.sd-dot.active { background: var(--sd-accent); transform: scale(1.3); }
+
+/* ─── Corpo principal ──────────────────────────────────────────────── */
+.sd-main {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* ─── Barra de busca ───────────────────────────────────────────────── */
+.sd-search-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.sd-search-input {
+  flex: 1;
+  min-width: 220px;
+  padding: 12px 18px 12px 44px;
+  border: 2px solid var(--sd-border);
+  border-radius: 50px;
+  font-size: .9rem;
+  outline: none;
+  font-family: inherit;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2300a878' stroke-width='2.5'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 14px center;
+  transition: border-color .2s;
+}
+.sd-search-input:focus { border-color: var(--sd-green); }
+.sd-year-select {
+  padding: 12px 16px;
+  border: 2px solid var(--sd-border);
+  border-radius: 50px;
+  font-size: .85rem;
+  outline: none;
+  font-family: inherit;
+  background: #fff;
+  cursor: pointer;
+  color: var(--sd-text);
+}
+.sd-year-select:focus { border-color: var(--sd-green); }
+
+/* ─── Filtros de Categoria ─────────────────────────────────────────── */
+.sd-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 32px;
+}
+.sd-filter-btn {
+  background: transparent;
+  border: 1.5px solid var(--sd-border);
+  color: var(--sd-text2);
+  font-weight: 600;
+  padding: 7px 16px;
+  border-radius: 50px;
+  font-size: .78rem;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.sd-filter-btn:hover { border-color: var(--sd-green); color: var(--sd-green); }
+.sd-filter-btn.active {
+  background: var(--sd-green);
+  color: #fff;
+  border-color: var(--sd-green);
+  font-weight: 800;
+}
+
+/* ─── Grid de Documentos ───────────────────────────────────────────── */
+.sd-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+.sd-card {
+  background: var(--sd-card);
+  border: 1px solid var(--sd-border);
+  border-radius: var(--sd-radius);
+  overflow: hidden;
+  transition: all .25s;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.sd-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--sd-shadow);
+  border-color: var(--sd-green);
+}
+.sd-card-img {
+  height: 150px;
+  background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.sd-card-img img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
+.sd-novo-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: var(--sd-red);
+  color: #fff;
+  font-size: .65rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 50px;
+  z-index: 3;
+  letter-spacing: .04em;
+  box-shadow: 0 2px 8px rgba(192,57,43,.4);
+  animation: sd-pulse-badge 2s infinite;
+}
+@keyframes sd-pulse-badge {
+  0%,100% { box-shadow: 0 2px 8px rgba(192,57,43,.4); }
+  50% { box-shadow: 0 2px 16px rgba(192,57,43,.7); }
+}
+.sd-fav-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255,255,255,.9);
+  border: none;
+  border-radius: 50%;
+  width: 32px; height: 32px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .2s;
+  z-index: 3;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+.sd-fav-btn:hover { transform: scale(1.2); }
+.sd-fav-btn.fav { background: var(--sd-accent); }
+.sd-card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
+.sd-card-cat {
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--sd-green);
+  letter-spacing: .08em;
+  margin-bottom: 6px;
+}
+.sd-card-title {
+  font-size: .92rem;
+  font-weight: 800;
+  color: var(--sd-text);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.sd-card-desc {
+  font-size: .78rem;
+  color: var(--sd-text2);
+  line-height: 1.5;
+  flex: 1;
+  margin-bottom: 12px;
+}
+.sd-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.sd-card-date {
+  font-size: .7rem;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.sd-card-ano {
+  font-size: .7rem;
+  color: var(--sd-green);
+  font-weight: 700;
+  background: rgba(0,168,120,.08);
+  padding: 2px 8px;
+  border-radius: 50px;
+}
+.sd-card-btns {
+  display: flex;
+  gap: 8px;
+}
+.sd-btn-view, .sd-btn-dl {
+  flex: 1;
+  padding: 9px 8px;
+  border-radius: 8px;
+  font-size: .76rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all .2s;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  text-decoration: none;
+}
+.sd-btn-view {
+  background: var(--sd-green);
+  color: #fff;
+}
+.sd-btn-view:hover { background: #008f67; transform: translateY(-1px); }
+.sd-btn-dl {
+  background: transparent;
+  border: 1.5px solid var(--sd-green);
+  color: var(--sd-green);
+}
+.sd-btn-dl:hover { background: var(--sd-green); color: #fff; }
+
+/* ─── Estado vazio ─────────────────────────────────────────────────── */
+.sd-empty {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--sd-text2);
+}
+.sd-empty .ico { font-size: 3.5rem; margin-bottom: 14px; }
+.sd-empty h4 { font-size: 1.1rem; margin-bottom: 8px; color: var(--sd-text); }
+.sd-empty p { font-size: .85rem; line-height: 1.6; }
+
+/* ─── Área de Favoritos ────────────────────────────────────────────── */
+#sd-favoritos-sec {
+  background: #fff;
+  border-top: 3px solid var(--sd-accent);
+  padding: 40px 20px;
+}
+.sd-fav-grid {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+.sd-fav-chip {
+  background: var(--sd-bg2);
+  border: 1.5px solid var(--sd-border);
+  border-radius: 50px;
+  padding: 8px 16px;
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--sd-text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all .2s;
+}
+.sd-fav-chip:hover { border-color: var(--sd-green); color: var(--sd-green); }
+.sd-fav-chip .rm {
+  color: #ccc;
+  font-size: .8rem;
+  line-height: 1;
+}
+.sd-fav-chip .rm:hover { color: var(--sd-red); }
+
+/* ─── Biblioteca Digital ───────────────────────────────────────────── */
+#sd-biblioteca {
+  background: var(--sd-dark);
+  padding: 48px 20px;
+}
+.sd-bib-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  max-width: 1060px;
+  margin: 0 auto;
+}
+.sd-bib-card {
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(0,168,120,.25);
+  border-radius: 14px;
+  padding: 20px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .25s;
+}
+.sd-bib-card:hover {
+  background: rgba(0,168,120,.15);
+  border-color: var(--sd-green);
+  transform: translateY(-4px);
+}
+.sd-bib-ico { font-size: 2.6rem; margin-bottom: 10px; display: block; }
+.sd-bib-label {
+  color: #fff;
+  font-size: .85rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.sd-bib-count {
+  color: var(--sd-pistache);
+  font-size: .72rem;
+}
+
+/* ─── Modal PDF Viewer ─────────────────────────────────────────────── */
+#sd-pdf-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99990;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+#sd-pdf-modal.open { display: flex; }
+.sd-pdf-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.85);
+  cursor: pointer;
+}
+.sd-pdf-box {
+  position: relative;
+  z-index: 2;
+  width: 95vw;
+  max-width: 900px;
+  height: 90vh;
+  background: #1a1a1a;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 24px 80px rgba(0,0,0,.6);
+}
+.sd-pdf-header {
+  background: #0d2318;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(0,168,120,.2);
+}
+.sd-pdf-title {
+  flex: 1;
+  color: #fff;
+  font-size: .9rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sd-pdf-ctrl {
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.15);
+  color: #fff;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: .75rem;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  transition: background .2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+}
+.sd-pdf-ctrl:hover { background: rgba(0,168,120,.3); }
+.sd-pdf-frame {
+  flex: 1;
+  border: none;
+  background: #fff;
+}
+.sd-pdf-close {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,.7);
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  line-height: 1;
+}
+.sd-pdf-close:hover { color: #fff; background: rgba(255,255,255,.1); }
+
+/* ─── Modal Flipbook ───────────────────────────────────────────────── */
+#sd-flip-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99991;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+#sd-flip-modal.open { display: flex; }
+.sd-flip-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.9);
+  cursor: pointer;
+}
+.sd-flip-box {
+  position: relative;
+  z-index: 2;
+  width: 95vw;
+  max-width: 900px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.sd-flip-box iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 12px;
+}
+.sd-flip-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  background: var(--sd-red);
+  border: none;
+  color: #fff;
+  border-radius: 50%;
+  width: 36px; height: 36px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─── Toast (notificação) ──────────────────────────────────────────── */
+#sd-toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--sd-dark);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: .85rem;
+  font-weight: 600;
+  z-index: 99999;
+  transition: transform .35s ease;
+  box-shadow: 0 8px 32px rgba(0,0,0,.35);
+  white-space: nowrap;
+  pointer-events: none;
+}
+#sd-toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ─── Títulos de seção reutilizáveis ───────────────────────────────── */
+.sd-sec-title {
+  text-align: center;
+  font-size: clamp(1.3rem,3vw,1.9rem);
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+.sd-sec-title.light { color: #fff; }
+.sd-sec-title.dark { color: var(--sd-text); }
+.sd-sec-title span { color: var(--sd-accent); }
+.sd-sec-sub { text-align: center; font-size: .85rem; margin-bottom: 32px; }
+.sd-sec-sub.light { color: var(--sd-pistache); }
+.sd-sec-sub.dark { color: var(--sd-text2); }
+.sd-divider {
+  width: 52px; height: 4px;
+  border-radius: 4px;
+  margin: 8px auto 32px;
+}
+.sd-divider.green { background: var(--sd-green); }
+.sd-divider.yellow { background: var(--sd-accent); }
+
+/* ─── Responsividade ───────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .sd-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .sd-bib-grid { grid-template-columns: repeat(2, 1fr); }
+  .sd-carousel { gap: 10px; }
+  .sd-dest-card { min-width: 220px; }
+  .sd-stats-row { gap: 12px; }
+  .sd-stat { min-width: 80px; padding: 10px 14px; }
+  .sd-pdf-box { height: 85vh; }
+}
+@media (max-width: 400px) {
+  .sd-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<!-- ── BARRA DE ACESSIBILIDADE ── -->
+<div id="sd-a11y-bar" aria-label="Ferramentas de acessibilidade">
+  <button class="sd-a11y-btn" onclick="sdFontUp()" title="Aumentar fonte" aria-label="Aumentar fonte">A+</button>
+  <button class="sd-a11y-btn" onclick="sdFontDown()" title="Diminuir fonte" aria-label="Diminuir fonte">A-</button>
+  <button class="sd-a11y-btn" onclick="sdToggleContrast()" title="Alto contraste" aria-label="Alto contraste">◑</button>
+</div>
+
+<!-- ── TOAST ── -->
+<div id="sd-toast" role="status" aria-live="polite"></div>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- SEÇÃO: SECRETARIA DIGITAL                               -->
+<!-- ════════════════════════════════════════════════════════ -->
+<section id="secretaria-digital" aria-label="Secretaria Digital">
+
+  <!-- Hero -->
+  <div class="sd-hero">
+    <div class="sd-hero-content">
+      <h2>📂 Secretaria <span>Digital</span></h2>
+      <p>Acesse documentos, comunicados, listas de materiais, calendários e muito mais — tudo em um só lugar, disponível 24h.</p>
+      <div class="sd-stats-row" id="sd-stats-row">
+        <div class="sd-stat">
+          <span class="num" id="sd-total">–</span>
+          <span class="lbl">Documentos</span>
+        </div>
+        <div class="sd-stat">
+          <span class="num" id="sd-novos">–</span>
+          <span class="lbl">Novidades</span>
+        </div>
+        <div class="sd-stat">
+          <span class="num" id="sd-cats">12</span>
+          <span class="lbl">Categorias</span>
+        </div>
+      </div>
     </div>
-    <div id="secretaria-grid" class="doc-grid-new">
-      <div class="doc-loading">⏳ Carregando documentos...</div>
+  </div>
+
+  <!-- Destaques -->
+  <div class="sd-destaques" id="sd-destaques-area" style="display:none;">
+    <div class="sd-destaques-title">⭐ Documentos em Destaque</div>
+    <div class="sd-carousel-wrap">
+      <div class="sd-carousel" id="sd-carousel"></div>
     </div>
-    <p class="doc-note">Dica para a equipe: Para adicionar ou remover documentos, atualize a planilha do Google Sheets.</p>
+    <div class="sd-carousel-dots" id="sd-dots"></div>
+  </div>
+
+  <!-- Corpo -->
+  <div class="sd-main">
+    <h3 class="sd-sec-title dark">Encontre o que <span>Precisa</span></h3>
+    <p class="sd-sec-sub dark">Pesquise por nome, categoria, palavra-chave ou ano letivo</p>
+    <div class="sd-divider green"></div>
+
+    <!-- Busca -->
+    <div class="sd-search-bar">
+      <input
+        type="search"
+        id="sd-search"
+        class="sd-search-input"
+        placeholder="Pesquisar documentos, comunicados, listas..."
+        aria-label="Buscar documentos"
+        autocomplete="off"
+      />
+      <select id="sd-year" class="sd-year-select" aria-label="Filtrar por ano letivo">
+        <option value="">Todos os anos</option>
+        <option value="2026">2026</option>
+        <option value="2025">2025</option>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+      </select>
+    </div>
+
+    <!-- Filtros -->
+    <div class="sd-filters" role="group" aria-label="Filtrar por categoria">
+      <button class="sd-filter-btn active" data-cat="todos" onclick="sdSetCat('todos',this)">📋 Todos</button>
+      <button class="sd-filter-btn" data-cat="Matrículas" onclick="sdSetCat('Matrículas',this)">📝 Matrículas</button>
+      <button class="sd-filter-btn" data-cat="Lista de Materiais" onclick="sdSetCat('Lista de Materiais',this)">🎒 Materiais</button>
+      <button class="sd-filter-btn" data-cat="Regimento Escolar" onclick="sdSetCat('Regimento Escolar',this)">📜 Regimento</button>
+      <button class="sd-filter-btn" data-cat="Calendário Escolar" onclick="sdSetCat('Calendário Escolar',this)">📅 Calendário</button>
+      <button class="sd-filter-btn" data-cat="Comunicados" onclick="sdSetCat('Comunicados',this)">📣 Comunicados</button>
+      <button class="sd-filter-btn" data-cat="Projetos" onclick="sdSetCat('Projetos',this)">🔬 Projetos</button>
+      <button class="sd-filter-btn" data-cat="Uniforme Escolar" onclick="sdSetCat('Uniforme Escolar',this)">👕 Uniforme</button>
+      <button class="sd-filter-btn" data-cat="Formulários" onclick="sdSetCat('Formulários',this)">📄 Formulários</button>
+      <button class="sd-filter-btn" data-cat="Transporte Escolar" onclick="sdSetCat('Transporte Escolar',this)">🚌 Transporte</button>
+      <button class="sd-filter-btn" data-cat="Revistas" onclick="sdSetCat('Revistas',this)">📰 Revistas</button>
+      <button class="sd-filter-btn" data-cat="Outros" onclick="sdSetCat('Outros',this)">📦 Outros</button>
+    </div>
+
+    <!-- Grid -->
+    <div class="sd-grid" id="sd-grid" aria-live="polite" aria-label="Lista de documentos">
+      <div class="sd-empty" id="sd-loading">
+        <div class="ico">⏳</div>
+        <h4>Carregando documentos…</h4>
+        <p>Aguarde um momento enquanto buscamos as informações.</p>
+      </div>
+    </div>
   </div>
 </section>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- SEÇÃO: FAVORITOS                                         -->
+<!-- ════════════════════════════════════════════════════════ -->
+<section id="sd-favoritos-sec" style="display:none;" aria-label="Meus favoritos">
+  <div style="max-width:1120px;margin:0 auto;">
+    <h3 class="sd-sec-title dark" style="text-align:left;margin-bottom:16px;">⭐ Meus <span>Favoritos</span></h3>
+    <div class="sd-fav-grid" id="sd-fav-grid"></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- SEÇÃO: BIBLIOTECA DIGITAL                               -->
+<!-- ════════════════════════════════════════════════════════ -->
+<section id="sd-biblioteca" aria-label="Biblioteca Digital">
+  <h3 class="sd-sec-title light">📚 Biblioteca <span>Digital</span></h3>
+  <p class="sd-sec-sub light">Revistas, projetos e produções dos alunos</p>
+  <div class="sd-divider yellow"></div>
+  <div class="sd-bib-grid" id="sd-bib-grid">
+    <div class="sd-bib-card" onclick="sdSetCat('Revistas',document.querySelector('[data-cat=Revistas]'))">
+      <span class="sd-bib-ico">📰</span>
+      <div class="sd-bib-label">Revistas Digitais</div>
+      <div class="sd-bib-count" id="bib-revistas">0 publicações</div>
+    </div>
+    <div class="sd-bib-card" onclick="sdSetCat('Projetos',document.querySelector('[data-cat=Projetos]'))">
+      <span class="sd-bib-ico">🔬</span>
+      <div class="sd-bib-label">Projetos Escolares</div>
+      <div class="sd-bib-count" id="bib-projetos">0 publicações</div>
+    </div>
+    <div class="sd-bib-card" onclick="sdSetCat('Comunicados',document.querySelector('[data-cat=Comunicados]'))">
+      <span class="sd-bib-ico">📣</span>
+      <div class="sd-bib-label">Informativos</div>
+      <div class="sd-bib-count" id="bib-comunicados">0 publicações</div>
+    </div>
+    <div class="sd-bib-card" onclick="sdSetCat('Outros',document.querySelector('[data-cat=Outros]'))">
+      <span class="sd-bib-ico">📖</span>
+      <div class="sd-bib-label">Produções dos Alunos</div>
+      <div class="sd-bib-count" id="bib-outros">0 publicações</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- MODAL PDF VIEWER                                         -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div id="sd-pdf-modal" role="dialog" aria-modal="true" aria-label="Visualizador de PDF">
+  <div class="sd-pdf-backdrop" onclick="sdClosePdf()"></div>
+  <div class="sd-pdf-box">
+    <div class="sd-pdf-header">
+      <span class="sd-pdf-title" id="sd-pdf-title">Documento</span>
+      <a id="sd-pdf-dl-btn" href="#" class="sd-pdf-ctrl" download target="_blank">⬇ Baixar</a>
+      <button class="sd-pdf-ctrl" onclick="sdPdfFullscreen()">⛶ Tela cheia</button>
+      <button class="sd-pdf-close" onclick="sdClosePdf()" aria-label="Fechar">✕</button>
+    </div>
+    <iframe id="sd-pdf-frame" class="sd-pdf-frame" title="PDF Viewer" loading="lazy"></iframe>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- MODAL FLIPBOOK (Revistas)                               -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div id="sd-flip-modal" role="dialog" aria-modal="true" aria-label="Revista Digital">
+  <div class="sd-flip-backdrop" onclick="sdCloseFlip()"></div>
+  <div class="sd-flip-box">
+    <button class="sd-flip-close" onclick="sdCloseFlip()" aria-label="Fechar">✕</button>
+    <iframe id="sd-flip-frame" title="Revista Digital" loading="lazy" allowfullscreen></iframe>
+  </div>
+</div>
 
 
 <section style="background:var(--bg);padding:56px 20px;" id="equipe">
@@ -2166,43 +3069,351 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 // SECRETARIA DIGITAL
-document.addEventListener("DOMContentLoaded", async function(){
-  var SECRETARIA_URL = "https://docs.google.com/spreadsheets/d/1poOn4HfljmohIRTU7yW8V_6gL4kI95AonDRrJTGhCn4/export?format=csv";
-  var grid = document.getElementById("secretaria-grid");
-  if(!grid) return;
+document.addEventListener("DOMContentLoaded", function(){
+  /* ── CONFIG ─────────────────────────────────────────────── */
+  const SECRETARIA_URL = "https://docs.google.com/spreadsheets/d/1poOn4HfljmohIRTU7yW8V_6gL4kI95AonDRrJTGhCn4/export?format=csv";
+  const NOVO_DIAS = 7;
 
-  try {
-    const r = await fetch(SECRETARIA_URL);
-    if (!r.ok) throw new Error("Erro na planilha");
-    const csvData = await r.text();
-    var csvLines = csvData.trim().split("\n");
-    
-    var htmlContent = "";
-    for(var i=1; i<csvLines.length; i++){
-      if(csvLines[i].trim() === "") continue;
-      var cols = csvLines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-      var nome = cols[0] ? cols[0].replace(/"/g, '').trim() : "Documento";
-      var link = cols[1] ? cols[1].replace(/"/g, '').trim() : "#";
-      
-      htmlContent += '<div class="dcc-new">' +
-                    '<div class="ico-wrap">📄</div>' +
-                    '<h3>' + nome + '</h3>' +
-                    '<p>Clique para visualizar ou baixar o documento em PDF.</p>' +
-                    '<a href="' + link + '" target="_blank" class="btn-baixar">⬇️ Baixar PDF</a>' +
-                    '</div>';
-    }
-    
-    if (htmlContent !== "") {
-      grid.innerHTML = htmlContent;
-    } else {
-      grid.innerHTML = '<div style="text-align:center;width:100%;color:var(--floresta);">Nenhum documento encontrado na planilha.</div>';
-    }
-  } catch (e) {
-    console.error("Erro Secretaria:", e);
-    grid.innerHTML = '<div style="text-align:center;width:100%;color:var(--floresta);">Erro ao carregar documentos. Verifique a URL da planilha.</div>';
+  /* ── EMOJIS POR CATEGORIA ────────────────────────────────── */
+  const ICONS = {
+    'Matrículas': '📝',
+    'Lista de Materiais': '🎒',
+    'Regimento Escolar': '📜',
+    'Calendário Escolar': '📅',
+    'Comunicados': '📣',
+    'Projetos': '🔬',
+    'Revistas': '📰',
+    'Uniforme Escolar': '👕',
+    'Formulários': '📄',
+    'Transporte Escolar': '🚌',
+    'Outros': '📦',
+    'default': '📂'
+  };
+
+  /* ── ESTADO ──────────────────────────────────────────────── */
+  let _docs = [], _catAtual = 'todos', _favs = {};
+
+  /* ── INIT ────────────────────────────────────────────────── */
+  function sdInit() {
+    _favs = JSON.parse(localStorage.getItem('sd_favs') || '{}');
+    sdLoad();
+    // Busca em tempo real
+    document.getElementById('sd-search').addEventListener('input', sdRender);
+    document.getElementById('sd-year').addEventListener('change', sdRender);
+    // Teclado: Fechar modal com ESC
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { window.sdClosePdf(); window.sdCloseFlip(); }
+    });
   }
-});
-</script>
+
+  /* ── CARREGAR DO GOOGLE SHEETS ────────────────────────────────── */
+  async function sdLoad() {
+    try {
+      const r = await fetch(SECRETARIA_URL);
+      if (!r.ok) throw new Error("Erro na planilha");
+      const csvData = await r.text();
+      var csvLines = csvData.trim().split("\n");
+      
+      _docs = [];
+      for(var i=1; i<csvLines.length; i++){
+        if(csvLines[i].trim() === "") continue;
+        var cols = csvLines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+        
+        // Mapeamento da planilha antiga para a nova estrutura
+        // Planilha antiga: Coluna 1 = Titulo, Coluna 2 = Link
+        // Novas colunas (opcionais, o usuario pode adicionar depois no Sheets):
+        // Coluna 3 = Categoria, Coluna 4 = Descricao, Coluna 5 = Destaque, Coluna 6 = Ano, Coluna 7 = Data
+        
+        var titulo = cols[0] ? cols[0].replace(/"/g, '').trim() : "Documento Sem Título";
+        var link = cols[1] ? cols[1].replace(/"/g, '').trim() : "";
+        var categoria = cols[2] ? cols[2].replace(/"/g, '').trim() : "Outros";
+        var descricao = cols[3] ? cols[3].replace(/"/g, '').trim() : "";
+        var destaque = cols[4] ? cols[4].replace(/"/g, '').trim().toLowerCase() === "sim" : false;
+        var ano = cols[5] ? cols[5].replace(/"/g, '').trim() : new Date().getFullYear().toString();
+        var dataPub = cols[6] ? cols[6].replace(/"/g, '').trim() : new Date().toISOString().slice(0,10);
+        
+        // Conversao de data se vier no padrao DD/MM/YYYY do sheets
+        if (dataPub.includes('/')) {
+            let partes = dataPub.split('/');
+            if(partes.length === 3) dataPub = `${partes[2]}-${partes[1]}-${partes[0]}`;
+        }
+
+        _docs.push({
+          id: 'doc_' + i,
+          titulo: titulo,
+          arquivo_pdf: link,
+          categoria: categoria,
+          descricao: descricao,
+          destaque: destaque,
+          ano_letivo: ano,
+          data_publicacao: dataPub,
+          ativo: true,
+          imagem_capa: ''
+        });
+      }
+      
+      // Inverte para os mais novos primeiro se a planilha não estiver ordenada
+      _docs.reverse();
+      
+      sdProcess();
+    } catch(e) {
+      console.warn('[SD] Sheets Error:', e.message);
+      document.getElementById('sd-loading').innerHTML = '<div class="ico">⚠️</div><h4>Erro ao carregar</h4><p>Não foi possível ler a planilha.</p>';
+    }
+  }
+
+  /* ── PROCESSAR DADOS ─────────────────────────────────────── */
+  function sdProcess() {
+    const total = _docs.length;
+    const agora = new Date();
+    const novos = _docs.filter(d => {
+      const pub = new Date(d.data_publicacao);
+      return (agora - pub) / 86400000 <= NOVO_DIAS;
+    }).length;
+    document.getElementById('sd-total').textContent = total;
+    document.getElementById('sd-novos').textContent = novos;
+    sdRenderDestaques();
+    sdRenderBiblioteca();
+    sdRender();
+  }
+
+  /* ── DESTAQUES / CARROSSEL ───────────────────────────────── */
+  function sdRenderDestaques() {
+    const destaques = _docs.filter(d => d.destaque);
+    const area = document.getElementById('sd-destaques-area');
+    const carousel = document.getElementById('sd-carousel');
+    const dots = document.getElementById('sd-dots');
+    if (!destaques.length) { area.style.display = 'none'; return; }
+    area.style.display = 'block';
+    carousel.innerHTML = destaques.map(d => `
+      <div class="sd-dest-card" onclick="sdOpenDoc('${d.id}')" role="button" tabindex="0" aria-label="${d.titulo}">
+        <div class="sd-dest-img">
+          ${d.imagem_capa ? `<img src="${d.imagem_capa}" alt="${d.titulo}" loading="lazy"/>` : (ICONS[d.categoria]||ICONS.default)}
+        </div>
+        <div class="sd-dest-body">
+          <div class="sd-dest-cat">${d.categoria}</div>
+          <div class="sd-dest-title">${d.titulo}</div>
+          <div class="sd-dest-desc">${d.descricao||''}</div>
+        </div>
+      </div>
+    `).join('');
+    dots.innerHTML = destaques.map((_,i)=>`<button class="sd-dot${i===0?' active':''}" onclick="sdGoSlide(${i})" aria-label="Slide ${i+1}"></button>`).join('');
+    // Auto-play
+    let idx = 0;
+    setInterval(() => {
+      idx = (idx+1) % destaques.length;
+      window.sdGoSlide(idx);
+    }, 4500);
+  }
+
+  window.sdGoSlide = function(idx) {
+    const carousel = document.getElementById('sd-carousel');
+    const dots = document.querySelectorAll('.sd-dot');
+    const card = carousel.querySelector('.sd-dest-card');
+    if (!card) return;
+    const w = card.offsetWidth + 16;
+    carousel.style.transform = `translateX(-${idx * w}px)`;
+    dots.forEach((d,i) => d.classList.toggle('active', i===idx));
+  };
+
+  /* ── RENDER PRINCIPAL ────────────────────────────────────── */
+  window.sdSetCat = function(cat, btn) {
+    _catAtual = cat;
+    document.querySelectorAll('.sd-filter-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    // Scroll para a seção
+    document.getElementById('secretaria-digital').scrollIntoView({ behavior:'smooth', block:'start' });
+    sdRender();
+  };
+
+  function sdRender() {
+    const q = (document.getElementById('sd-search').value||'').toLowerCase().trim();
+    const ano = document.getElementById('sd-year').value;
+    const grid = document.getElementById('sd-grid');
+    const loading = document.getElementById('sd-loading');
+    if (loading) loading.remove();
+
+    let filtered = _docs;
+    if (_catAtual !== 'todos') {
+      filtered = filtered.filter(d => d.categoria === _catAtual);
+    }
+    if (q) {
+      filtered = filtered.filter(d =>
+        d.titulo.toLowerCase().includes(q) ||
+        (d.descricao||'').toLowerCase().includes(q) ||
+        d.categoria.toLowerCase().includes(q) ||
+        (d.ano_letivo||'').includes(q)
+      );
+    }
+    if (ano) {
+      filtered = filtered.filter(d => (d.ano_letivo||'') === ano);
+    }
+
+    if (!filtered.length) {
+      grid.innerHTML = `<div class="sd-empty"><div class="ico">🔍</div><h4>Nenhum documento encontrado</h4><p>Tente outros termos ou categorias.</p></div>`;
+      return;
+    }
+
+    const agora = new Date();
+    grid.innerHTML = filtered.map(d => {
+      const isNovo = (agora - new Date(d.data_publicacao)) / 86400000 <= NOVO_DIAS;
+      const isFav = !!_favs[d.id];
+      const ico = ICONS[d.categoria] || ICONS.default;
+      const dataFmt = new Date(d.data_publicacao).toLocaleDateString('pt-BR');
+      return `
+        <article class="sd-card" id="sd-card-${d.id}" data-id="${d.id}">
+          <div class="sd-card-img">
+            ${d.imagem_capa ? `<img src="${d.imagem_capa}" alt="${d.titulo}" loading="lazy"/>` : ico}
+            ${isNovo ? '<span class="sd-novo-badge">🆕 Novo</span>' : ''}
+            <button class="sd-fav-btn${isFav?' fav':''}" onclick="sdToggleFav('${d.id}','${d.titulo.replace(/'/g,"\\'")}',event)"
+              title="${isFav?'Remover dos favoritos':'Salvar nos favoritos'}"
+              aria-label="${isFav?'Remover dos favoritos':'Salvar nos favoritos'}"
+            >${isFav?'⭐':'☆'}</button>
+          </div>
+          <div class="sd-card-body">
+            <div class="sd-card-cat">${d.categoria}</div>
+            <h4 class="sd-card-title">${d.titulo}</h4>
+            <p class="sd-card-desc">${d.descricao||''}</p>
+            <div class="sd-card-meta">
+              <span class="sd-card-date">📅 ${dataFmt !== 'Invalid Date' ? dataFmt : ''}</span>
+              ${d.ano_letivo?`<span class="sd-card-ano">${d.ano_letivo}</span>`:``}
+            </div>
+            <div class="sd-card-btns">
+              <button class="sd-btn-view" onclick="sdOpenDoc('${d.id}')" aria-label="Visualizar ${d.titulo}">
+                👁 Visualizar
+              </button>
+              ${d.arquivo_pdf?`<a class="sd-btn-dl" href="${d.arquivo_pdf}" download target="_blank" aria-label="Baixar ${d.titulo}">⬇ Baixar</a>`:``}
+            </div>
+          </div>
+        </article>
+      `;
+    }).join('');
+  }
+
+  /* ── ABRIR DOCUMENTO ─────────────────────────────────────── */
+  window.sdOpenDoc = function(id) {
+    const doc = _docs.find(d => d.id === id);
+    if (!doc) return;
+    if (doc.categoria === 'Revistas' && doc.arquivo_pdf) {
+      sdOpenFlip(doc);
+    } else if (doc.arquivo_pdf) {
+      sdOpenPdf(doc);
+    } else {
+      sdToast('ℹ️ Este documento ainda não tem arquivo em PDF.');
+    }
+  };
+
+  /* ── PDF VIEWER ──────────────────────────────────────────── */
+  function sdOpenPdf(doc) {
+    document.getElementById('sd-pdf-title').textContent = doc.titulo;
+    document.getElementById('sd-pdf-frame').src = doc.arquivo_pdf;
+    document.getElementById('sd-pdf-dl-btn').href = doc.arquivo_pdf;
+    document.getElementById('sd-pdf-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  window.sdClosePdf = function() {
+    document.getElementById('sd-pdf-modal').classList.remove('open');
+    document.getElementById('sd-pdf-frame').src = '';
+    document.body.style.overflow = '';
+  };
+  window.sdPdfFullscreen = function() {
+    const fr = document.getElementById('sd-pdf-frame');
+    if (fr.requestFullscreen) fr.requestFullscreen();
+  };
+
+  /* ── FLIPBOOK ────────────────────────────────────────────── */
+  function sdOpenFlip(doc) {
+    const frame = document.getElementById('sd-flip-frame');
+    frame.src = doc.arquivo_pdf;
+    document.getElementById('sd-flip-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  window.sdCloseFlip = function() {
+    document.getElementById('sd-flip-modal').classList.remove('open');
+    document.getElementById('sd-flip-frame').src = '';
+    document.body.style.overflow = '';
+  };
+
+  /* ── FAVORITOS ───────────────────────────────────────────── */
+  window.sdToggleFav = function(id, titulo, e) {
+    e.stopPropagation();
+    if (_favs[id]) {
+      delete _favs[id];
+      sdToast('☆ Removido dos favoritos.');
+    } else {
+      _favs[id] = titulo;
+      sdToast('⭐ Salvo nos favoritos!');
+    }
+    localStorage.setItem('sd_favs', JSON.stringify(_favs));
+    sdRenderFavs();
+    sdRender();
+  };
+
+  function sdRenderFavs() {
+    const sec = document.getElementById('sd-favoritos-sec');
+    const grid = document.getElementById('sd-fav-grid');
+    const ids = Object.keys(_favs);
+    if (!ids.length) { sec.style.display = 'none'; return; }
+    sec.style.display = 'block';
+    grid.innerHTML = ids.map(id => `
+      <div class="sd-fav-chip" onclick="sdOpenDoc('${id}')">
+        ⭐ ${_favs[id]}
+        <span class="rm" onclick="sdToggleFavRemove('${id}',event)" title="Remover">✕</span>
+      </div>
+    `).join('');
+  }
+  window.sdToggleFavRemove = function(id, e) {
+    e.stopPropagation();
+    delete _favs[id];
+    localStorage.setItem('sd_favs', JSON.stringify(_favs));
+    sdRenderFavs();
+    sdRender();
+  };
+
+  /* ── BIBLIOTECA ──────────────────────────────────────────── */
+  function sdRenderBiblioteca() {
+    const counts = { Revistas:0, Projetos:0, Comunicados:0, Outros:0 };
+    _docs.forEach(d => { if (counts[d.categoria] !== undefined) counts[d.categoria]++; });
+    Object.entries(counts).forEach(([cat,n]) => {
+      const el = document.getElementById('bib-' + cat.toLowerCase());
+      if (el) el.textContent = `${n} publicaç${n===1?'ão':'ões'}`;
+    });
+  }
+
+  /* ── TOAST ───────────────────────────────────────────────── */
+  function sdToast(msg) {
+    const t = document.getElementById('sd-toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  /* ── ACESSIBILIDADE ──────────────────────────────────────── */
+  let _fontSize = 100;
+  window.sdFontUp = function() {
+    _fontSize = Math.min(_fontSize + 10, 140);
+    document.documentElement.style.fontSize = _fontSize + '%';
+    sdToast('🔠 Fonte aumentada.');
+  };
+  window.sdFontDown = function() {
+    _fontSize = Math.max(_fontSize - 10, 80);
+    document.documentElement.style.fontSize = _fontSize + '%';
+    sdToast('🔡 Fonte diminuída.');
+  };
+  window.sdToggleContrast = function() {
+    document.body.classList.toggle('high-contrast');
+    const on = document.body.classList.contains('high-contrast');
+    localStorage.setItem('sd_contrast', on ? '1' : '0');
+    sdToast(on ? '◑ Alto contraste ativado.' : '◑ Alto contraste desativado.');
+  };
+  // Restaurar contraste
+  if (localStorage.getItem('sd_contrast') === '1') {
+    document.body.classList.add('high-contrast');
+  }
+
+  sdInit();
+
+});</script>
 
 
 
