@@ -3187,10 +3187,8 @@ document.addEventListener("DOMContentLoaded", function(){
   window.sdOpenDoc = function(id) {
     const doc = _docs.find(d => d.id === id);
     if (!doc) return;
-    if (doc.categoria === 'Revistas' && doc.arquivo_pdf) {
-      sdOpenFlip(doc);
-    } else if (doc.arquivo_pdf) {
-      sdOpenPdf(doc);
+    if (doc.arquivo_pdf) {
+      window.open(doc.arquivo_pdf, '_blank');
     } else {
       sdToast('ℹ️ Este documento ainda não tem arquivo em PDF.');
     }
