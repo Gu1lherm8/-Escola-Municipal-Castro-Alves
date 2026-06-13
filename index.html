@@ -1023,7 +1023,7 @@ text-align:center;
           <p>Contamos com uma equipe comprometida, projetos pedagógicos inovadores e estrutura em constante melhoria para oferecer o melhor à nossa comunidade.</p>
         </div>
         <div style="width:100%; text-align:center;">
-          <img src="./fachada.jpg" alt="Fachada da Escola Municipal Castro Alves" style="width:100%; max-height:420px; object-fit:cover; display:block;">
+          <img src="./fachada.jpg" alt="Fachada da Escola Municipal Castro Alves" style="width:100%; max-height:420px; object-fit:cover; display:block; border-radius: 24px; box-shadow: 0 12px 35px rgba(0,0,0,0.12);">
         </div>
       </div>
       </div>
@@ -2017,20 +2017,8 @@ body.high-contrast .sd-admin-panel {
     <div class="sd-hero-content">
       <h2>📂 Secretaria <span>Digital</span></h2>
       <p>Acesse documentos, comunicados, listas de materiais, calendários e muito mais — tudo em um só lugar, disponível 24h.</p>
-      <div class="sd-stats-row" id="sd-stats-row">
-        <div class="sd-stat">
-          <span class="num" id="sd-total">–</span>
-          <span class="lbl">Documentos</span>
-        </div>
-        <div class="sd-stat">
-          <span class="num" id="sd-novos">–</span>
-          <span class="lbl">Novidades</span>
-        </div>
-        <div class="sd-stat">
-          <span class="num" id="sd-cats">12</span>
-          <span class="lbl">Categorias</span>
-        </div>
-      </div>
+    </div>
+  </div>
     </div>
   </div>
 
@@ -2069,9 +2057,7 @@ body.high-contrast .sd-admin-panel {
     </div>
 
     <!-- Filtros -->
-    <div class="sd-filters" role="group" aria-label="Filtrar por categoria" id="sd-filters-container">
-      <button class="sd-filter-btn active" data-cat="todos" onclick="sdSetCat('todos',this)">📋 Todos</button>
-    </div>
+    
 
     <!-- Grid -->
     <div class="sd-grid" id="sd-grid" aria-live="polite" aria-label="Lista de documentos">
@@ -3178,7 +3164,7 @@ document.addEventListener("DOMContentLoaded", function(){
             >${isFav?'⭐':'☆'}</button>
           </div>
           <div class="sd-card-body">
-            <div class="sd-card-cat">${d.categoria}</div>
+            
             <h4 class="sd-card-title">${d.titulo}</h4>
             <p class="sd-card-desc">${d.descricao||''}</p>
             <div class="sd-card-meta">
@@ -3325,5 +3311,34 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
 
+
+<script>
+  // Otimização Mobile: Reduzir travamentos ao rolar a página
+  let scrollTimeout;
+  window.addEventListener('scroll', function() {
+    if (!document.body.classList.contains('disable-hover')) {
+      document.body.classList.add('disable-hover');
+    }
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(function() {
+      document.body.classList.remove('disable-hover');
+    }, 150);
+  }, { passive: true });
+</script>
+<style>
+  .disable-hover, .disable-hover * {
+    pointer-events: none !important;
+  }
+  /* Suavizar renderização geral */
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  /* Otimizar imagens */
+  img {
+    content-visibility: auto;
+  }
+</style>
 </body>
 </html>
