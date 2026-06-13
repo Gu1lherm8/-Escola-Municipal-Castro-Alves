@@ -2594,13 +2594,13 @@ async function carregarEventos() {
       card.style.cssText = "display:flex;gap:16px;align-items:center;background:#fff;border:1px solid #e0ede6;border-radius:12px;padding:16px;margin-bottom:4px;";
       card.innerHTML =
         "<div style=\"min-width:70px;text-align:center;background:var(--esmeralda);border-radius:8px;padding:8px;color:#fff;font-weight:800;font-size:.85rem;line-height:1.3;flex-shrink:0;\">" +
-          "<b style=\"display:block;font-size:1.6rem;\">" + dia + "</b>" +
+          "<b style=\"display:block;font-size:1.6rem;\">" + sanitize(dia) + "</b>" +
           "<span>" + mes + "</span><br>" +
           "<span style=\"font-size:.7rem;opacity:.85;\">" + ano + "</span>" +
         "</div>" +
         "<div style=\"flex:1;\">" +
-          "<h3 style=\"font-weight:700;font-size:.95rem;color:#1e3d2a;margin-bottom:4px;\">" + titulo + "</h3>" +
-          "<p style=\"font-size:.82rem;color:#2d5a3d;opacity:.8;\">" + desc + "</p>" +
+          "<h3 style=\"font-weight:700;font-size:.95rem;color:#1e3d2a;margin-bottom:4px;\">" + sanitize(titulo) + "</h3>" +
+          "<p style=\"font-size:.82rem;color:#2d5a3d;opacity:.8;\">" + sanitize(desc) + "</p>" +
         "</div>" +
         "<span style=\"font-size:1.5rem;flex-shrink:0;\">📅</span>";
       lista.appendChild(card);
@@ -2907,16 +2907,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
   fetch(URL)
     .then(function(r){
-      console.log("[Avisos] Status:", r.status);
+
       return r.text();
     })
     .then(function(text){
       console.log("[Avisos] CSV recebido:", text.substring(0,200));
       var lines = text.trim().split("\n");
-      if(lines.length < 2){ console.log("[Avisos] Sem dados"); return; }
+      if(lines.length < 2){
+ return; }
 
       var banner = document.getElementById("aviso-banner");
-      if(!banner){ console.log("[Avisos] Banner não encontrado!"); return; }
+      if(!banner){
+ return; }
 
       var hoje = new Date();
       hoje.setHours(0,0,0,0);
@@ -2931,34 +2933,37 @@ document.addEventListener("DOMContentLoaded", function() {
         var ativo    = c[3] ? c[3].replace(/"/g,"").trim().toLowerCase() : "";
         var destaque = c[4] ? c[4].replace(/"/g,"").trim().toLowerCase() : "nao";
 
-        console.log("[Avisos] Linha", i, ":", msg, "|", dtInicio, "|", dtFim, "|", ativo, "|", destaque);
 
-        if(!msg || ativo !== "sim"){ console.log("[Avisos] Pulando - inativo ou sem msg"); continue; }
+        if(!msg || ativo !== "sim"){
+ continue; }
 
         var ini = parseData(dtInicio);
         var fim = parseData(dtFim);
-        console.log("[Avisos] Datas:", ini, "->", fim);
 
-        if(ini && hoje < ini){ console.log("[Avisos] Ainda não começou"); continue; }
-        if(fim){ fim.setHours(23,59,59,999); if(hoje > fim){ console.log("[Avisos] Já expirou"); continue; } }
+
+        if(ini && hoje < ini){
+ continue; }
+        if(fim){ fim.setHours(23,59,59,999); if(hoje > fim){
+ continue; } }
 
         var item = document.createElement("div");
         item.className = "aviso-item " + (destaque==="sim" ? "destaque" : "normal");
-        item.innerHTML = "<span>" + (destaque==="sim" ? "🚨 " : "🔔 ") + msg + "</span>" +
+        item.innerHTML = "<span>" + (destaque==="sim" ? "🚨 " : "🔔 ") + sanitize(msg) + "</span>" +
           "<button onclick=\"this.parentElement.remove();var b=document.getElementById('aviso-banner');if(!b.children.length)b.style.display='none';\" aria-label=\"Fechar\">✕</button>";
         banner.appendChild(item);
         count++;
-        console.log("[Avisos] ✅ Aviso adicionado:", msg);
+
       }
 
       if(count > 0){
         banner.style.display = "block";
         console.log("[Avisos] Banner exibido com", count, "aviso(s)");
       } else {
-        console.log("[Avisos] Nenhum aviso válido para hoje");
+
       }
     })
-    .catch(function(e){ console.log("[Avisos] Erro:", e); });
+    .catch(function(e){
+ });
 })();
 
 
@@ -3175,7 +3180,7 @@ document.addEventListener("DOMContentLoaded", function(){
               <button class="sd-btn-view" onclick="sdOpenDoc('${d.id}')" aria-label="Visualizar ${d.titulo}">
                 👁 Visualizar
               </button>
-              ${d.arquivo_pdf?`<a class="sd-btn-dl" href="${d.arquivo_pdf}" download target="_blank" aria-label="Baixar ${d.titulo}">⬇ Baixar</a>`:``}
+              ${d.arquivo_pdf?`<a class="sd-btn-dl" href="${d.arquivo_pdf}" target="_blank" rel="noopener noreferrer" aria-label="Baixar ${d.titulo}">⬇ Baixar</a>`:``}
             </div>
           </div>
         </article>
