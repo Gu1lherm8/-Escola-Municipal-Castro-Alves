@@ -3064,8 +3064,8 @@ document.addEventListener("DOMContentLoaded", function(){
       const pub = new Date(d.data_publicacao);
       return (agora - pub) / 86400000 <= NOVO_DIAS;
     }).length;
-    document.getElementById('sd-total').textContent = total;
-    document.getElementById('sd-novos').textContent = novos;
+    if(document.getElementById('sd-total')) document.getElementById('sd-total').textContent = total;
+    if(document.getElementById('sd-novos')) document.getElementById('sd-novos').textContent = novos;
     sdRenderDestaques();
     sdRender();
   }
