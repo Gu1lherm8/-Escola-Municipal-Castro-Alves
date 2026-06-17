@@ -24,7 +24,7 @@
       animation: animatedGradient 12s ease infinite;
     }
 
-    .btn-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+    .btn-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
     .btn-cat { background: #f8f9fa; border: 2px solid #e0e0e0; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: bold; color: var(--verde); cursor: pointer; transition: 0.2s; }
     .btn-cat:hover { border-color: var(--dourado); background: #fffdf5; }
     .btn-cat.active { background: var(--verde); color: var(--dourado); border-color: var(--verde); }
@@ -33,7 +33,7 @@
     .iframe-container.active { display: block; }
     iframe { width: 100%; height: 100%; border: none; border-radius: 8px; }
     
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
       .btn-container { grid-template-columns: 1fr; }
       .caixa { padding: 15px; }
     }
@@ -65,10 +65,9 @@
 
     <!-- Botões de Seleção -->
     <div class="btn-container">
-      <button class="btn-cat" onclick="mostrarForm('professores', this)">📚 Professores</button>
-      <button class="btn-cat" onclick="mostrarForm('administrativo', this)">📋 Administrativo</button>
-      <button class="btn-cat" onclick="mostrarForm('estagiarios', this)">🎓 Estagiários</button>
       <button class="btn-cat" onclick="mostrarForm('voluntario', this)">🤝 Social Voluntário</button>
+      <button class="btn-cat" onclick="mostrarForm('estagiarios', this)">🎓 Estagiários</button>
+      <button class="btn-cat" onclick="mostrarForm('docentes', this)">📚 Docentes / Administrativos</button>
     </div>
 
     <!-- Área onde os formulários aparecem -->
@@ -79,20 +78,17 @@
       </div>
 
       <!-- Iframes do Google Forms -->
-      <div id="form-professores" class="iframe-container">
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfF-5Jh6xVSDpaXVOExSqB-6ki0TDElRNyQ3xPACTkXO7z1ag/viewform?embedded=true">Carregando…</iframe>
-      </div>
-      
-      <div id="form-administrativo" class="iframe-container">
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfHC5bKlVYSyRbQFqzR1415hLYdr81mXT3BdC39TsxHJWYXyQ/viewform?embedded=true">Carregando…</iframe>
+      <div id="form-voluntario" class="iframe-container">
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfUBf9H_wSe4qGHwHwOS39hoWxx0Wgbr3SYw3qMFpsGPLD8AQ/viewform?embedded=true">Carregando…</iframe>
       </div>
 
       <div id="form-estagiarios" class="iframe-container">
         <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeA5cOkkKYQpDAaN2PktBnD9POsV59N7vtxHBWpAUGGHmW0sA/viewform?embedded=true">Carregando…</iframe>
       </div>
-
-      <div id="form-voluntario" class="iframe-container">
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfUBf9H_wSe4qGHwHwOS39hoWxx0Wgbr3SYw3qMFpsGPLD8AQ/viewform?embedded=true">Carregando…</iframe>
+      
+      <!-- Formulário unificado para Docentes e Administrativos -->
+      <div id="form-docentes" class="iframe-container">
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfF-5Jh6xVSDpaXVOExSqB-6ki0TDElRNyQ3xPACTkXO7z1ag/viewform?embedded=true">Carregando…</iframe>
       </div>
     </div>
 
