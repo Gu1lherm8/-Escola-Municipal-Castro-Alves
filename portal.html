@@ -5,147 +5,605 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal do Servidor - Escola Castro Alves</title>
   <style>
-    :root { --verde: #0d2318; --dourado: #f9c31f; --branco: #ffffff; --fundo: #f4f6f5; }
-    body { font-family: 'Inter', sans-serif; background: var(--fundo); margin: 0; padding: 20px; display: flex; justify-content: center; }
-    .caixa { background: var(--branco); padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); max-width: 800px; width: 100%; }
-    
-    .hero-header {
-      text-align: center; margin-bottom: 40px; padding: 70px 20px; 
-      border-radius: 16px; color: white; position: relative; overflow: hidden; 
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-      background: radial-gradient(circle at center, #3d2306 0%, #170a02 70%, #0a0400 100%);
-    }
-    /* Partículas/Estrelas Cadentes (Streaks) */
-    .streak {
-      position: absolute;
-      background: linear-gradient(90deg, transparent, rgba(255, 220, 150, 0.9), #fff);
-      height: 2px;
-      border-radius: 50%;
-      box-shadow: 0 0 15px #ffb94f, 0 0 30px #ffb94f;
-      animation: shoot linear infinite;
-      opacity: 0;
-      z-index: 1;
-    }
-    .streak::after {
-      content: '';
-      position: absolute;
-      right: 0;
-      top: -2px;
-      width: 6px;
-      height: 6px;
-      background: #fff;
-      border-radius: 50%;
-      box-shadow: 0 0 10px #fff, 0 0 20px #ffb94f;
-    }
-    @keyframes shoot {
-      0% { transform: translateX(-50vw); opacity: 0; }
-      10% { opacity: 1; }
-      80% { opacity: 1; }
-      100% { transform: translateX(100vw); opacity: 0; }
-    }
-    .hero-content {
-      position: relative;
-      z-index: 2;
+    :root { 
+      --verde: #0d2318; 
+      --dourado: #f9c31f; 
+      --branco: #ffffff; 
+      --fundo: #f4f6f5;
+      --cinza-claro: #f8f9fa;
+      --cinza-borda: #e0e0e0;
+      --cinza-texto: #888;
+      --cinza-suave: #d4cdb3;
     }
 
-    .btn-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
-    .btn-cat { background: #f8f9fa; border: 2px solid #e0e0e0; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: bold; color: var(--verde); cursor: pointer; transition: 0.2s; }
-    .btn-cat:hover { border-color: var(--dourado); background: #fffdf5; }
-    .btn-cat.active { background: var(--verde); color: var(--dourado); border-color: var(--verde); }
+    * {
+      box-sizing: border-box;
+    }
+
+    body { 
+      font-family: 'Inter', sans-serif; 
+      background: var(--fundo); 
+      margin: 0; 
+      padding: 20px; 
+      display: flex; 
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .caixa { 
+      background: var(--branco); 
+      padding: 30px; 
+      border-radius: 12px; 
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
+      max-width: 800px; 
+      width: 100%; 
+    }
     
-    .iframe-container { display: none; width: 100%; height: 1100px; }
-    .iframe-container.active { display: block; }
-    iframe { width: 100%; height: 100%; border: none; border-radius: 8px; }
-    
+    /* ===== HERO HEADER COM SHADER CANVAS ===== */
+    .hero-header {
+      text-align: center; 
+      margin: -30px -30px 40px -30px; 
+      padding: 70px 20px; 
+      border-radius: 12px 12px 0 0;
+      color: white; 
+      position: relative; 
+      overflow: hidden;
+      background: #0a0400;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* ===== CANVAS SHADER (behind text) ===== */
+    #shader-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+    }
+
+    /* ===== BADGE DE ACESSO ===== */
+    .badge-acesso {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 200, 100, 0.3);
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffcc66;
+      margin-bottom: 24px;
+      backdrop-filter: blur(10px);
+    }
+
+    /* ===== HEADLINES ===== */
+    .hero-title {
+      font-size: clamp(32px, 6vw, 48px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin: 0 0 16px 0;
+      color: #ffffff;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+
+    .hero-title-destaque {
+      background: -webkit-linear-gradient(0deg, #ffb347, #ffcc33);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(20px, 3vw, 26px);
+      color: #ffdd99;
+      opacity: 0.9;
+    }
+
+    .hero-description {
+      font-size: 16px;
+      color: var(--cinza-suave);
+      max-width: 550px;
+      margin: 0 auto;
+      line-height: 1.6;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    /* ===== BOTÕES COM EFEITO GOOEY ===== */
+    .btn-container { 
+      display: grid; 
+      grid-template-columns: repeat(3, 1fr); 
+      gap: 15px; 
+      margin-bottom: 30px; 
+    }
+
+    /* Container do botão com efeito gooey */
+    .btn-wrapper {
+      position: relative;
+      height: 44px;
+      filter: url(#gooey-filter);
+    }
+
+    .btn-cat { 
+      background: var(--cinza-claro);
+      border: 2px solid var(--cinza-borda);
+      padding: 0 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--verde);
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-cat:hover:not(.active) { 
+      border-color: var(--dourado); 
+      background: #fffdf5; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .btn-cat:focus {
+      outline: 2px solid var(--dourado);
+      outline-offset: 2px;
+    }
+
+    .btn-cat.active { 
+      background: var(--verde); 
+      color: var(--dourado); 
+      border-color: var(--verde);
+      box-shadow: 0 4px 12px rgba(13, 35, 24, 0.3);
+    }
+
+    /* Botão oculto que anima (efeito gooey) */
+    .btn-cat::before {
+      content: '→';
+      position: absolute;
+      right: 12px;
+      opacity: 0;
+      transform: translateX(-10px);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      font-size: 18px;
+      pointer-events: none;
+    }
+
+    .btn-cat:hover:not(.active)::before {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* ===== ÁREA DOS FORMULÁRIOS ===== */
+    #form-area {
+      position: relative;
+      z-index: 5;
+    }
+
+    .msg-inicial { 
+      text-align: center; 
+      padding: 40px; 
+      color: var(--cinza-texto); 
+      border: 2px dashed var(--cinza-borda); 
+      border-radius: 8px;
+      background: #fafafa;
+    }
+
+    .iframe-container { 
+      display: none; 
+      width: 100%; 
+      min-height: 1100px;
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .iframe-container.active { 
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== IFRAMES - CRÍTICO: NÃO MODIFICAR ===== */
+    iframe { 
+      width: 100%; 
+      height: 100%;
+      min-height: 1100px;
+      border: none; 
+      border-radius: 8px;
+      display: block;
+    }
+
+    /* ===== RESPONSIVO ===== */
     @media (max-width: 768px) {
-      .btn-container { grid-template-columns: 1fr; }
-      .caixa { padding: 15px; }
+      .btn-container { 
+        grid-template-columns: 1fr; 
+      }
+      
+      .caixa { 
+        padding: 15px; 
+      }
+
+      .hero-header {
+        margin: -15px -15px 40px -15px;
+        padding: 50px 15px;
+        border-radius: 12px 12px 0 0;
+        min-height: 350px;
+      }
+
+      .iframe-container,
+      iframe {
+        min-height: 800px;
+        height: 800px;
+      }
+    }
+
+    /* ===== ACESSIBILIDADE ===== */
+    @media (prefers-reduced-motion: reduce) {
+      .btn-cat,
+      .iframe-container {
+        animation: none !important;
+        transition: none !important;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- ===== SVG FILTER PARA EFEITO GOOEY ===== -->
+  <svg style="display: none;">
+    <defs>
+      <!-- Gooey Filter Effect -->
+      <filter id="gooey-filter">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="coloredBlur" />
+        <feMerge>
+          <feMergeNode in="coloredBlur" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+    </defs>
+  </svg>
+
   <div class="caixa">
     <div class="hero-header" id="hero-header">
+      <!-- ===== CANVAS SHADER (NOVO - MUITO VISUAL!) ===== -->
+      <canvas id="shader-canvas"></canvas>
+
       <div class="hero-content">
         <!-- Trust Badge -->
-        <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,200,100,0.3); padding:6px 16px; border-radius:50px; font-size:14px; font-weight:600; color:#ffcc66; margin-bottom:24px; backdrop-filter:blur(10px);">
-          <span>🚀</span> <span>Acesso Exclusivo para Servidores</span> <span>✨</span>
+        <div class="badge-acesso" aria-label="Acesso exclusivo para servidores">
+          <span>🚀</span> 
+          <span>Acesso Exclusivo para Servidores</span> 
+          <span>✨</span>
         </div>
         
         <!-- Headline -->
-        <h1 style="font-size:clamp(32px, 6vw, 48px); font-weight:900; line-height:1.1; margin:0 0 16px 0; color:#ffffff;">
-          Portal do <span style="background: -webkit-linear-gradient(0deg, #ffb347, #ffcc33); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Servidor</span><br/>
-          <span style="font-size:clamp(20px, 3vw, 26px); color:#ffdd99; opacity:0.9;">Escola Municipal Castro Alves</span>
+        <h1 class="hero-title">
+          Portal do <span class="hero-title-destaque">Servidor</span><br/>
+          <span class="hero-subtitle">Escola Municipal Castro Alves</span>
         </h1>
         
         <!-- Subtitle -->
-        <p style="font-size:16px; color:#d4cdb3; max-width:550px; margin:0 auto; line-height:1.6;">
+        <p class="hero-description">
           Selecione a sua categoria abaixo para acessar o seu formulário de cadastro administrativo com segurança e rapidez.
         </p>
       </div>
     </div>
 
-    <!-- Botões de Seleção -->
-    <div class="btn-container">
-      <button class="btn-cat" onclick="mostrarForm('voluntario', this)">🤝 Social Voluntário</button>
-      <button class="btn-cat" onclick="mostrarForm('estagiarios', this)">🎓 Estagiários</button>
-      <button class="btn-cat" onclick="mostrarForm('docentes', this)">📚 Docentes / Administrativos</button>
+    <!-- Botões de Seleção COM EFEITO GOOEY -->
+    <div class="btn-container" role="tablist" aria-label="Categorias de formulário">
+      <div class="btn-wrapper">
+        <button 
+          class="btn-cat" 
+          onclick="mostrarForm('voluntario', this)"
+          role="tab"
+          aria-selected="false"
+          aria-controls="form-voluntario">
+          🤝 Social Voluntário
+        </button>
+      </div>
+
+      <div class="btn-wrapper">
+        <button 
+          class="btn-cat" 
+          onclick="mostrarForm('estagiarios', this)"
+          role="tab"
+          aria-selected="false"
+          aria-controls="form-estagiarios">
+          🎓 Estagiários
+        </button>
+      </div>
+
+      <div class="btn-wrapper">
+        <button 
+          class="btn-cat" 
+          onclick="mostrarForm('docentes', this)"
+          role="tab"
+          aria-selected="false"
+          aria-controls="form-docentes">
+          📚 Docentes / Administrativos
+        </button>
+      </div>
     </div>
 
     <!-- Área onde os formulários aparecem -->
-    <div id="form-area">
+    <div id="form-area" role="tabpanel">
       <!-- Mensagem inicial -->
-      <div id="msg-inicial" style="text-align:center; padding: 40px; color: #888; border: 2px dashed #ccc; border-radius: 8px;">
+      <div id="msg-inicial" class="msg-inicial" aria-live="polite">
         👆 Clique em um dos botões acima para carregar o seu formulário.
       </div>
 
-      <!-- Iframes do Google Forms -->
-      <div id="form-voluntario" class="iframe-container">
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfUBf9H_wSe4qGHwHwOS39hoWxx0Wgbr3SYw3qMFpsGPLD8AQ/viewform?embedded=true">Carregando…</iframe>
+      <!-- ===== IFRAMES GOOGLE FORMS - CRÍTICO: MANTER EXATAMENTE COMO ESTÁ ===== -->
+      <!-- Formulário: Social Voluntário -->
+      <div id="form-voluntario" class="iframe-container" role="tabpanel" aria-labelledby="btn-voluntario">
+        <iframe 
+          src="https://docs.google.com/forms/d/e/1FAIpQLSfUBf9H_wSe4qGHwHwOS39hoWxx0Wgbr3SYw3qMFpsGPLD8AQ/viewform?embedded=true"
+          title="Formulário de Cadastro - Social Voluntário"
+          aria-label="Formulário para servidores voluntários">
+          Carregando…
+        </iframe>
       </div>
 
-      <div id="form-estagiarios" class="iframe-container">
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeA5cOkkKYQpDAaN2PktBnD9POsV59N7vtxHBWpAUGGHmW0sA/viewform?embedded=true">Carregando…</iframe>
+      <!-- Formulário: Estagiários -->
+      <div id="form-estagiarios" class="iframe-container" role="tabpanel" aria-labelledby="btn-estagiarios">
+        <iframe 
+          src="https://docs.google.com/forms/d/e/1FAIpQLSeA5cOkkKYQpDAaN2PktBnD9POsV59N7vtxHBWpAUGGHmW0sA/viewform?embedded=true"
+          title="Formulário de Cadastro - Estagiários"
+          aria-label="Formulário para estagiários">
+          Carregando…
+        </iframe>
       </div>
       
-      <div id="form-docentes" class="iframe-container">
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfHC5bKlVYSyRbQFqzR1415hLYdr81mXT3BdC39TsxHJWYXyQ/viewform?embedded=true">Carregando…</iframe>
+      <!-- Formulário: Docentes / Administrativos -->
+      <div id="form-docentes" class="iframe-container" role="tabpanel" aria-labelledby="btn-docentes">
+        <iframe 
+          src="https://docs.google.com/forms/d/e/1FAIpQLSfHC5bKlVYSyRbQFqzR1415hLYdr81mXT3BdC39TsxHJWYXyQ/viewform?embedded=true"
+          title="Formulário de Cadastro - Docentes / Administrativos"
+          aria-label="Formulário para docentes e administrativos">
+          Carregando…
+        </iframe>
       </div>
     </div>
 
   </div>
 
   <script>
-    // Gerar as streaks dinâmicas (efeito luzes horizontais)
-    const hero = document.getElementById('hero-header');
-    if(hero) {
-      for(let i=0; i<12; i++) {
-        let streak = document.createElement('div');
-        streak.className = 'streak';
-        streak.style.top = Math.random() * 95 + '%';
-        streak.style.width = (Math.random() * 200 + 100) + 'px';
-        streak.style.animationDuration = (Math.random() * 2.5 + 2) + 's';
-        streak.style.animationDelay = (Math.random() * 5) + 's';
-        hero.appendChild(streak);
+    /**
+     * ============================================
+     * PORTAL DO SERVIDOR - SCRIPT
+     * Conexão com Google Forms: PROTEGIDA
+     * ============================================
+     */
+
+    /**
+     * ===== SHADER CANVAS AVANÇADO =====
+     * Cria efeito visual muito mais impactante
+     */
+    class ShaderBackground {
+      constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.width = canvas.width;
+        this.height = canvas.height;
+        this.particles = [];
+        this.time = 0;
+        
+        this.resizeCanvas();
+        this.createParticles();
+        this.animate();
+        
+        window.addEventListener('resize', () => this.resizeCanvas());
+      }
+
+      resizeCanvas() {
+        const rect = this.canvas.parentElement.getBoundingClientRect();
+        this.canvas.width = rect.width;
+        this.canvas.height = rect.height;
+        this.width = this.canvas.width;
+        this.height = this.canvas.height;
+      }
+
+      createParticles() {
+        this.particles = [];
+        for (let i = 0; i < 60; i++) {
+          this.particles.push({
+            x: Math.random() * this.width,
+            y: Math.random() * this.height,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5,
+            radius: Math.random() * 3 + 1,
+            color: Math.random() > 0.5 ? 'rgba(255, 200, 100, 0.4)' : 'rgba(255, 220, 150, 0.3)',
+            life: Math.random() * 100 + 50
+          });
+        }
+      }
+
+      drawGradient() {
+        // Gradiente de fundo base
+        const gradient = this.ctx.createLinearGradient(0, 0, this.width, this.height);
+        gradient.addColorStop(0, '#1a0f0a');
+        gradient.addColorStop(0.3, '#2d1810');
+        gradient.addColorStop(0.5, '#1f0f08');
+        gradient.addColorStop(0.7, '#3d2306');
+        gradient.addColorStop(1, '#1a0a02');
+        
+        this.ctx.fillStyle = gradient;
+        this.ctx.fillRect(0, 0, this.width, this.height);
+      }
+
+      drawRadialGlow() {
+        // Glow dinâmico que se move
+        const glowX = this.width * (0.5 + Math.sin(this.time * 0.001) * 0.3);
+        const glowY = this.height * (0.4 + Math.cos(this.time * 0.0008) * 0.2);
+        
+        const radialGradient = this.ctx.createRadialGradient(glowX, glowY, 0, glowX, glowY, this.width * 0.7);
+        radialGradient.addColorStop(0, 'rgba(255, 180, 80, 0.15)');
+        radialGradient.addColorStop(0.5, 'rgba(255, 150, 60, 0.08)');
+        radialGradient.addColorStop(1, 'rgba(255, 100, 20, 0)');
+        
+        this.ctx.fillStyle = radialGradient;
+        this.ctx.fillRect(0, 0, this.width, this.height);
+      }
+
+      drawParticles() {
+        this.particles.forEach((p, idx) => {
+          // Movimento
+          p.x += p.vx;
+          p.y += p.vy;
+          
+          // Bounce
+          if (p.x < 0 || p.x > this.width) p.vx *= -1;
+          if (p.y < 0 || p.y > this.height) p.vy *= -1;
+          
+          // Manter na tela
+          p.x = Math.max(0, Math.min(this.width, p.x));
+          p.y = Math.max(0, Math.min(this.height, p.y));
+          
+          // Desenhar
+          this.ctx.fillStyle = p.color;
+          this.ctx.beginPath();
+          this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          this.ctx.fill();
+        });
+      }
+
+      drawStreaks() {
+        // Linhas animadas (streaks) mais sofisticadas
+        for (let i = 0; i < 4; i++) {
+          const y = (this.height * 0.2) + (i * this.height * 0.15);
+          const offset = (this.time * 0.5) % this.width;
+          
+          const gradient = this.ctx.createLinearGradient(offset - 300, y, offset + 300, y);
+          gradient.addColorStop(0, 'rgba(255, 200, 100, 0)');
+          gradient.addColorStop(0.3, 'rgba(255, 200, 100, 0.4)');
+          gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.6)');
+          gradient.addColorStop(0.7, 'rgba(255, 200, 100, 0.4)');
+          gradient.addColorStop(1, 'rgba(255, 200, 100, 0)');
+          
+          this.ctx.strokeStyle = gradient;
+          this.ctx.lineWidth = 2;
+          this.ctx.beginPath();
+          this.ctx.moveTo(offset - 300, y);
+          this.ctx.lineTo(offset + 300, y);
+          this.ctx.stroke();
+        }
+      }
+
+      animate() {
+        this.time++;
+        
+        // Limpar
+        this.drawGradient();
+        
+        // Desenhar efeitos
+        this.drawRadialGlow();
+        this.drawParticles();
+        this.drawStreaks();
+        
+        requestAnimationFrame(() => this.animate());
       }
     }
 
+    /**
+     * Mostra o formulário selecionado
+     * Mantém integridade total dos Google Forms
+     */
     function mostrarForm(idForm, btnElement) {
-      // Esconder a mensagem inicial
-      document.getElementById('msg-inicial').style.display = 'none';
+      if (!idForm || typeof idForm !== 'string') {
+        console.error('ID do formulário inválido:', idForm);
+        return;
+      }
 
-      // Esconder todos os iframes
-      document.querySelectorAll('.iframe-container').forEach(el => el.classList.remove('active'));
+      if (!btnElement || !(btnElement instanceof HTMLElement)) {
+        console.error('Elemento do botão inválido');
+        return;
+      }
+
+      try {
+        // Esconder mensagem inicial
+        const msgInicial = document.getElementById('msg-inicial');
+        if (msgInicial) {
+          msgInicial.style.display = 'none';
+        }
+
+        // Esconder todos os iframes
+        const todosContainers = document.querySelectorAll('.iframe-container');
+        todosContainers.forEach(container => {
+          container.classList.remove('active');
+        });
+        
+        // Remover ativo de botões
+        const todosBotoes = document.querySelectorAll('.btn-cat');
+        todosBotoes.forEach(botao => {
+          botao.classList.remove('active');
+          botao.setAttribute('aria-selected', 'false');
+        });
+        
+        // Mostrar o escolhido
+        const containerEscolhido = document.getElementById('form-' + idForm);
+        if (!containerEscolhido) {
+          console.error(`Formulário com ID "form-${idForm}" não encontrado`);
+          return;
+        }
+
+        containerEscolhido.classList.add('active');
+        btnElement.classList.add('active');
+        btnElement.setAttribute('aria-selected', 'true');
+
+        console.log(`✓ Formulário carregado: ${idForm}`);
+
+      } catch (erro) {
+        console.error('Erro ao exibir formulário:', erro);
+        alert('Erro ao carregar o formulário. Por favor, recarregue a página.');
+      }
+    }
+
+    /**
+     * Inicializa o portal
+     */
+    function inicializarPortal() {
+      const canvas = document.getElementById('shader-canvas');
       
-      // Remover a classe 'active' de todos os botões
-      document.querySelectorAll('.btn-cat').forEach(el => el.classList.remove('active'));
+      if (canvas) {
+        new ShaderBackground(canvas);
+        console.log('✓ Shader Canvas ativado');
+      }
       
-      // Mostrar o iframe escolhido
-      document.getElementById('form-' + idForm).classList.add('active');
-      
-      // Marcar o botão clicado como verde/dourado
-      btnElement.classList.add('active');
+      console.log('✓ Portal do Servidor iniciado com sucesso');
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', inicializarPortal);
+    } else {
+      inicializarPortal();
     }
   </script>
 </body>
