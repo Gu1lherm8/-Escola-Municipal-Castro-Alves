@@ -9,19 +9,43 @@
     body { font-family: 'Inter', sans-serif; background: var(--fundo); margin: 0; padding: 20px; display: flex; justify-content: center; }
     .caixa { background: var(--branco); padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); max-width: 800px; width: 100%; }
     
-    /* Shader Animado */
-    @keyframes animatedGradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
     .hero-header {
-      text-align: center; margin-bottom: 40px; padding: 50px 20px; 
+      text-align: center; margin-bottom: 40px; padding: 70px 20px; 
       border-radius: 16px; color: white; position: relative; overflow: hidden; 
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      background: linear-gradient(-45deg, #0d2318, #1a3d28, #0a1f14, #123321);
-      background-size: 400% 400%;
-      animation: animatedGradient 12s ease infinite;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      background: radial-gradient(circle at center, #3d2306 0%, #170a02 70%, #0a0400 100%);
+    }
+    /* Partículas/Estrelas Cadentes (Streaks) */
+    .streak {
+      position: absolute;
+      background: linear-gradient(90deg, transparent, rgba(255, 220, 150, 0.9), #fff);
+      height: 2px;
+      border-radius: 50%;
+      box-shadow: 0 0 15px #ffb94f, 0 0 30px #ffb94f;
+      animation: shoot linear infinite;
+      opacity: 0;
+      z-index: 1;
+    }
+    .streak::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: -2px;
+      width: 6px;
+      height: 6px;
+      background: #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #fff, 0 0 20px #ffb94f;
+    }
+    @keyframes shoot {
+      0% { transform: translateX(-50vw); opacity: 0; }
+      10% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { transform: translateX(100vw); opacity: 0; }
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
     }
 
     .btn-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
@@ -42,25 +66,24 @@
 <body>
 
   <div class="caixa">
-    <div class="hero-header">
-      <!-- Background Glow -->
-      <div style="position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:radial-gradient(circle, rgba(249,195,31,0.15) 0%, transparent 60%); pointer-events:none;"></div>
-      
-      <!-- Trust Badge -->
-      <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); padding:6px 16px; border-radius:50px; font-size:14px; font-weight:600; color:#f9c31f; margin-bottom:24px; backdrop-filter:blur(4px);">
-        <span>🚀</span> <span>Acesso Exclusivo para Servidores</span> <span>✨</span>
+    <div class="hero-header" id="hero-header">
+      <div class="hero-content">
+        <!-- Trust Badge -->
+        <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,200,100,0.3); padding:6px 16px; border-radius:50px; font-size:14px; font-weight:600; color:#ffcc66; margin-bottom:24px; backdrop-filter:blur(10px);">
+          <span>🚀</span> <span>Acesso Exclusivo para Servidores</span> <span>✨</span>
+        </div>
+        
+        <!-- Headline -->
+        <h1 style="font-size:clamp(32px, 6vw, 48px); font-weight:900; line-height:1.1; margin:0 0 16px 0; color:#ffffff;">
+          Portal do <span style="background: -webkit-linear-gradient(0deg, #ffb347, #ffcc33); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Servidor</span><br/>
+          <span style="font-size:clamp(20px, 3vw, 26px); color:#ffdd99; opacity:0.9;">Escola Municipal Castro Alves</span>
+        </h1>
+        
+        <!-- Subtitle -->
+        <p style="font-size:16px; color:#d4cdb3; max-width:550px; margin:0 auto; line-height:1.6;">
+          Selecione a sua categoria abaixo para acessar o seu formulário de cadastro administrativo com segurança e rapidez.
+        </p>
       </div>
-      
-      <!-- Headline -->
-      <h1 style="font-size:clamp(28px, 5vw, 42px); font-weight:900; line-height:1.2; margin:0 0 16px 0; color:#ffffff;">
-        Portal do <span style="color:#f9c31f;">Servidor</span><br/>
-        <span style="font-size:clamp(20px, 3vw, 26px); opacity:0.9;">Escola Municipal Castro Alves</span>
-      </h1>
-      
-      <!-- Subtitle -->
-      <p style="font-size:16px; color:#b5c99a; max-width:500px; margin:0 auto; line-height:1.6;">
-        Selecione a sua categoria abaixo para acessar o seu formulário de cadastro administrativo com segurança e rapidez.
-      </p>
     </div>
 
     <!-- Botões de Seleção -->
@@ -86,15 +109,28 @@
         <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeA5cOkkKYQpDAaN2PktBnD9POsV59N7vtxHBWpAUGGHmW0sA/viewform?embedded=true">Carregando…</iframe>
       </div>
       
-      <!-- Formulário unificado para Docentes e Administrativos -->
       <div id="form-docentes" class="iframe-container">
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfF-5Jh6xVSDpaXVOExSqB-6ki0TDElRNyQ3xPACTkXO7z1ag/viewform?embedded=true">Carregando…</iframe>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfHC5bKlVYSyRbQFqzR1415hLYdr81mXT3BdC39TsxHJWYXyQ/viewform?embedded=true">Carregando…</iframe>
       </div>
     </div>
 
   </div>
 
   <script>
+    // Gerar as streaks dinâmicas (efeito luzes horizontais)
+    const hero = document.getElementById('hero-header');
+    if(hero) {
+      for(let i=0; i<12; i++) {
+        let streak = document.createElement('div');
+        streak.className = 'streak';
+        streak.style.top = Math.random() * 95 + '%';
+        streak.style.width = (Math.random() * 200 + 100) + 'px';
+        streak.style.animationDuration = (Math.random() * 2.5 + 2) + 's';
+        streak.style.animationDelay = (Math.random() * 5) + 's';
+        hero.appendChild(streak);
+      }
+    }
+
     function mostrarForm(idForm, btnElement) {
       // Esconder a mensagem inicial
       document.getElementById('msg-inicial').style.display = 'none';
