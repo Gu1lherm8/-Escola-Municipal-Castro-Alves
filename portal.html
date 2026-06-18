@@ -123,7 +123,7 @@
     /* ===== BOTÕES COM EFEITO GOOEY ===== */
     .btn-container { 
       display: grid; 
-      grid-template-columns: repeat(3, 1fr); 
+      grid-template-columns: repeat(2, 1fr); 
       gap: 15px; 
       margin-bottom: 30px; 
     }
@@ -343,14 +343,29 @@
       </div>
 
       <div class="btn-wrapper">
-        <button 
+        <a 
           class="btn-cat" 
-          onclick="mostrarForm('docentes', this)"
+          href="https://docs.google.com/forms/d/1lJClDUVVLs9rL8kTydMvD0vXsTObEBidPXRow9sMGPQ/viewform"
+          target="_blank"
+          rel="noopener noreferrer"
           role="tab"
           aria-selected="false"
-          aria-controls="form-docentes">
-          📚 Docentes / Administrativos
-        </button>
+          style="text-decoration:none;">
+          📚 Docentes &nbsp;<span style="font-size:11px;background:#f9c31f;color:#0d2318;padding:2px 7px;border-radius:50px;font-weight:800;">↗ Abrir</span>
+        </a>
+      </div>
+
+      <div class="btn-wrapper">
+        <a 
+          class="btn-cat" 
+          href="https://docs.google.com/forms/d/1gYgekQZCFLr6MIqAjBN-K-5sNtfU8JRRxxluNVoJJOA/viewform"
+          target="_blank"
+          rel="noopener noreferrer"
+          role="tab"
+          aria-selected="false"
+          style="text-decoration:none;">
+          🏢 Administrativos &nbsp;<span style="font-size:11px;background:#f9c31f;color:#0d2318;padding:2px 7px;border-radius:50px;font-weight:800;">↗ Abrir</span>
+        </a>
       </div>
     </div>
 
@@ -382,15 +397,8 @@
         </iframe>
       </div>
       
-      <!-- Formulário: Docentes / Administrativos -->
-      <div id="form-docentes" class="iframe-container" role="tabpanel" aria-labelledby="btn-docentes">
-        <iframe 
-          src="https://docs.google.com/forms/d/e/1FAIpQLSfHC5bKlVYSyRbQFqzR1415hLYdr81mXT3BdC39TsxHJWYXyQ/viewform?embedded=true"
-          title="Formulário de Cadastro - Docentes / Administrativos"
-          aria-label="Formulário para docentes e administrativos">
-          Carregando…
-        </iframe>
-      </div>
+      <!-- Formulários Docentes/Administrativos: abrem em nova aba -->
+      <!-- (removidos os iframes pois os forms possuem upload de arquivo) -->
     </div>
 
   </div>
