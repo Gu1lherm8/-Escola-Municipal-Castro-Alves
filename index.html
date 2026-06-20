@@ -477,7 +477,7 @@ text-align:center;
 
 .galeria-section {
   width: 100%;
-  padding: 48px 20px;
+  padding: 48px 20px 80px 20px; /* Padding-bottom extra para não sobrepor botões de acessibilidade */
   background: #f8f9fa;
 }
 
@@ -580,9 +580,16 @@ text-align:center;
 
 .filter-buttons {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
   flex: 1;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Hide scrollbar for filters */
+}
+.filter-buttons::-webkit-scrollbar {
+  display: none;
 }
 
 .filter-btn {
@@ -659,12 +666,12 @@ text-align:center;
   background: #1e4d35;
 }
 
-/* Celular: linhas menores */
+/* Celular: 2 linhas apenas para parecer um carrossel mais limpo */
 @media (max-width: 600px) {
   .gallery-grid {
-    grid-template-rows: repeat(3, 160px);
+    grid-template-rows: repeat(2, 160px);
     grid-auto-columns: 160px;
-    gap: 10px;
+    gap: 12px;
   }
 }
 
@@ -995,16 +1002,22 @@ text-align:center;
   }
   
   .galeria-filters {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .galeria-filters::-webkit-scrollbar {
+    display: none;
   }
   
   .filters-label {
-    width: 100%;
+    width: auto;
+    margin-right: 8px;
   }
   
   .filter-buttons {
-    width: 100%;
+    width: auto;
   }
   
   .filter-btn {
