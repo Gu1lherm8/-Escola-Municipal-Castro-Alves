@@ -4085,6 +4085,22 @@ document.addEventListener("DOMContentLoaded", function(){
     content-visibility: auto;
   }
 </style>
+<!-- ════════════════════════════════════════════════════════════════════════════
+     LIGHTBOX / MODAL (MELHORADO)
+     ════════════════════════════════════════════════════════════════════════════ -->
+<div id="lightbox" role="dialog" aria-modal="true" class="lightbox-improved">
+  <button class="lightbox-close" onclick="closeLightbox()" aria-label="Fechar">✕</button>
+  <button class="lightbox-nav lightbox-prev" onclick="prevPhoto()" aria-label="Foto anterior">❮</button>
+  <div class="lightbox-content">
+    <img id="lightboxImg" src="" alt="" class="lightbox-image">
+    <div id="lightboxLabel" class="lightbox-info"></div>
+  </div>
+  <button class="lightbox-nav lightbox-next" onclick="nextPhoto()" aria-label="Próxima foto">❯</button>
+  <div class="lightbox-counter">
+    <span id="currentPhotoIndex">1</span> / <span id="totalPhotos">1</span>
+  </div>
+</div>
+
 </body>
 </html>
 < ! - -   t r i g g e r   v e r c e l   b u i l d   - - >  
