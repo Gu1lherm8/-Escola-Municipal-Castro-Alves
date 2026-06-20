@@ -3310,18 +3310,9 @@ function prevPhoto() {
   showPhoto();
 }
 
-document.addEventListener('keydown', function(e) {
-  var lb = document.getElementById('lightbox');
-  if (lb.style.display === 'flex') {
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowRight') nextPhoto();
-    if (e.key === 'ArrowLeft') prevPhoto();
-  }
-});
+document.addEventListener('keydown', function(e) { var lb = document.getElementById('lightbox'); if(lb && lb.style.display==='flex') { if(e.key==='Escape') closeLightbox(); if(e.key==='ArrowRight') nextPhoto(); if(e.key==='ArrowLeft') prevPhoto(); } });
 
-document.getElementById('lightbox').addEventListener('click', function(e) {
-  if (e.target === this) closeLightbox();
-});
+document.addEventListener('DOMContentLoaded', function() { var lb = document.getElementById('lightbox'); if(lb) { lb.addEventListener('click', function(e) { if(e.target===this) closeLightbox(); }); } });
 </script>
 <script>
 // ── Configuração ─────────────────────────────────────────────────────────────
