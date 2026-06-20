@@ -1002,27 +1002,24 @@ text-align:center;
   }
   
   .galeria-filters {
-    flex-direction: row;
-    align-items: center;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .galeria-filters::-webkit-scrollbar {
-    display: none;
+    flex-direction: column;
+    align-items: flex-start;
   }
   
   .filters-label {
     width: auto;
-    margin-right: 8px;
+    margin-bottom: 8px;
   }
   
   .filter-buttons {
-    width: auto;
+    flex-wrap: wrap;
+    width: 100%;
+    overflow-x: visible;
   }
   
   .filter-btn {
-    font-size: 12px;
-    padding: 6px 12px;
+    font-size: 13px;
+    padding: 8px 12px;
   }
 }
 
@@ -1533,6 +1530,7 @@ text-align:center;
       <a href="#vagas" class="btn1">🎒 Garanta a vaga do seu filho!</a>
       <a href="#contato" class="btn2">📞 Entre em contato</a>
     </div>
+  </div>
   </section>
   
   <section class="tabs-sec" id="sobre">
@@ -2537,11 +2535,7 @@ body.high-contrast .sd-admin-panel {
 </style>
 
 <!-- ── BARRA DE ACESSIBILIDADE ── -->
-<div id="sd-a11y-bar" aria-label="Ferramentas de acessibilidade">
-  <button class="sd-a11y-btn" onclick="sdFontUp()" title="Aumentar fonte" aria-label="Aumentar fonte">A+</button>
-  <button class="sd-a11y-btn" onclick="sdFontDown()" title="Diminuir fonte" aria-label="Diminuir fonte">A-</button>
-  <button class="sd-a11y-btn" onclick="sdToggleContrast()" title="Alto contraste" aria-label="Alto contraste">◑</button>
-</div>
+
 
 <!-- ── TOAST ── -->
 <div id="sd-toast" role="status" aria-live="polite"></div>
@@ -4038,16 +4032,7 @@ document.addEventListener("DOMContentLoaded", function(){
     document.documentElement.style.fontSize = _fontSize + '%';
     sdToast('🔡 Fonte diminuída.');
   };
-  window.sdToggleContrast = function() {
-    document.body.classList.toggle('high-contrast');
-    const on = document.body.classList.contains('high-contrast');
-    localStorage.setItem('sd_contrast', on ? '1' : '0');
-    sdToast(on ? '◑ Alto contraste ativado.' : '◑ Alto contraste desativado.');
-  };
-  // Restaurar contraste
-  if (localStorage.getItem('sd_contrast') === '1') {
-    document.body.classList.add('high-contrast');
-  }
+  
 
   sdInit();
 
