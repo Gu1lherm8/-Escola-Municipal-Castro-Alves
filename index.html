@@ -1657,51 +1657,6 @@ text-align:center;
   
 </section>
 
-<!-- ════════════════════════════════════════════════════════════════════════════
-     LIGHTBOX / MODAL (MELHORADO)
-     ✅ Mostra categoria e descrição
-     ✅ Navegação com setas
-     ✅ Fechar com botão ou clicando fora
-     ════════════════════════════════════════════════════════════════════════════ -->
-
-<div id="lightbox" role="dialog" aria-modal="true" class="lightbox-improved">
-  
-  <!-- Botão Fechar -->
-  <button 
-    class="lightbox-close" 
-    onclick="closeLightbox()" 
-    aria-label="Fechar">
-    ✕
-  </button>
-  
-  <!-- Botão Anterior -->
-  <button 
-    class="lightbox-nav lightbox-prev" 
-    onclick="prevPhoto()" 
-    aria-label="Foto anterior">
-    ❮
-  </button>
-  
-  <!-- Conteúdo Principal (Imagem + Legenda) -->
-  <div class="lightbox-content">
-    <img id="lightboxImg" src="" alt="" class="lightbox-image">
-    <div id="lightboxLabel" class="lightbox-info"></div>
-  </div>
-  
-  <!-- Botão Próximo -->
-  <button 
-    class="lightbox-nav lightbox-next" 
-    onclick="nextPhoto()" 
-    aria-label="Próxima foto">
-    ❯
-  </button>
-  
-  <!-- Indicador de Página -->
-  <div class="lightbox-counter">
-    <span id="currentPhotoIndex">1</span> / <span id="totalPhotos">1</span>
-  </div>
-  
-</div>
 
 <!-- ════════════════════════════════════════════════════════════════════════════
      INSTRUÇÕES DE INTEGRAÇÃO:
