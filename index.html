@@ -1844,12 +1844,14 @@ text-align:center;
     '  float tt=t*0.06+rnd2(vec2(uv.x,0.))*0.4;',
     '  float lw=0.0008;',
     '  vec3 col=vec3(0.);',
-    '  for(int j=0;j<3;j++){',
-    '    for(int i=0;i<5;i++){',
-    '      col[j]+=lw*float(i*i)/abs(fract(tt-0.01*float(j)+float(i)*0.01)-length(uv));',
-    '    }',
+    '  for(int i=0;i<5;i++){',
+    '    float fi = float(i);',
+    '    float fi2 = fi*fi;',
+    '    col.b += lw*fi2/abs(fract(tt - 0.00 + fi*0.01) - length(uv));',
+    '    col.g += lw*fi2/abs(fract(tt - 0.01 + fi*0.01) - length(uv));',
+    '    col.r += lw*fi2/abs(fract(tt - 0.02 + fi*0.01) - length(uv));',
     '  }',
-    '  gl_FragColor=vec4(col[2],col[1],col[0],1.);',
+    '  gl_FragColor=vec4(col,1.);',
     '}'
   ].join('\n');
 
@@ -1857,6 +1859,9 @@ text-align:center;
     var sh=gl.createShader(type);
     gl.shaderSource(sh,src);
     gl.compileShader(sh);
+    if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
+      console.error(gl.getShaderInfoLog(sh));
+    }
     return sh;
   }
   var prog=gl.createProgram();
@@ -1892,7 +1897,6 @@ text-align:center;
     gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
   }
 
-  // Only animate when hero is visible
   var obs=new IntersectionObserver(function(e){
     e.forEach(function(x){
       if(x.isIntersecting){if(!raf)loop();}
