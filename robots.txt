@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://escola-municipal-castro-alves.vercel.app/sitemap.xml
