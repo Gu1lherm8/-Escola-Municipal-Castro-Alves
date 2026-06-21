@@ -1557,7 +1557,7 @@ text-align:center;
   <section class="tabs-sec" id="sobre">
     <div class="container">
       <h2 class="stitle">Conheça Nossa <span>Escola</span></h2>
-      <p class="ssub">Tudo sobre a Castro Alves em um só lugar</p>
+      <p class="ssub">Tudo sobre o Castro Alves em um só lugar</p>
       <div class="div"></div>
       <div class="tab-nav">
         <button class="tab-btn active" data-target="sobre-tab">🏫 Sobre</button>
@@ -3345,7 +3345,7 @@ async function carregarFotos() {
       var dm = url.match(/\/d\/([A-Za-z0-9_-]{25,})/);
       if (dm) url = "https://lh3.googleusercontent.com/d/" + dm[1];
       
-      var idx = startIdx + (i - 1);
+      var idx = galleryPhotos.length;
       
       // ✅ ARMAZENA AGORA COM 4 POSIÇÕES: [url, label, categoria, descricao]
       galleryPhotos.push([url, label, categoria, descricao]);
@@ -3532,15 +3532,29 @@ function closeLightbox() {
 // ── Próxima Foto (Mantém Original) ─────────────────────────────────────────
 function nextPhoto() {
   if (galleryPhotos.length === 0) return;
-  currentPhoto = (currentPhoto + 1) % galleryPhotos.length;
-  openLightbox(currentPhoto);
+  var items = document.querySelectorAll(".gallery-item");
+  for (var k = 1; k < galleryPhotos.length; k++) {
+    var checkIdx = (currentPhoto + k) % galleryPhotos.length;
+    if (items[checkIdx] && items[checkIdx].style.display !== "none") {
+      openLightbox(checkIdx);
+      return;
+    }
+  }
+  openLightbox((currentPhoto + 1) % galleryPhotos.length);
 }
 
 // ── Foto Anterior (Mantém Original) ────────────────────────────────────────
 function prevPhoto() {
   if (galleryPhotos.length === 0) return;
-  currentPhoto = (currentPhoto - 1 + galleryPhotos.length) % galleryPhotos.length;
-  openLightbox(currentPhoto);
+  var items = document.querySelectorAll(".gallery-item");
+  for (var k = 1; k < galleryPhotos.length; k++) {
+    var checkIdx = (currentPhoto - k + galleryPhotos.length) % galleryPhotos.length;
+    if (items[checkIdx] && items[checkIdx].style.display !== "none") {
+      openLightbox(checkIdx);
+      return;
+    }
+  }
+  openLightbox((currentPhoto - 1 + galleryPhotos.length) % galleryPhotos.length);
 }
 
 
