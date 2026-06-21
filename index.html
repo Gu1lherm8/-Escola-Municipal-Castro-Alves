@@ -3409,6 +3409,7 @@ async function carregarFotos() {
       img.onerror = function() { this.parentElement.style.display = "none"; };
       item.classList.add("skeleton");  // ← skeleton ativado
       img.onload  = function() { item.classList.remove("skeleton"); };  // ← remove ao carregar
+      if (img.complete) { item.classList.remove("skeleton"); }           // ← já no cache: remove já
       
       // Criar overlay com legenda e categoria
       var overlay = document.createElement("div");
