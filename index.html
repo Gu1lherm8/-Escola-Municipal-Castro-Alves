@@ -3159,7 +3159,7 @@ function cbResposta(t){
   if(/^(oi|ola|hey|ei|bom dia|boa tarde|boa noite)/.test(m))
     return '😊 Olá! Como posso ajudar? Pergunte sobre matrículas, horários, calendário ou equipe!';
   if(/diretora|luziene/.test(m))
-    return '👩‍💼 A diretora é <strong>Luziene Lopes Gomes</strong>. Foi ela quem conquistou a verba para a grande reforma da escola!';
+    return '👩‍💼 A diretora é <strong>Luziene Lopes Gomes</strong>. Ela lidera a gestao da nossa escola.';
   if(/vice|joelton|flavio/.test(m))
     return '👨‍💼 O vice-diretor é <strong>Joelton Flávio</strong>.';
   if(/coordenadora|zelia|pedagogica/.test(m))
@@ -3173,7 +3173,7 @@ function cbResposta(t){
   if(/professor|professora|equipe|apoio/.test(m))
     return '👩‍🏫 Contamos com <strong>16 professores</strong> e uma equipe de <strong>profissionais de apoio</strong> essenciais no acompanhamento pedagógico!';
   if(/reforma|historia|obra|cozinha|banheiro/.test(m))
-    return '🏗️ A escola <strong>nunca havia sido reformada</strong> pois o terreno era cedido pelo Estado. A diretora <strong>Luziene</strong> conquistou verba e reformou: cozinha, banheiros, sala de recurso, direção, sala de professores e secretaria. Em breve as salas de aula também serão reformadas! 🎉';
+    return '🏗️ A escola <strong>passou por uma <strong>grande reforma</strong> que renovou: cozinha, banheiros, sala de recursos, direção, sala de professores e secretaria. Em breve as salas de aula também serão reformadas! 🎉';
   if(/calendario|bimestre|letivo|dias letivos|ano letivo/.test(m))
     return '📅 <strong>Calendário Escolar 2026</strong>:<br>📌 1° Bim: 14/01 → 10/04 (55 dias)<br>📌 2° Bim: 13/04 → 30/06 (53 dias)<br>📌 3° Bim: 31/07 → 02/10 (44 dias)<br>📌 4° Bim: 05/10 → 23/12 (48 dias)<br>📊 Total: <strong>200 dias letivos</strong><br>📥 Baixe o PDF na seção Calendário do site!';
   if(/ferias|recesso|julho/.test(m))
@@ -3196,7 +3196,15 @@ function cbResposta(t){
     return '🍎 <strong>Merenda escolar nutritiva</strong> todos os dias para todos os alunos, gratuitamente!';
   if(/lazer|recreio|brincar/.test(m))
     return '🤸 Temos espaços de lazer e recreação para os alunos brincarem e se desenvolverem!';
-  return '🤔 Não encontrei essa informação. Entre em contato:<br>📱 <strong>(61) 99282-1474</strong>';
+  if(/site|desenvolvedor|guilherme|criou|quem fez|projeto/.test(m))
+    return '💻 Este site foi desenvolvido por <strong>Guilherme Fernandes de Lima</strong>, uma iniciativa voluntária <strong>sem fins lucrativos</strong> e sem verba da escola — feito com muito carinho pela unidade! 💚';
+  if(/obrigad|valeu/.test(m))
+    return '😊 De nada! Se tiver mais dúvidas, é só perguntar. Tenha um ótimo dia! 🌟';
+  if(/tchau|ate logo|adeus/.test(m))
+    return '👋 Até logo! Qualquer dúvida, pode voltar aqui. 😊';
+  if(/ajuda|o que pode|duvida/.test(m))
+    return '🤖 Posso ajudar com: matrículas, horários, calendário, equipe, endereço e contato. É só perguntar!';
+  return '🤔 Não encontrei essa informação. Tente perguntar sobre matrículas, horários ou equipe.<br>📱 <strong>(61) 99282-1474</strong>';
 }
 
 function cbSend(){
