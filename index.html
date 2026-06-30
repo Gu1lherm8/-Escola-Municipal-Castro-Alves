@@ -1853,6 +1853,99 @@ text-align:center;
 })();
 </script>
 
+
+<!-- ═══════════════════════════════════════════════════
+     SPLASH DE LANCAMENTO - 30/06/2026 - APENAS UMA VEZ
+     ═══════════════════════════════════════════════════ -->
+<style>
+#launch-splash{position:fixed;inset:0;z-index:99999;background:rgba(5,26,14,0.96);display:flex;align-items:center;justify-content:center;opacity:1;transition:opacity .8s ease;}
+#launch-splash.hide{opacity:0;pointer-events:none;}
+#launch-confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
+#launch-card{position:relative;z-index:2;text-align:center;padding:40px 32px;animation:launchIn .9s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes launchIn{from{opacity:0;transform:scale(.6) translateY(40px);}to{opacity:1;transform:scale(1) translateY(0);}}
+.launch-logo{font-size:4rem;margin-bottom:8px;animation:launchBounce 1.2s .9s ease both;}
+@keyframes launchBounce{0%{transform:scale(0) rotate(-20deg);}60%{transform:scale(1.2) rotate(5deg);}100%{transform:scale(1) rotate(0);}}
+.launch-badge{display:inline-block;background:linear-gradient(135deg,#00a878,#0d5c3a);color:#fff;font-size:.7rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:18px;animation:fadeIn .5s 1.6s both;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.launch-escola{font-family:sans-serif;color:#c8f0dc;font-size:1rem;font-weight:400;letter-spacing:3px;text-transform:uppercase;animation:fadeIn .5s 1.8s both;}
+.launch-nome{font-family:sans-serif;color:#ffffff;font-size:clamp(2rem,7vw,3.2rem);font-weight:900;line-height:1;margin:6px 0 4px;letter-spacing:-1px;animation:fadeIn .5s 2s both;}
+.launch-nome span{color:#4ade80;}
+.launch-slogan{font-family:sans-serif;color:#6ee7b7;font-size:1rem;margin-bottom:32px;animation:fadeIn .5s 2.2s both;}
+#launch-btn{background:linear-gradient(135deg,#00a878,#006b4f);color:#fff;border:none;padding:14px 36px;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:.5px;box-shadow:0 8px 32px rgba(0,168,120,.4);animation:fadeIn .5s 2.6s both;transition:transform .2s,box-shadow .2s;}
+#launch-btn:hover{transform:scale(1.05);box-shadow:0 12px 40px rgba(0,168,120,.6);}
+.launch-stars{font-size:1.2rem;letter-spacing:4px;margin-bottom:8px;animation:fadeIn .5s 2.4s both;}
+</style>
+<div id="launch-splash">
+  <canvas id="launch-confetti"></canvas>
+  <div id="launch-card">
+    <div class="launch-logo">🏫</div>
+    <div class="launch-badge">🎉 Site Oficial Lançado</div>
+    <div class="launch-escola">Escola Municipal</div>
+    <div class="launch-nome">Castro <span>Alves</span></div>
+    <div class="launch-slogan">Educando para a vida!</div>
+    <div class="launch-stars">⭐ ⭐ ⭐</div>
+    <button id="launch-btn">Acessar o Site →</button>
+  </div>
+</div>
+<script>
+(function(){
+  if(localStorage.getItem('ca_launched_2026')){
+    var el=document.getElementById('launch-splash');
+    if(el) el.style.display='none';
+    return;
+  }
+  // Confetti
+  var canvas=document.getElementById('launch-confetti');
+  var ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+  window.addEventListener('resize',function(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
+  var cols=['#4ade80','#00a878','#f9c31f','#ffffff','#6ee7b7','#fbbf24','#34d399','#a7f3d0'];
+  var pieces=[];
+  for(var i=0;i<140;i++){
+    pieces.push({
+      x:Math.random()*canvas.width,
+      y:Math.random()*canvas.height-canvas.height,
+      w:Math.random()*10+6,
+      h:Math.random()*6+4,
+      color:cols[Math.floor(Math.random()*cols.length)],
+      rot:Math.random()*360,
+      vx:(Math.random()-.5)*2,
+      vy:Math.random()*3+2,
+      vr:Math.random()*4-2
+    });
+  }
+  var anim;
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(function(p){
+      ctx.save();
+      ctx.translate(p.x+p.w/2,p.y+p.h/2);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color;
+      ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);
+      ctx.restore();
+      p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr;
+      if(p.y>canvas.height){p.y=-20;p.x=Math.random()*canvas.width;}
+    });
+    anim=requestAnimationFrame(draw);
+  }
+  draw();
+  // Fechar
+  function fechar(){
+    localStorage.setItem('ca_launched_2026','1');
+    var sp=document.getElementById('launch-splash');
+    sp.classList.add('hide');
+    cancelAnimationFrame(anim);
+    setTimeout(function(){sp.style.display='none';},900);
+  }
+  document.getElementById('launch-btn').addEventListener('click',fechar);
+  // Auto-fechar apos 9 segundos
+  setTimeout(fechar,9000);
+})();
+</script>
+<!-- ═══════════════════════════════════════════════════ -->
+
 </body>
      4. Certifique-se de que a variável FOTOS_CSV está definida:
         var FOTOS_CSV = "https://docs.google.com/spreadsheets/d/...";
