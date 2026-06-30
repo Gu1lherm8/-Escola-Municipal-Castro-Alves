@@ -1853,25 +1853,6 @@ text-align:center;
 })();
 </script>
 
-
-<!-- ═══════════════════════════════════════════════════
-     SPLASH DE LANCAMENTO - 30/06/2026 - APENAS UMA VEZ
-     ═══════════════════════════════════════════════════ -->
-
-<!-- ═══════════════════════════════════════════════════ -->
-
-
-
-
-</body>
-     4. Certifique-se de que a variável FOTOS_CSV está definida:
-        var FOTOS_CSV = "https://docs.google.com/spreadsheets/d/...";
-     5. Certifique-se de que carregarFotos() é chamado no DOMContentLoaded
-     
-     ✅ TUDO PRONTO! A galeria funcionará com filtros, busca e lazy loading
-     ════════════════════════════════════════════════════════════════════════════ -->
-
-
 </section>
 
 
@@ -3419,7 +3400,6 @@ async function carregarFotos() {
       
       (function(ci) { 
         item.onclick = function() { openLightbox(ci); };
-        item.addEventListener('touchend', function(e) { e.preventDefault(); openLightbox(ci); }, { passive: false });
       })(idx);
       
       // Criar imagem
