@@ -727,7 +727,6 @@ text-align:center;
 
 /* ── Skeleton Loader ─────────────────────────────────────────────────────── */
 .gallery-item.skeleton {
-  pointer-events: none;
   cursor: default;
 }
 .gallery-item.skeleton::before {
@@ -3409,7 +3408,8 @@ async function carregarFotos() {
       item.setAttribute("aria-label", "Ver foto: " + label);
       
       (function(ci) { 
-        item.onclick = function() { openLightbox(ci); }; 
+        item.onclick = function() { openLightbox(ci); };
+        item.addEventListener('touchend', function(e) { e.preventDefault(); openLightbox(ci); }, { passive: false });
       })(idx);
       
       // Criar imagem
@@ -3420,7 +3420,9 @@ async function carregarFotos() {
       img.onerror = function() { this.parentElement.style.display = "none"; };
       item.classList.add("skeleton");  // ← skeleton ativado
       img.onload  = function() { item.classList.remove("skeleton"); };  // ← remove ao carregar
-      if (img.complete) { item.classList.remove("skeleton"); }           // ← já no cache: remove já
+      if (img.complete && img.naturalWidth > 0) { item.classList.remove("skeleton"); }
+      // Safety: remover skeleton após 5s mesmo se onload não disparar (mobile fix)
+      (function(el){ setTimeout(function(){ el.classList.remove("skeleton"); }, 5000); })(item);
       
       // Criar overlay com legenda e categoria
       var overlay = document.createElement("div");
@@ -4267,8 +4269,13 @@ document.addEventListener("DOMContentLoaded", function(){
   }, { passive: true });
 </script>
 <style>
-  .disable-hover, .disable-hover * {
-    pointer-events: none !important;
+  /* Mobile scroll: apenas desativa hover e transicoes, NAO bloqueia cliques */
+  .disable-hover .gallery-item:hover,
+  .disable-hover .gallery-item,
+  .disable-hover a:hover {
+    transform: none !important;
+    box-shadow: none !important;
+    transition: none !important;
   }
   /* Suavizar renderização geral */
   body {
