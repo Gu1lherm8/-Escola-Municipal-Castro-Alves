@@ -28,9 +28,10 @@ export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
-// Lista de e-mails com permissão de Secretaria Geral (Super Administrador)
+// Lista de e-mails com permissão de Secretaria Geral (Super Administrador - Acesso Total)
 const ADMIN_EMAILS = [
   'jfernandes.guilherme.lima@gmail.com',
+  'secretariacastroalves7@gmail.com',
   'secretaria@castroalves.escola',
   'admin@castroalves.escola'
 ];
