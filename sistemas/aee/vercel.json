@@ -1,0 +1,6 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/verificar/(.*)", "destination": "/validador.html?id=$1" }
+  ]
+}

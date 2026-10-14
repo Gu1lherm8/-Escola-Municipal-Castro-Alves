@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Brasão de Prefeitura Modernizado -->
+  <path d="M50 10 L80 25 L80 60 C80 75, 65 85, 50 90 C35 85, 20 75, 20 60 L20 25 Z" fill="#1e3d2f" stroke="#F5C030" stroke-width="2.5"/>
+  
+  <!-- Linhas Internas / Listras do Escudo -->
+  <path d="M50 12 L50 88" stroke="#F5C030" stroke-width="1.5" stroke-dasharray="2,2"/>
+  
+  <!-- Sol Nascente (Desenvolvimento) -->
+  <circle cx="50" cy="40" r="10" fill="#F5C030"/>
+  <path d="M35 40 L65 40 M50 25 L50 55 M39 29 L61 51 M39 51 L61 29" stroke="#F5C030" stroke-width="2"/>
+  
+  <!-- Três Torres (Poder Municipal) -->
+  <path d="M40 22 L42 16 L46 16 L48 22 Z M47 22 L49 16 L53 16 L55 22 Z M54 22 L56 16 L60 16 L62 22 Z" fill="#F5C030"/>
+  <rect x="40" y="21" width="22" height="2" fill="#F5C030"/>
+  
+  <!-- Faixas de rios / riqueza natural (Verde/Azul) -->
+  <path d="M25 60 C35 55, 45 65, 50 60 C55 55, 65 65, 75 60" fill="none" stroke="#6db87a" stroke-width="3" stroke-linecap="round"/>
+  <path d="M25 68 C35 63, 45 73, 50 68 C55 63, 65 73, 75 68" fill="none" stroke="#2b5c8f" stroke-width="3" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGEA | Gerador de Carteirinhas — Escola Municipal Castro Alves</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  @keyframes pulse  { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes float  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+
+  /* =====================================================================  BODY */
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: #050e08;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 0 0 6rem; color: #fff;
+    background-image:
+      radial-gradient(ellipse at 12% 10%, rgba(15,61,46,0.55) 0%, transparent 48%),
+      radial-gradient(ellipse at 88% 90%, rgba(212,175,55,0.07) 0%, transparent 48%),
+      url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='1' cy='1' r='1' fill='%230F3D2E' fill-opacity='0.12'/%3E%3C/svg%3E");
+  }
+
+  /* =====================================================================  TOPO */
+  .topo {
+    width: 100%;
+    background: linear-gradient(135deg,#050e08 0%,#0a2018 30%,#0F3D2E 55%,#0a2018 80%,#050e08 100%);
+    border-bottom: 2.5px solid #D4AF37;
+    padding: 1rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative; overflow: hidden;
+    box-shadow: 0 4px 40px rgba(0,0,0,0.6);
+  }
+  .topo::before {
+    content:''; position:absolute; inset:0;
+    background: repeating-linear-gradient(-55deg,transparent,transparent 18px,rgba(212,175,55,0.025) 18px,rgba(212,175,55,0.025) 19px);
+    pointer-events:none;
+  }
+  .topo-left { display:flex; align-items:center; gap:1rem; z-index:1; }
+  .topo-logo {
+    width:56px; height:56px; border-radius:50%; flex-shrink:0;
+    border:2px solid #D4AF37;
+    background:radial-gradient(circle at 35% 35%,#fff 60%,#e8f5e9);
+    display:flex; align-items:center; justify-content:center; overflow:hidden;
+    box-shadow: 0 0 0 4px rgba(212,175,55,0.12), 0 4px 20px rgba(0,0,0,0.5);
+    animation: float 4s ease-in-out infinite;
+  }
+  .topo-logo img { width:48px; height:48px; object-fit:contain; }
+  .topo-escola .sup  { font-size:.65rem; color:#D4AF37; text-transform:uppercase; letter-spacing:2.5px; font-weight:700; }
+  .topo-escola .nome { font-size:1.3rem; font-weight:900; color:#fff; line-height:1; }
+  .topo-escola .sub  { font-size:.68rem; color:rgba(255,255,255,.45); margin-top:1px; }
+  .topo-right { display:flex; align-items:center; gap:.9rem; z-index:1; }
+  .db-status {
+    display:inline-flex; align-items:center; gap:7px;
+    background:rgba(0,0,0,.4); border:1px solid rgba(212,175,55,.2);
+    border-radius:20px; padding:.35rem 1rem; font-size:.76rem; color:rgba(255,255,255,.6);
+  }
+  .db-status .dot { width:8px; height:8px; border-radius:50%; background:#555; flex-shrink:0; transition:background .3s; }
+  .db-status.loaded  .dot { background:#4dca72; box-shadow:0 0 8px #4dca72; }
+  .db-status.loading .dot { background:#f5c87a; animation:pulse .8s infinite; }
+  .db-status.error   .dot { background:#e05555; }
+  .btn-logout {
+    background:rgba(180,30,30,.2); border:1px solid rgba(220,60,60,.35);
+    border-radius:8px; color:#ff9f9f; font-family:inherit;
+    font-size:.82rem; font-weight:700; padding:.4rem 1rem; cursor:pointer; transition:all .2s;
+  }
+  .btn-logout:hover { background:rgba(200,30,30,.4); }
+
+  /* =====================================================================  LAYOUT */
+  .main-layout {
+    width:100%; max-width:1300px;
+    display:grid; grid-template-columns:295px 1fr;
+    gap:1.8rem; align-items:start;
+    padding:1.8rem 1.5rem 0;
+  }
+
+  /* =====================================================================  SIDEBAR */
+  .form-panel {
+    background:linear-gradient(160deg,rgba(15,61,46,.5) 0%,rgba(5,14,8,.8) 100%);
+    border:1px solid rgba(212,175,55,.18);
+    border-radius:18px; padding:1.4rem;
+    backdrop-filter:blur(20px);
+    box-shadow:0 8px 36px rgba(0,0,0,.4),inset 0 1px 0 rgba(212,175,55,.08);
+    position:sticky; top:1rem;
+  }
+  .fp-head { display:flex; align-items:center; gap:.65rem; margin-bottom:1.1rem; padding-bottom:.8rem; border-bottom:1px solid rgba(212,175,55,.12); }
+  .fp-icon { width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg,#0F3D2E,#1a6040); border:1px solid rgba(212,175,55,.25); display:flex; align-items:center; justify-content:center; font-size:.95rem; }
+  .form-panel h2 { font-size:.95rem; font-weight:800; color:#D4AF37; }
+  .form-group { margin-bottom:.75rem; }
+  .form-group label { display:block; font-size:.7rem; font-weight:800; color:rgba(212,175,55,.75); margin-bottom:.25rem; text-transform:uppercase; letter-spacing:.06em; }
+  .form-group select,
+  .form-group input {
+    width:100%; background:rgba(0,0,0,.38); border:1px solid rgba(212,175,55,.18);
+    border-radius:8px; color:#fff; font-family:inherit; font-size:.87rem;
+    padding:.52rem .8rem; outline:none; transition:all .2s;
+  }
+  .form-group select:focus,
+  .form-group input:focus { border-color:rgba(212,175,55,.55); box-shadow:0 0 0 3px rgba(212,175,55,.07); background:rgba(15,61,46,.28); }
+  .form-group .hint { font-size:.58rem; color:rgba(255,255,255,.3); display:block; margin-top:3px; }
+  .photo-upload-area {
+    width:100%; height:65px; border:1.5px dashed rgba(212,175,55,.28); border-radius:8px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    cursor:pointer; transition:all .2s; gap:.15rem;
+  }
+  .photo-upload-area:hover { border-color:#D4AF37; background:rgba(212,175,55,.04); }
+  .photo-upload-area .pu-icon { font-size:1.2rem; }
+  .photo-upload-area .pu-txt  { font-size:.74rem; color:rgba(255,255,255,.5); font-weight:700; }
+  .photo-upload-area .pu-nome { font-size:.6rem; color:#D4AF37; }
+  #photo-input { display:none; }
+  .btn-actions { display:flex; gap:.5rem; margin-top:1rem; flex-direction:column; }
+  .btn-add {
+    width:100%; padding:.75rem;
+    background:rgba(15,61,46,.55); border:1px solid rgba(212,175,55,.28);
+    border-radius:10px; color:#D4AF37; font-family:inherit;
+    font-weight:800; cursor:pointer; font-size:.9rem;
+    display:flex; align-items:center; justify-content:center; gap:.5rem; transition:all .2s;
+  }
+  .btn-add:hover { background:rgba(15,61,46,.85); border-color:#D4AF37; }
+  .btn-add:disabled { opacity:.3; cursor:not-allowed; }
+  .btn-print {
+    width:100%; padding:.82rem;
+    background:linear-gradient(135deg,#0F3D2E 0%,#1a6040 100%);
+    border:1px solid #D4AF37; border-radius:10px; color:#fff;
+    font-family:inherit; font-weight:900; cursor:pointer; font-size:.9rem;
+    display:flex; align-items:center; justify-content:center; gap:.5rem;
+    box-shadow:0 4px 20px rgba(15,61,46,.4); transition:all .2s;
+  }
+  .btn-print:hover { transform:translateY(-1px); box-shadow:0 8px 28px rgba(15,61,46,.65); }
+  .btn-limpar {
+    width:100%; padding:.62rem;
+    background:rgba(140,20,20,.15); border:1px solid rgba(180,50,50,.3);
+    border-radius:10px; color:#ffaaaa; font-family:inherit;
+    font-weight:700; cursor:pointer; font-size:.87rem;
+    display:flex; align-items:center; justify-content:center; gap:.5rem; transition:all .2s;
+  }
+  .btn-limpar:hover { background:rgba(150,20,20,.35); }
+
+  /* =====================================================================  PREVIEW PANEL */
+  .card-panel { display:flex; flex-direction:column; gap:.9rem; }
+  .preview-label {
+    font-size:.7rem; color:rgba(212,175,55,.65); font-weight:800;
+    text-transform:uppercase; letter-spacing:2px;
+    display:flex; align-items:center; gap:.6rem;
+  }
+  .preview-label::before { content:''; width:20px; height:2px; background:linear-gradient(90deg,#D4AF37,transparent); }
+  .preview-tabs {
+    display:flex; border-radius:9px; overflow:hidden;
+    border:1px solid rgba(212,175,55,.22); width:fit-content;
+  }
+  .preview-tab {
+    padding:.4rem 1.4rem; font-size:.8rem; font-weight:800;
+    cursor:pointer; transition:all .2s;
+    background:rgba(0,0,0,.3); color:rgba(255,255,255,.4); letter-spacing:.5px;
+  }
+  .preview-tab.active { background:#0F3D2E; color:#D4AF37; border-bottom:2px solid #D4AF37; }
+  #prev-frente, #prev-verso { display:none; animation:fadeIn .3s ease; }
+  #prev-frente.show, #prev-verso.show { display:flex; }
+
+  /* ===================================================================
+     CARTEIRINHA — COMPONENTES VISUAIS (usados na prévia e na impressão)
+  =================================================================== */
+
+  /* ── Painel esquerdo escuro com diagonal ── */
+  .ca-left {
+    background: linear-gradient(175deg, #050e08 0%, #0F3D2E 35%, #1a6040 60%, #0F3D2E 80%, #050e08 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: space-between;
+    position: relative; overflow: hidden; flex-shrink: 0;
+  }
+  /* Diagonal stripes */
+  .ca-left::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      -55deg,
+      transparent, transparent 8px,
+      rgba(212,175,55,0.07) 8px, rgba(212,175,55,0.07) 9px
+    );
+    pointer-events: none;
+  }
+  /* Filete dourado direito */
+  .ca-left::after {
+    content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 2.5px;
+    background: linear-gradient(180deg, transparent 5%, #D4AF37 20%, #D4AF37 80%, transparent 95%);
+  }
+  .ca-logo-wrap {
+    border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fff 60%, #e8f5e9);
+    border: solid #D4AF37; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 0 rgba(212,175,55,0.2), 0 4px 16px rgba(0,0,0,0.5);
+    flex-shrink: 0; position: relative; z-index: 1;
+  }
+  .ca-logo-wrap img { object-fit: contain; }
+  .ca-school-abbr {
+    color: #D4AF37; font-weight: 900; text-align: center;
+    text-transform: uppercase; letter-spacing: 1px;
+    line-height: 1; position: relative; z-index: 1;
+  }
+  .ca-year-tag {
+    color: rgba(212,175,55,.7); font-weight: 700;
+    writing-mode: vertical-rl; transform: rotate(180deg); letter-spacing: 3px;
+    position: relative; z-index: 1;
+  }
+
+  /* ── Painel direito branco ── */
+  .ca-right {
+    flex: 1; display: flex; flex-direction: column;
+    background: linear-gradient(150deg, #f5faf7 0%, #fff 55%, #edf8f3 100%);
+    position: relative; overflow: hidden;
+  }
+  /* Losangos de fundo */
+  .ca-right::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 1 L19 10 L10 19 L1 10 Z' fill='none' stroke='%230F3D2E' stroke-width='0.25' stroke-opacity='0.07'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0;
+  }
+  /* Logo marca d'água */
+  .ca-right::after {
+    content: ''; position: absolute;
+    background-image: url('logo oficial da escola.png');
+    background-size: contain; background-repeat: no-repeat; background-position: center;
+    opacity: 0.04; pointer-events: none; z-index: 0;
+  }
+
+  /* Header do painel direito */
+  .ca-header {
+    background: linear-gradient(90deg, #071510 0%, #0F3D2E 25%, #1a6040 50%, #0F3D2E 75%, #071510 100%);
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 2px solid #D4AF37; flex-shrink: 0; position: relative; z-index: 2; overflow: hidden;
+  }
+  .ca-header::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(-55deg,transparent,transparent 10px,rgba(212,175,55,0.04) 10px,rgba(212,175,55,0.04) 11px);
+    pointer-events: none;
+  }
+  .ca-school-text { position: relative; z-index: 1; line-height: 1; }
+  .ca-s-tiny { color: rgba(255,255,255,.6); font-weight: 600; text-transform: uppercase; letter-spacing: .8px; display: block; }
+  .ca-s-big  { font-weight: 900; color: #fff; display: block; }
+  .ca-s-sub  { color: #D4AF37; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; display: block; }
+  .ca-pref-logo {
+    border-radius: 50%; background: rgba(255,255,255,.1); border: solid rgba(212,175,55,.4);
+    overflow: hidden; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; position: relative; z-index: 1;
+  }
+  .ca-pref-logo img { object-fit: contain; }
+
+  /* Badge de validade */
+  .ca-validade {
+    background: linear-gradient(135deg, #0F3D2E, #1a6040);
+    border: solid #D4AF37; text-align: center;
+    box-shadow: 2px 2px 0 rgba(15,61,46,.4);
+    position: absolute; z-index: 3;
+  }
+  .ca-val-label { color: #D4AF37; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; display: block; }
+  .ca-val-date  { color: #fff; font-weight: 900; display: block; line-height: 1; }
+
+  /* Conteúdo principal */
+  .ca-content {
+    flex: 1; display: flex; flex-direction: row;
+    position: relative; z-index: 1;
+  }
+
+  /* Foto */
+  .ca-foto {
+    background: linear-gradient(135deg, #c5ddd1, #a8c5b5);
+    overflow: hidden; flex-shrink: 0;
+    border-right: solid #0F3D2E;
+  }
+  .ca-foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* Dados */
+  .ca-dados { flex: 1; display: flex; flex-direction: column; position: relative; }
+  .ca-dados-header {
+    font-weight: 900; text-transform: uppercase; color: #0F3D2E; letter-spacing: 1px;
+    display: flex; align-items: center; gap: 4px;
+    border-bottom: solid rgba(15,61,46,.12);
+  }
+  .ca-dados-header::before { content: ''; width: 14px; background: #D4AF37; border-radius: 1px; flex-shrink: 0; }
+
+  .ca-field { display: flex; flex-direction: column; }
+  .ca-fl { font-weight: 800; color: rgba(15,61,46,.45); text-transform: uppercase; letter-spacing: .3px; display: flex; align-items: center; gap: 2px; }
+  .ca-fv { font-weight: 700; color: #111; line-height: 1.2; }
+  .ca-fv.big { font-weight: 900; color: #0F3D2E; }
+
+  .ca-grid2 { display: grid; grid-template-columns: 1fr 1fr; }
+
+  /* Tipo Acesso */
+  .ca-acesso {
+    background: linear-gradient(90deg, rgba(15,61,46,.08), rgba(15,61,46,.03));
+    border-left: solid #0F3D2E;
+    display: flex; align-items: center; gap: 4px; margin-top: auto;
+  }
+  .ca-acesso-icon { background: linear-gradient(135deg,#0F3D2E,#1a6040); color: #D4AF37; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: .8em; }
+  .ca-acesso-text { font-weight: 900; color: #0F3D2E; }
+  .ca-acesso-label { font-weight: 800; color: rgba(15,61,46,.45); text-transform: uppercase; font-size: .7em; display: block; }
+
+  /* QR code pequeno na frente */
+  .ca-qr-small {
+    background: #fff; border: solid #0F3D2E;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 2px 2px 0 #D4AF37;
+    align-self: flex-end; flex-shrink: 0;
+  }
+  .ca-qr-small img { width: 100% !important; height: 100% !important; }
+
+  /* Footer frente */
+  .ca-footer {
+    background: linear-gradient(90deg,#071510 0%,#0F3D2E 25%,#1a6040 50%,#0F3D2E 75%,#071510 100%);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0; border-top: 1.5px solid #D4AF37;
+    position: relative; z-index: 2; overflow: hidden;
+  }
+  .ca-footer::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(-55deg,transparent,transparent 10px,rgba(212,175,55,0.04) 10px,rgba(212,175,55,0.04) 11px);
+    pointer-events: none;
+  }
+  .ca-fn { font-style: italic; color: rgba(255,255,255,.7); position: relative; z-index: 1; }
+  .ca-ft { color: rgba(255,255,255,.6); position: relative; z-index: 1; display: flex; align-items: center; gap: 3px; }
+  .ca-fc { font-weight: 900; color: #D4AF37; font-family: monospace; position: relative; z-index: 1; }
+
+  /* ── VERSO ── */
+  .cv-header {
+    background: linear-gradient(90deg,#071510 0%,#0F3D2E 25%,#1a6040 50%,#0F3D2E 75%,#071510 100%);
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 2px solid #D4AF37; flex-shrink: 0; position: relative; z-index: 2; overflow: hidden;
+  }
+  .cv-header::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(-55deg,transparent,transparent 10px,rgba(212,175,55,0.04) 10px,rgba(212,175,55,0.04) 11px);
+    pointer-events: none;
+  }
+  .cv-h-title { font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: .8px; display: block; position: relative; z-index: 1; }
+  .cv-h-sub   { color: #D4AF37; font-weight: 700; position: relative; z-index: 1; display: block; }
+  .cv-h-icon  {
+    border-radius: 50%; background: rgba(255,255,255,.1); border: solid rgba(212,175,55,.4);
+    overflow: hidden; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; position: relative; z-index: 1;
+  }
+  .cv-h-icon img { object-fit: contain; }
+
+  .cv-body {
+    flex: 1; display: flex; flex-direction: row;
+    background: linear-gradient(150deg,#f5faf7 0%,#fff 55%,#edf8f3 100%);
+    position: relative; overflow: hidden;
+  }
+  .cv-body::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 1 L19 10 L10 19 L1 10 Z' fill='none' stroke='%230F3D2E' stroke-width='0.25' stroke-opacity='0.07'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0;
+  }
+  .cv-body::after {
+    content: ''; position: absolute;
+    background-image: url('logo oficial da escola.png');
+    background-size: contain; background-repeat: no-repeat; background-position: center;
+    opacity: 0.04; pointer-events: none; z-index: 0;
+  }
+  .cv-left { flex: 1; display: flex; flex-direction: column; position: relative; z-index: 1; }
+  .cv-right {
+    display: flex; flex-direction: column; align-items: center;
+    flex-shrink: 0;
+    border-left: 1px solid rgba(15,61,46,.1);
+    background: linear-gradient(180deg,rgba(15,61,46,.04) 0%,rgba(15,61,46,.07) 100%);
+    position: relative; z-index: 1;
+  }
+
+  .cv-sec {
+    font-weight: 900; color: #0F3D2E; text-transform: uppercase; letter-spacing: .6px;
+    display: flex; align-items: center; gap: 4px;
+    border-bottom: solid rgba(15,61,46,.12);
+  }
+  .cv-sec::before { content: ''; width: 8px; background: #D4AF37; border-radius: 1px; flex-shrink: 0; }
+
+  .cv-field { display: flex; flex-direction: column; }
+  .cv-fl { font-weight: 800; color: rgba(15,61,46,.45); text-transform: uppercase; display: flex; align-items: center; gap: 2px; }
+  .cv-fv { font-weight: 700; color: #111; }
+
+  .cv-auth-list { display: flex; flex-direction: column; }
+  .cv-auth-item {
+    display: flex; align-items: center;
+    background: linear-gradient(90deg,rgba(15,61,46,.06),transparent);
+    border-left: solid #0F3D2E;
+  }
+  .cv-auth-n { border-radius: 50%; background: linear-gradient(135deg,#0F3D2E,#1a6040); color: #D4AF37; display: flex; align-items: center; justify-content: center; font-weight: 900; flex-shrink: 0; }
+  .cv-auth-name { font-weight: 700; color: #111; flex: 1; }
+  .cv-auth-rel  { font-weight: 700; color: #0F3D2E; background: rgba(15,61,46,.1); border: .5px solid rgba(15,61,46,.15); border-radius: 20px; white-space: nowrap; }
+
+  .cv-carimbo {
+    border: dashed rgba(15,61,46,.3); border-radius: 3px;
+    background: rgba(15,61,46,.02);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+    margin-top: auto;
+  }
+  .cv-carimbo-label { font-weight: 900; color: rgba(15,61,46,.38); text-transform: uppercase; letter-spacing: 1px; }
+  .cv-carimbo-area  { color: rgba(15,61,46,.2); font-style: italic; }
+
+  .cv-qr-label { font-weight: 900; color: #0F3D2E; text-align: center; text-transform: uppercase; letter-spacing: .5px; }
+  .cv-qr-frame {
+    background: #fff; border: solid #0F3D2E;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 3px 3px 0 #D4AF37; border-radius: 4px;
+  }
+  .cv-qr-inner img { width: 100% !important; height: 100% !important; }
+  .cv-qr-scan { font-weight: 700; color: #0F3D2E; text-align: center; text-transform: uppercase; }
+
+  .cv-footer {
+    background: linear-gradient(90deg,#071510 0%,#0F3D2E 25%,#1a6040 50%,#0F3D2E 75%,#071510 100%);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-shrink: 0; border-top: 1.5px solid #D4AF37;
+    position: relative; z-index: 2; overflow: hidden;
+  }
+  .cv-footer::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(-55deg,transparent,transparent 10px,rgba(212,175,55,0.04) 10px,rgba(212,175,55,0.04) 11px);
+    pointer-events: none;
+  }
+  .cv-f-tel   { color: rgba(255,255,255,.7); display: flex; align-items: center; gap: 4px; position: relative; z-index: 1; }
+  .cv-f-loc   { color: rgba(255,255,255,.55); display: flex; align-items: center; gap: 3px; position: relative; z-index: 1; }
+  .cv-f-code  { font-weight: 900; color: #D4AF37; font-family: monospace; position: relative; z-index: 1; }
+  .cv-barcode {
+    background: repeating-linear-gradient(90deg,rgba(255,255,255,.65),rgba(255,255,255,.65) 1px,transparent 1px,transparent 3px,rgba(255,255,255,.65) 3px,rgba(255,255,255,.65) 4px,transparent 4px,transparent 6px);
+    opacity: .35; position: relative; z-index: 1;
+  }
+
+  /* ===================================================================
+     TAMANHOS DE PRÉVIA — Tela (660px × 430px)
+  =================================================================== */
+  #prev-frente, #prev-verso {
+    width: 660px; height: 430px; border-radius: 14px; overflow: hidden;
+    box-shadow: 0 24px 60px rgba(0,0,0,.85), 0 0 0 1px rgba(212,175,55,.25);
+    flex-direction: row;
+  }
+  #prev-verso { flex-direction: column; }
+
+  /* FRENTE – prévia */
+  #prev-frente .ca-left { width: 74px; padding: 12px 6px 10px; gap: 0; justify-content: space-between; }
+  #prev-frente .ca-logo-wrap { width: 44px; height: 44px; border-width: 2px; box-shadow: 0 0 0 3px rgba(212,175,55,.12), 0 3px 12px rgba(0,0,0,.4); }
+  #prev-frente .ca-logo-wrap img { width: 38px; height: 38px; }
+  #prev-frente .ca-school-abbr { font-size: .55rem; margin-top: 4px; }
+  #prev-frente .ca-year-tag { font-size: .5rem; }
+  #prev-frente .ca-right::after { width: 260px; height: 260px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+  #prev-frente .ca-header { padding: 10px 14px; }
+  #prev-frente .ca-s-tiny { font-size: .6rem; }
+  #prev-frente .ca-s-big  { font-size: 1.28rem; }
+  #prev-frente .ca-s-sub  { font-size: .58rem; margin-top: 1px; }
+  #prev-frente .ca-pref-logo { width: 42px; height: 42px; border-width: 2px; }
+  #prev-frente .ca-pref-logo img { width: 34px; height: 34px; }
+  #prev-frente .ca-validade { top: 48px; right: 14px; padding: 6px 14px; border-radius: 6px; border-width: 1.5px; }
+  #prev-frente .ca-val-label { font-size: .55rem; }
+  #prev-frente .ca-val-date  { font-size: 1.2rem; }
+  #prev-frente .ca-content { padding: 14px; gap: 14px; }
+  #prev-frente .ca-foto { width: 120px; height: 168px; border-right-width: 2.5px; border-radius: 3px; }
+  #prev-frente .ca-dados { padding: 0 0 0 2px; gap: 6px; }
+  #prev-frente .ca-dados-header { font-size: .62rem; margin-bottom: 8px; padding-bottom: 5px; border-bottom-width: 1.5px; height: 2px; }
+  #prev-frente .ca-dados-header::before { height: 2px; }
+  #prev-frente .ca-field { margin-bottom: 5px; }
+  #prev-frente .ca-fl { font-size: .6rem; }
+  #prev-frente .ca-fv { font-size: .95rem; }
+  #prev-frente .ca-fv.big { font-size: 1.22rem; }
+  #prev-frente .ca-grid2 { gap: 4px 14px; margin-top: 4px; }
+  #prev-frente .ca-acesso { padding: 6px 10px; border-radius: 6px; border-left-width: 3px; gap: 8px; }
+  #prev-frente .ca-acesso-icon { width: 22px; height: 22px; font-size: .7rem; }
+  #prev-frente .ca-acesso-text  { font-size: .95rem; }
+  #prev-frente .ca-acesso-label { font-size: .6rem; }
+  #prev-frente .ca-qr-small { width: 62px; height: 62px; border-width: 1.5px; padding: 4px; margin-top: 6px; border-radius: 4px; }
+  #prev-frente .ca-footer { padding: 8px 14px; }
+  #prev-frente .ca-fn { font-size: .68rem; }
+  #prev-frente .ca-ft { font-size: .62rem; }
+  #prev-frente .ca-fc { font-size: .72rem; }
+
+  /* VERSO – prévia */
+  #prev-verso .cv-header { padding: 10px 18px; }
+  #prev-verso .cv-h-title { font-size: .72rem; }
+  #prev-verso .cv-h-sub   { font-size: .58rem; }
+  #prev-verso .cv-h-icon  { width: 36px; height: 36px; border-width: 1.5px; }
+  #prev-verso .cv-h-icon img { width: 28px; height: 28px; }
+  #prev-verso .cv-body::after { width: 280px; height: 280px; top: 50%; left: 35%; transform: translate(-50%,-50%); }
+  #prev-verso .cv-left { padding: 14px 16px; gap: 6px; }
+  #prev-verso .cv-right { width: 195px; padding: 14px 14px; gap: 8px; justify-content: center; }
+  #prev-verso .cv-sec { font-size: .62rem; padding-bottom: 3px; border-bottom-width: 1.5px; margin-bottom: 4px; }
+  #prev-verso .cv-sec::before { height: 2px; }
+  #prev-verso .cv-field { margin-bottom: 5px; }
+  #prev-verso .cv-fl { font-size: .6rem; }
+  #prev-verso .cv-fv { font-size: .95rem; }
+  #prev-verso .cv-auth-list { gap: 4px; }
+  #prev-verso .cv-auth-item { gap: 8px; padding: 5px 10px; border-radius: 5px; border-left-width: 3px; }
+  #prev-verso .cv-auth-n { width: 20px; height: 20px; font-size: .65rem; }
+  #prev-verso .cv-auth-name { font-size: .88rem; }
+  #prev-verso .cv-auth-rel  { font-size: .68rem; padding: 2px 9px; }
+  #prev-verso .cv-carimbo { padding: 10px; border-width: 1px; border-style: dashed; min-height: 54px; gap: 2px; }
+  #prev-verso .cv-carimbo-label { font-size: .58rem; }
+  #prev-verso .cv-carimbo-area  { font-size: .62rem; }
+  #prev-verso .cv-qr-label { font-size: .62rem; }
+  #prev-verso .cv-qr-frame { width: 152px; height: 152px; border-width: 2px; padding: 8px; }
+  #prev-verso .cv-qr-inner { width: 132px; height: 132px; }
+  #prev-verso .cv-qr-scan { font-size: .58rem; margin-top: 2px; }
+  #prev-verso .cv-footer { padding: 8px 18px; }
+  #prev-verso .cv-f-tel   { font-size: .65rem; }
+  #prev-verso .cv-f-loc   { font-size: .65rem; }
+  #prev-verso .cv-f-code  { font-size: .72rem; }
+  #prev-verso .cv-barcode { width: 80px; height: 14px; }
+
+  /* ===================================================================
+     FOLHA — grade na tela
+  =================================================================== */
+  .fila-container {
+    width: 100%; max-width: 1300px;
+    padding: 0 1.5rem; margin-top: 1.5rem;
+    border-top: 1px dashed rgba(212,175,55,.12); padding-top: 1rem;
+  }
+  .fila-titulo {
+    text-align: center; font-size: .74rem; font-weight: 800;
+    color: rgba(212,175,55,.55); text-transform: uppercase; letter-spacing: 1.5px;
+    display: flex; align-items: center; gap: 1rem; justify-content: center; margin-bottom: 1rem;
+  }
+  .fila-titulo::before, .fila-titulo::after { content:''; flex:1; max-width:60px; height:1px; background:linear-gradient(90deg,transparent,rgba(212,175,55,.3)); }
+  #pagina-impressao { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; width: 100%; }
+
+  /* ===================================================================
+     PAR de impressão — FRENTE + VERSO LADO A LADO
+  =================================================================== */
+  .par-carteirinha {
+    display: flex; flex-direction: row; gap: 3mm;
+    align-items: flex-start; flex-shrink: 0;
+  }
+
+  /* ===================================================================
+     CARTEIRINHA IMPRESSA — 9.6cm × 6.4cm
+     (tamanhos em mm ou cm para fidelidade de impressão)
+  =================================================================== */
+  .carteirinha-fila {
+    width: 9.6cm; height: 6.4cm;
+    border-radius: 2px; overflow: hidden;
+    display: flex; flex-direction: row; flex-shrink: 0;
+    font-family: 'Outfit', sans-serif; position: relative;
+    border: 0.3mm solid #555;
+    box-shadow: 0 3px 10px rgba(0,0,0,.2);
+  }
+  .carteirinha-verso {
+    width: 9.6cm; height: 6.4cm;
+    border-radius: 2px; overflow: hidden;
+    display: flex; flex-direction: column; flex-shrink: 0;
+    font-family: 'Outfit', sans-serif; position: relative;
+    border: 0.3mm solid #555;
+    box-shadow: 0 3px 10px rgba(0,0,0,.2);
+  }
+
+  /* FRENTE impressão */
+  .carteirinha-fila .ca-left { width: 1.1cm; padding: 3px 3px 3px; gap: 0; justify-content: space-between; }
+  .carteirinha-fila .ca-logo-wrap { width: 0.7cm; height: 0.7cm; border-width: 1.5px; box-shadow: 0 0 0 2px rgba(212,175,55,.12); }
+  .carteirinha-fila .ca-logo-wrap img { width: 0.55cm; height: 0.55cm; }
+  .carteirinha-fila .ca-school-abbr { font-size: 4px; margin-top: 2px; }
+  .carteirinha-fila .ca-year-tag { font-size: 3px; }
+  .carteirinha-fila .ca-right::after { width: 90px; height: 90px; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+  .carteirinha-fila .ca-header { padding: 3.5px 10px; }
+  .carteirinha-fila .ca-s-tiny { font-size: 4px; }
+  .carteirinha-fila .ca-s-big  { font-size: 9.5px; }
+  .carteirinha-fila .ca-s-sub  { font-size: 3.5px; margin-top: 1px; }
+  .carteirinha-fila .ca-pref-logo { width: 1.7cm; height: 1.7cm; border-width: 1.5px; display: none; }
+  .carteirinha-fila .ca-validade { top: 8mm; right: 2mm; padding: 2px 5px; border-radius: 3px; border-width: 1px; }
+  .carteirinha-fila .ca-val-label { font-size: 3.5px; }
+  .carteirinha-fila .ca-val-date  { font-size: 8px; }
+  .carteirinha-fila .ca-content { padding: 5px 6px; gap: 5px; }
+  .carteirinha-fila .ca-foto { width: 1.7cm; height: 2.35cm; border-right-width: 1.5px; border-radius: 1px; }
+  .carteirinha-fila .ca-dados { padding: 0 0 0 2px; gap: 2px; }
+  .carteirinha-fila .ca-dados-header { font-size: 4px; margin-bottom: 3px; padding-bottom: 2px; border-bottom-width: 1px; height: 1.5px; }
+  .carteirinha-fila .ca-dados-header::before { height: 1.5px; }
+  .carteirinha-fila .ca-field { margin-bottom: 2px; }
+  .carteirinha-fila .ca-fl { font-size: 4px; }
+  .carteirinha-fila .ca-fv { font-size: 7px; }
+  .carteirinha-fila .ca-fv.big { font-size: 9.5px; }
+  .carteirinha-fila .ca-grid2 { gap: 1px 6px; margin-top: 2px; }
+  .carteirinha-fila .ca-acesso { padding: 3px 6px; border-radius: 3px; border-left-width: 2px; gap: 4px; margin-top: 2px; }
+  .carteirinha-fila .ca-acesso-icon { width: 12px; height: 12px; font-size: 5px; }
+  .carteirinha-fila .ca-acesso-text  { font-size: 7px; }
+  .carteirinha-fila .ca-acesso-label { font-size: 3.5px; }
+  .carteirinha-fila .ca-qr-small { width: 1.45cm; height: 1.45cm; border-width: 1px; padding: 3px; margin-top: 3px; border-radius: 3px; }
+  .carteirinha-fila .ca-footer { padding: 3px 8px; }
+  .carteirinha-fila .ca-fn { font-size: 4px; }
+  .carteirinha-fila .ca-ft { font-size: 4px; }
+  .carteirinha-fila .ca-fc { font-size: 4.5px; }
+
+  /* VERSO impressão */
+  .carteirinha-verso .cv-header { padding: 3.5px 8px; }
+  .carteirinha-verso .cv-h-title { font-size: 5px; }
+  .carteirinha-verso .cv-h-sub   { font-size: 4px; }
+  .carteirinha-verso .cv-h-icon  { width: 1.4cm; height: 1.4cm; border-width: 1px; }
+  .carteirinha-verso .cv-h-icon img { width: 1.1cm; height: 1.1cm; }
+  .carteirinha-verso .cv-body::after { width: 90px; height: 90px; top: 50%; left: 35%; transform: translate(-50%,-50%); }
+  .carteirinha-verso .cv-left { padding: 5px 8px; gap: 2px; }
+  .carteirinha-verso .cv-right { width: 2.8cm; padding: 5px 7px; gap: 3px; justify-content: center; }
+  .carteirinha-verso .cv-sec { font-size: 4px; padding-bottom: 1.5px; border-bottom-width: 1px; margin-bottom: 2px; }
+  .carteirinha-verso .cv-sec::before { height: 1.5px; }
+  .carteirinha-verso .cv-field { margin-bottom: 2px; }
+  .carteirinha-verso .cv-fl { font-size: 4px; }
+  .carteirinha-verso .cv-fv { font-size: 7px; }
+  .carteirinha-verso .cv-auth-list { gap: 2px; }
+  .carteirinha-verso .cv-auth-item { gap: 3px; padding: 2px 5px; border-radius: 2px; border-left-width: 2px; }
+  .carteirinha-verso .cv-auth-n { width: 10px; height: 10px; font-size: 5px; }
+  .carteirinha-verso .cv-auth-name { font-size: 6px; }
+  .carteirinha-verso .cv-auth-rel  { font-size: 4.5px; padding: 1px 5px; }
+  .carteirinha-verso .cv-carimbo { padding: 3px 6px; border-width: 0.8px; border-style: dashed; min-height: 22px; gap: 1px; margin-top: 3px; }
+  .carteirinha-verso .cv-carimbo-label { font-size: 3.5px; }
+  .carteirinha-verso .cv-carimbo-area  { font-size: 4px; }
+  .carteirinha-verso .cv-qr-label { font-size: 4px; }
+  .carteirinha-verso .cv-qr-frame { width: 2.25cm; height: 2.25cm; border-width: 1.5px; padding: 4px; }
+  .carteirinha-verso .cv-qr-inner { width: 1.9cm; height: 1.9cm; }
+  .carteirinha-verso .cv-qr-scan { font-size: 3.5px; }
+  .carteirinha-verso .cv-footer { padding: 3px 8px; }
+  .carteirinha-verso .cv-f-tel   { font-size: 4px; }
+  .carteirinha-verso .cv-f-loc   { font-size: 4px; }
+  .carteirinha-verso .cv-f-code  { font-size: 4.5px; }
+  .carteirinha-verso .cv-barcode { width: 55px; height: 9px; }
+
+  /* ===================================================================
+     IMPRESSÃO @MEDIA — REGRAS DEFINITIVAS
+  =================================================================== */
+  @media print {
+    @page { size: A4 portrait; margin: 8mm; }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    body { background: #fff !important; padding: 0 !important; display: block !important; }
+    .topo, .main-layout, .fila-titulo { display: none !important; }
+
+    .fila-container {
+      display: block !important; width: 100% !important; max-width: 100% !important;
+      margin: 0 !important; padding: 0 !important; border: none !important;
+    }
+    #pagina-impressao {
+      display: flex !important; flex-direction: column !important;
+      align-items: flex-start !important; gap: 6mm !important;
+      width: 100% !important; padding: 0 !important;
+    }
+    .par-carteirinha {
+      display: flex !important; flex-direction: row !important;
+      gap: 3mm !important; align-items: flex-start !important;
+      break-inside: avoid !important; page-break-inside: avoid !important;
+    }
+    .carteirinha-fila, .carteirinha-verso {
+      box-shadow: none !important; border: 0.3mm solid #444 !important;
+      break-inside: avoid !important; page-break-inside: avoid !important; margin: 0 !important;
+    }
+    /* Preservar gradientes e texturas na impressão — idêntico à tela */
+  }
+  </style>
+</head>
+<body>
+
+<!-- ======================================================== TOPO -->
+<header class="topo">
+  <div class="topo-left">
+    <div class="topo-logo">
+      <img src="logo oficial da escola.png" alt="Logo"
+           onerror="this.style.display='none';document.getElementById('topo-svg').style.display='block'">
+      <svg id="topo-svg" viewBox="0 0 80 80" style="display:none;width:48px;height:48px">
+        <defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#0F3D2E"/><stop offset="100%" stop-color="#1a6040"/></linearGradient></defs>
+        <path d="M40 5 L70 18 L70 45 Q70 64 40 76 Q10 64 10 45 L10 18 Z" fill="url(#g1)" stroke="#D4AF37" stroke-width="2.5"/>
+        <path d="M40 14 L62 24 L62 44 Q62 58 40 68 Q18 58 18 44 L18 24 Z" fill="none" stroke="rgba(212,175,55,.3)" stroke-width="1"/>
+        <text x="40" y="40" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#D4AF37">CA</text>
+        <text x="40" y="54" text-anchor="middle" font-family="sans-serif" font-size="5" fill="rgba(255,255,255,.6)">ESCOLA MUN.</text>
+      </svg>
+    </div>
+    <div class="topo-escola">
+      <span class="sup">Secretaria Escolar · Planaltina de Goiás — GO</span>
+      <span class="nome">Castro Alves</span>
+      <span class="sub">SIGEA — Sistema Integrado de Gerenciamento Escolar de Acesso</span>
+    </div>
+  </div>
+  <div class="topo-right">
+    <span class="db-status loading" id="db-status">
+      <span class="dot"></span>
+      <span id="db-status-text">Conectando...</span>
+    </span>
+    <button class="btn-logout" onclick="fazerLogout()">⎋ Sair</button>
+  </div>
+</header>
+
+<!-- ======================================================== LAYOUT -->
+<div class="main-layout">
+  <!-- SIDEBAR -->
+  <aside class="form-panel">
+    <div class="fp-head">
+      <div class="fp-icon">📋</div>
+      <h2>Dados do Aluno</h2>
+    </div>
+    <div class="form-group">
+      <label>Selecionar Aluno</label>
+      <select id="sel-aluno"><option value="">Aguarde...</option></select>
+    </div>
+    <div class="form-group">
+      <label>Nome Completo *</label>
+      <input type="text" id="inp-nome" oninput="atualizar()">
+    </div>
+    <div class="form-group">
+      <label>Matrícula</label>
+      <input type="text" id="inp-matricula" oninput="atualizar()">
+    </div>
+    <div class="form-group">
+      <label>Série / Turma</label>
+      <input type="text" id="inp-turma" oninput="atualizar()" placeholder="Ex: 2º Ano B">
+    </div>
+    <div class="form-group">
+      <label>Turno</label>
+      <input type="text" id="inp-turno" oninput="atualizar()" placeholder="Ex: Vespertino">
+    </div>
+    <div class="form-group">
+      <label>Professor(a)</label>
+      <input type="text" id="inp-professor" oninput="atualizar()">
+    </div>
+    <div class="form-group">
+      <label>Responsável Principal</label>
+      <input type="text" id="inp-responsavel" oninput="atualizar()">
+    </div>
+    <div class="form-group">
+      <label>Código da Carteirinha</label>
+      <input type="text" id="inp-codigo" oninput="atualizar()" placeholder="CA-2026-000001">
+    </div>
+    <div class="form-group">
+      <label>Validade</label>
+      <input type="text" id="inp-validade" oninput="atualizar()" placeholder="12/2026">
+    </div>
+    <div class="form-group">
+      <label>URL Validador (opcional)</label>
+      <input type="text" id="inp-url-validador" oninput="atualizar()" placeholder="Automático">
+      <span class="hint">Se vazio, usa o caminho local automaticamente.</span>
+    </div>
+    <div class="form-group">
+      <label>Foto do Aluno</label>
+      <div class="photo-upload-area" onclick="document.getElementById('photo-input').click()">
+        <span class="pu-icon">📷</span>
+        <span class="pu-txt">Clique para escolher</span>
+        <span class="pu-nome" id="foto-nome-label">Nenhuma selecionada</span>
+      </div>
+      <input type="file" id="photo-input" accept="image/*" onchange="carregarFoto(this)">
+    </div>
+    <div class="btn-actions">
+      <button class="btn-add" id="btn-adicionar" onclick="adicionarNaFila()" disabled>➕ Adicionar à Folha</button>
+      <button class="btn-print" onclick="window.print()">🖨️ Imprimir Folha A4</button>
+      <button class="btn-limpar" onclick="limparFila()">🗑️ Limpar Folha</button>
+    </div>
+  </aside>
+
+  <!-- CARD PANEL -->
+  <div class="card-panel">
+    <div class="preview-label">Prévia da Carteirinha</div>
+    <div class="preview-tabs">
+      <div class="preview-tab active" id="tab-frente" onclick="switchTab('frente')">▶ FRENTE</div>
+      <div class="preview-tab"        id="tab-verso"  onclick="switchTab('verso')">◀ VERSO</div>
+    </div>
+
+    <!-- ────────── PRÉVIA FRENTE ────────── -->
+    <div id="prev-frente" class="show">
+      <div class="ca-left">
+        <div class="ca-logo-wrap">
+          <img src="logo oficial da escola.png" alt="Logo"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <svg viewBox="0 0 80 80" style="display:none;width:48px;height:48px">
+            <path d="M40 6 L65 17 L65 43 Q65 60 40 72 Q15 60 15 43 L15 17 Z" fill="#0F3D2E" stroke="#D4AF37" stroke-width="2.5"/>
+            <text x="40" y="39" text-anchor="middle" font-family="Georgia,serif" font-size="14" font-weight="bold" fill="#D4AF37">CA</text>
+          </svg>
+        </div>
+        <div class="ca-school-abbr">CASTRO<br>ALVES</div>
+        <div class="ca-year-tag">2026</div>
+      </div>
+      <div class="ca-right">
+        <div class="ca-header">
+          <div class="ca-school-text">
+            <span class="ca-s-tiny">Escola Municipal</span>
+            <span class="ca-s-big">CASTRO ALVES</span>
+            <span class="ca-s-sub">Acesso Especial</span>
+          </div>
+          <div class="ca-pref-logo">
+            <img src="logo_prefeitura.png" onerror="this.style.display='none'" alt="Pref">
+          </div>
+        </div>
+        <div class="ca-validade">
+          <span class="ca-val-label">VALIDADE</span>
+          <span class="ca-val-date" id="prev-validade-val">--/----</span>
+        </div>
+        <div class="ca-content">
+          <div class="ca-foto">
+            <img id="photo-preview"
+                 src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='200'><defs><linearGradient id='b' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%23c5ddd1'/><stop offset='100%25' stop-color='%23a8c5b5'/></linearGradient></defs><rect width='140' height='200' fill='url(%23b)'/><circle cx='70' cy='72' r='30' fill='%230F3D2E' opacity='0.2'/><ellipse cx='70' cy='145' rx='44' ry='34' fill='%230F3D2E' opacity='0.18'/><text x='70' y='190' font-family=\'sans-serif\' font-size='10' fill='%230F3D2E' text-anchor='middle' font-weight='900' opacity='0.45'>FOTO</text></svg>"
+                 alt="Foto">
+          </div>
+          <div class="ca-dados">
+            <div class="ca-dados-header">Autorização de Acesso Especial</div>
+            <div id="data-display-preview"></div>
+            <div class="ca-acesso">
+              <div class="ca-acesso-icon">🛡️</div>
+              <div>
+                <span class="ca-acesso-label">Tipo de Acesso</span>
+                <span class="ca-acesso-text">Acesso Especial — AEE</span>
+              </div>
+              <div class="ca-qr-small" id="qr-prev-frente-wrap" style="margin-left:auto">
+                <div id="qr-prev-frente"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ca-footer">
+          <span class="ca-fn">Autorizado para retirada às 17h</span>
+          <span class="ca-ft">📞 (61) 99282-1474</span>
+          <span class="ca-fc" id="prev-codigo"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ────────── PRÉVIA VERSO ────────── -->
+    <div id="prev-verso">
+      <div class="cv-header">
+        <div>
+          <span class="cv-h-title">Escola Municipal Castro Alves · Acesso Especial</span>
+          <span class="cv-h-sub">SIGEA · Documento Oficial</span>
+        </div>
+        <div class="cv-h-icon">
+          <img src="logo oficial da escola.png" onerror="this.style.display='none'" alt="Logo">
+        </div>
+      </div>
+      <div class="cv-body">
+        <div class="cv-left">
+          <div class="cv-sec">👤 Responsável Principal</div>
+          <div class="cv-field">
+            <span class="cv-fl">Nome</span>
+            <span class="cv-fv" id="pv-responsavel">—</span>
+          </div>
+          <div class="cv-sec" style="margin-top:4px;">👥 Pessoas Autorizadas a Retirar</div>
+          <div class="cv-auth-list" id="pv-auth-list">
+            <div class="cv-auth-item">
+              <div class="cv-auth-n">1</div>
+              <span class="cv-auth-name">Aguardando dados...</span>
+              <span class="cv-auth-rel"></span>
+            </div>
+          </div>
+          <div class="cv-carimbo">
+            <div class="cv-carimbo-label">⬛ Carimbo Oficial da Escola</div>
+            <div class="cv-carimbo-area">Espaço reservado para carimbo institucional</div>
+          </div>
+        </div>
+        <div class="cv-right">
+          <div class="cv-qr-label">🔲 QR CODE</div>
+          <div class="cv-qr-frame">
+            <div class="cv-qr-inner" id="qr-prev-verso"></div>
+          </div>
+          <div class="cv-qr-scan">🔍 Escaneie para validar</div>
+        </div>
+      </div>
+      <div class="cv-footer">
+        <div style="display:flex;align-items:center;gap:10px;z-index:1">
+          <div class="cv-barcode"></div>
+          <span class="cv-f-tel">📞 (61) 99282-1474</span>
+        </div>
+        <span class="cv-f-loc">📍 Planaltina de Goiás — GO</span>
+        <span class="cv-f-code" id="pv-codigo">—</span>
+      </div>
+    </div>
+
+  </div><!-- /.card-panel -->
+</div><!-- /.main-layout -->
+
+<!-- ======================================================== FOLHA -->
+<div class="fila-container">
+  <div class="fila-titulo">📄 Folha de Impressão — Frente e Verso lado a lado</div>
+  <div id="pagina-impressao"></div>
+</div>
+
+<script>
+/* ─── Auth ─── */
+if (localStorage.getItem('sigea_auth') !== 'ok') window.location.href = 'login.html';
+
+const SHEET_URL = '';
+let ALUNOS = [];
+let qrCounter = 0;
+
+function obterUrlValidador(codigo) {
+  const urlManual = document.getElementById('inp-url-validador').value.trim();
+  if (urlManual) return urlManual + '?id=' + encodeURIComponent(codigo);
+  const path = window.location.href.split('?')[0];
+  return path.substring(0, path.lastIndexOf('/')) + '/validador.html?id=' + encodeURIComponent(codigo);
+}
+
+/* ─── Planilha ─── */
+async function carregarDados() {
+  const st  = document.getElementById('db-status');
+  const sel = document.getElementById('sel-aluno');
+  st.className = 'db-status loading';
+  if (!SHEET_URL) {
+    st.className = 'db-status error';
+    document.getElementById('db-status-text').innerText = 'Offline — preencha manualmente';
+    sel.innerHTML = '<option value="">— preencha manualmente —</option>';
+    return;
+  }
+  try {
+    const resp = await fetch(SHEET_URL + '&t=' + Date.now());
+    const text = await resp.text();
+    const linhas = text.split('\n');
+    sel.innerHTML = '<option value="">Selecione o aluno...</option>';
+    ALUNOS = [];
+    for (let i = 1; i < linhas.length; i++) {
+      const c = linhas[i].split(',').map(s => s.replace(/^"|"$/g,'').trim());
+      if (!c[0]) continue;
+      ALUNOS.push({ nome:c[0], mat:c[1]||'', turma:c[2]||'', turno:c[3]||'', professor:c[4]||'', responsavel:c[5]||'', codigo:c[6]||'', validade:c[7]||'' });
+      const o = document.createElement('option');
+      o.value = ALUNOS.length - 1; o.innerText = c[0]; sel.appendChild(o);
+    }
+    st.className = 'db-status loaded';
+    document.getElementById('db-status-text').innerText = ALUNOS.length + ' alunos ok';
+  } catch (e) {
+    st.className = 'db-status error';
+    document.getElementById('db-status-text').innerText = 'Offline — preencha manualmente';
+    sel.innerHTML = '<option value="">— preencha manualmente —</option>';
+  }
+}
+
+/* ─── Selecionar Aluno ─── */
+document.getElementById('sel-aluno').onchange = function() {
+  const a = ALUNOS[this.value]; if (!a) return;
+  document.getElementById('inp-nome').value        = a.nome;
+  document.getElementById('inp-matricula').value   = a.mat;
+  document.getElementById('inp-turma').value       = a.turma;
+  document.getElementById('inp-turno').value       = a.turno;
+  document.getElementById('inp-professor').value   = a.professor;
+  document.getElementById('inp-responsavel').value = a.responsavel;
+  document.getElementById('inp-codigo').value      = a.codigo;
+  document.getElementById('inp-validade').value    = a.validade;
+  atualizar();
+};
+
+/* ─── Atualizar Prévia ─── */
+function atualizar() {
+  const campos = [
+    ['Nome Completo',  'inp-nome',        true ],
+    ['Matrícula',      'inp-matricula',   false],
+    ['Turma / Setor',  'inp-turma',       false],
+    ['Função / Cargo', 'inp-professor',   false],
+  ];
+  document.getElementById('data-display-preview').innerHTML = campos.map(([lbl, id, big]) => {
+    const v = document.getElementById(id).value || '—';
+    if (big) {
+      return `<div class="ca-field">
+        <span class="ca-fl">👤 ${lbl}</span>
+        <span class="ca-fv big">${v}</span>
+      </div>`;
+    }
+    return `<div class="ca-field"><span class="ca-fl">${lbl}</span><span class="ca-fv">${v}</span></div>`;
+  }).join('');
+
+  const validade = document.getElementById('inp-validade').value || '--/----';
+  const codigo   = document.getElementById('inp-codigo').value;
+  document.getElementById('prev-validade-val').innerText = validade;
+  document.getElementById('prev-codigo').innerText       = codigo;
+  document.getElementById('pv-responsavel').innerText    = document.getElementById('inp-responsavel').value || '—';
+  document.getElementById('pv-codigo').innerText         = codigo || '—';
+
+  // QR prévia verso
+  const qrV = document.getElementById('qr-prev-verso');
+  qrV.innerHTML = '';
+  if (codigo) {
+    new QRCode(qrV, {
+      text: obterUrlValidador(codigo),
+      width: 128, height: 128,
+      colorDark: '#0F3D2E', colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  }
+
+  // QR preview frente (pequeno)
+  const qrF = document.getElementById('qr-prev-frente');
+  qrF.innerHTML = '';
+  if (codigo) {
+    new QRCode(qrF, {
+      text: obterUrlValidador(codigo),
+      width: 52, height: 52,
+      colorDark: '#0F3D2E', colorLight: '#ffffff',
+      correctLevel: QRCode.CorrectLevel.L
+    });
+  }
+
+  document.getElementById('btn-adicionar').disabled = !document.getElementById('inp-nome').value;
+}
+
+/* ─── Foto ─── */
+function carregarFoto(input) {
+  if (input.files && input.files[0]) {
+    document.getElementById('foto-nome-label').innerText = input.files[0].name;
+    const rd = new FileReader();
+    rd.onload = e => { document.getElementById('photo-preview').src = e.target.result; };
+    rd.readAsDataURL(input.files[0]);
+  }
+}
+
+/* ─── Tabs ─── */
+function switchTab(tab) {
+  document.getElementById('prev-frente').classList.toggle('show', tab === 'frente');
+  document.getElementById('prev-verso').classList.toggle('show',  tab === 'verso');
+  document.getElementById('tab-frente').classList.toggle('active', tab === 'frente');
+  document.getElementById('tab-verso').classList.toggle('active',  tab === 'verso');
+}
+
+/* ─── Adicionar à Folha ─── */
+function adicionarNaFila() {
+  const nome        = document.getElementById('inp-nome').value;
+  const mat         = document.getElementById('inp-matricula').value;
+  const turma       = document.getElementById('inp-turma').value;
+  const turno       = document.getElementById('inp-turno').value;
+  const professor   = document.getElementById('inp-professor').value;
+  const responsavel = document.getElementById('inp-responsavel').value;
+  const codigo      = document.getElementById('inp-codigo').value;
+  const validade    = document.getElementById('inp-validade').value;
+  const foto        = document.getElementById('photo-preview').src;
+  const qrId        = 'qr-cf-' + (++qrCounter);
+  const qrUrl       = obterUrlValidador(codigo);
+  const anoAtual    = new Date().getFullYear();
+
+  /* wrapper par */
+  const par = document.createElement('div');
+  par.className = 'par-carteirinha';
+
+  /* ── FRENTE ── */
+  const frente = document.createElement('div');
+  frente.className = 'carteirinha-fila';
+  const qrFrenteId = qrId + '-f';
+  frente.innerHTML = `
+    <div class="ca-left">
+      <div class="ca-logo-wrap">
+        <img src="logo oficial da escola.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <svg viewBox="0 0 80 80" style="display:none;width:18px;height:18px">
+          <path d="M40 6 L65 17 L65 43 Q65 60 40 72 Q15 60 15 43 L15 17 Z" fill="#0F3D2E" stroke="#D4AF37" stroke-width="3"/>
+          <text x="40" y="39" text-anchor="middle" font-family="Georgia,serif" font-size="18" font-weight="bold" fill="#D4AF37">CA</text>
+        </svg>
+      </div>
+      <div class="ca-school-abbr">CASTRO<br>ALVES</div>
+      <div class="ca-year-tag">${anoAtual}</div>
+    </div>
+    <div class="ca-right">
+      <div class="ca-header">
+        <div class="ca-school-text">
+          <span class="ca-s-tiny">Escola Municipal</span>
+          <span class="ca-s-big">CASTRO ALVES</span>
+          <span class="ca-s-sub">Acesso Especial</span>
+        </div>
+      </div>
+      <div class="ca-validade">
+        <span class="ca-val-label">VALIDADE</span>
+        <span class="ca-val-date">${validade}</span>
+      </div>
+      <div class="ca-content">
+        <div class="ca-foto">
+          ${foto && foto.length > 200
+            ? `<img src="${foto}">`
+            : `<div style="width:100%;height:100%;background:linear-gradient(135deg,#c5ddd1,#a8c5b5);display:flex;align-items:center;justify-content:center;font-size:6px;color:#0F3D2E;font-weight:900;opacity:.7">SEM FOTO</div>`}
+        </div>
+        <div class="ca-dados">
+          <div class="ca-dados-header">Autorização de Acesso Especial</div>
+          <div class="ca-field">
+            <span class="ca-fl">👤 Nome Completo</span>
+            <span class="ca-fv big">${nome}</span>
+          </div>
+          <div class="ca-field">
+            <span class="ca-fl">🪪 Matrícula</span>
+            <span class="ca-fv">${mat}</span>
+          </div>
+          <div class="ca-grid2">
+            <div class="ca-field">
+              <span class="ca-fl">Turma / Setor</span>
+              <span class="ca-fv">${turma} · ${turno}</span>
+            </div>
+            <div class="ca-field">
+              <span class="ca-fl">Professor(a)</span>
+              <span class="ca-fv">${professor}</span>
+            </div>
+          </div>
+          <div class="ca-acesso">
+            <div class="ca-acesso-icon">🛡️</div>
+            <div>
+              <span class="ca-acesso-label">Tipo de Acesso</span>
+              <span class="ca-acesso-text">Acesso Especial — AEE</span>
+            </div>
+            <div class="ca-qr-small" style="margin-left:auto">
+              <div id="${qrFrenteId}"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ca-footer">
+        <span class="ca-fn">Autorizado para retirada às 17h</span>
+        <span class="ca-ft">📞 (61) 99282-1474</span>
+        <span class="ca-fc">${codigo}</span>
+      </div>
+    </div>`;
+  par.appendChild(frente);
+
+  /* ── VERSO ── */
+  const verso = document.createElement('div');
+  verso.className = 'carteirinha-verso';
+  const qrVersoId = qrId + '-v';
+  verso.innerHTML = `
+    <div class="cv-header">
+      <div>
+        <span class="cv-h-title">Escola Municipal Castro Alves · Acesso Especial</span>
+        <span class="cv-h-sub">SIGEA · Documento Oficial</span>
+      </div>
+      <div class="cv-h-icon">
+        <img src="logo oficial da escola.png" onerror="this.style.display='none'">
+      </div>
+    </div>
+    <div class="cv-body">
+      <div class="cv-left">
+        <div class="cv-sec">👤 Responsável Principal</div>
+        <div class="cv-field">
+          <span class="cv-fl">Nome</span>
+          <span class="cv-fv">${responsavel}</span>
+        </div>
+        <div class="cv-sec" style="margin-top:2px;">👥 Pessoas Autorizadas a Retirar</div>
+        <div class="cv-auth-list" id="auth-list-${qrId}"></div>
+        <div class="cv-carimbo">
+          <div class="cv-carimbo-label">⬛ Carimbo Oficial da Escola</div>
+          <div class="cv-carimbo-area">Espaço para carimbo</div>
+        </div>
+      </div>
+      <div class="cv-right">
+        <div class="cv-qr-label">🔲 QR CODE</div>
+        <div class="cv-qr-frame">
+          <div class="cv-qr-inner" id="${qrVersoId}"></div>
+        </div>
+        <div class="cv-qr-scan">🔍 Escaneie para validar</div>
+      </div>
+    </div>
+    <div class="cv-footer">
+      <div style="display:flex;align-items:center;gap:5px;z-index:1">
+        <div class="cv-barcode"></div>
+        <span class="cv-f-tel">📞 (61) 99282-1474</span>
+      </div>
+      <span class="cv-f-loc">📍 Planaltina de Goiás — GO</span>
+      <span class="cv-f-code">${codigo}</span>
+    </div>`;
+  par.appendChild(verso);
+
+  document.getElementById('pagina-impressao').appendChild(par);
+
+  /* Autorizados */
+  const authEl = document.getElementById('auth-list-' + qrId);
+  const mock = [{ nome: responsavel, rel: 'Responsável' }];
+  authEl.innerHTML = mock.map((p, i) => `
+    <div class="cv-auth-item">
+      <div class="cv-auth-n">${i+1}</div>
+      <span class="cv-auth-name">${p.nome}</span>
+      <span class="cv-auth-rel">${p.rel}</span>
+    </div>`).join('');
+
+  /* QR Codes */
+  setTimeout(() => {
+    const boxV = document.getElementById(qrVersoId);
+    if (boxV && codigo) {
+      boxV.innerHTML = '';
+      new QRCode(boxV, { text: qrUrl, width: 68, height: 68, colorDark: '#0F3D2E', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+    }
+    const boxF = document.getElementById(qrFrenteId);
+    if (boxF && codigo) {
+      boxF.innerHTML = '';
+      new QRCode(boxF, { text: qrUrl, width: 52, height: 52, colorDark: '#0F3D2E', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.L });
+    }
+  }, 100);
+}
+
+/* ─── Limpar ─── */
+function limparFila() {
+  if (confirm('Limpar toda a folha de impressão?')) {
+    document.getElementById('pagina-impressao').innerHTML = '';
+    qrCounter = 0;
+  }
+}
+
+/* ─── Logout ─── */
+function fazerLogout() {
+  localStorage.removeItem('sigea_auth');
+  window.location.href = 'login.html';
+}
+
+window.onload = carregarDados;
+</script>
+</body>
+</html>

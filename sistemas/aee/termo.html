@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Termo de Recebimento e Compromisso — Saída Antecipada AEE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #eef2f7;
+      color: #111;
+      padding: 1.2rem 1rem;
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+    }
+
+    /* ── Barra de Ações (Não sai na impressão) ── */
+    .no-print-bar {
+      width: 100%; max-width: 780px;
+      background: #0033A0; color: #fff;
+      padding: 0.8rem 1.2rem; border-radius: 10px;
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1rem;
+      box-shadow: 0 6px 20px rgba(0,51,160,0.3);
+      font-family: 'Outfit', sans-serif;
+    }
+    .no-print-bar .title { font-size: 0.95rem; font-weight: 800; }
+    .btn-print-doc {
+      background: #FF8200; color: #fff; border: none;
+      padding: 0.55rem 1.2rem; border-radius: 6px;
+      font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 800;
+      cursor: pointer; transition: transform 0.2s;
+      box-shadow: 0 3px 10px rgba(255,130,0,0.4);
+    }
+    .btn-print-doc:hover { transform: translateY(-2px); }
+
+    /* ── Papel A4 / Contrato (Estritamente 1 Página A4) ── */
+    .page-a4 {
+      width: 100%; max-width: 780px;
+      background: #ffffff;
+      padding: 1.6rem 2rem;
+      border-radius: 4px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+      border: 1px solid #d0d7de;
+      position: relative;
+    }
+
+    .page-a4::before {
+      content: ''; position: absolute;
+      top: 8px; bottom: 8px; left: 8px; right: 8px;
+      border: 1.5px solid #0033A0;
+      pointer-events: none;
+    }
+    .page-a4::after {
+      content: ''; position: absolute;
+      top: 11px; bottom: 11px; left: 11px; right: 11px;
+      border: 0.5px solid #FF8200;
+      pointer-events: none;
+    }
+
+    /* ── Cabeçalho Oficial ── */
+    .header-doc {
+      text-align: center;
+      border-bottom: 2px solid #0033A0;
+      padding-bottom: 0.5rem; margin-bottom: 0.7rem;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .logo-doc {
+      width: 48px; height: 48px; margin-bottom: 0.2rem;
+      object-fit: contain;
+    }
+    .header-doc .h-gov {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.65rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1.2px; color: #0033A0;
+    }
+    .header-doc .h-school {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem; font-weight: 900; color: #001850;
+      line-height: 1.1; margin: 1px 0;
+    }
+    .header-doc .h-info {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.65rem; font-weight: 600; color: #444;
+      margin-top: 1px;
+    }
+    .header-doc .h-sub {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.7rem; font-weight: 800; color: #FF8200;
+      text-transform: uppercase; letter-spacing: 0.8px; margin-top: 1px;
+    }
+
+    /* ── Título do Documento ── */
+    .doc-title-box {
+      background: #f0f4ff; border: 1px solid #cce0ff;
+      border-left: 4px solid #0033A0;
+      padding: 0.4rem 0.8rem; margin-bottom: 0.7rem;
+      text-align: center;
+    }
+    .doc-title-box h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem; font-weight: 900; color: #001850;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .doc-title-box .protocol-num {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem; font-weight: 700; color: #0033A0;
+      margin-top: 1px;
+    }
+
+    /* ── Tipo de Emissão ── */
+    .tipo-emissao-row {
+      display: flex; gap: 2rem; justify-content: center;
+      margin-bottom: 0.7rem; padding: 0.35rem;
+      background: #fafafa; border: 1px solid #eee;
+      font-family: 'Outfit', sans-serif; font-size: 0.75rem; font-weight: 800;
+    }
+    .box-check { display: flex; align-items: center; gap: 6px; }
+    .sq-check {
+      width: 13px; height: 13px; border: 1.5px solid #0033A0;
+      display: inline-block; text-align: center; line-height: 10px;
+      font-size: 10px; font-weight: bold;
+    }
+    .sq-check.checked { background: #0033A0; color: #fff; }
+
+    /* ── Seção de Dados ── */
+    .sec-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem; font-weight: 900; color: #0033A0;
+      text-transform: uppercase; letter-spacing: 0.8px;
+      border-bottom: 1.5px solid #FF8200;
+      padding-bottom: 2px; margin-bottom: 0.45rem; margin-top: 0.7rem;
+    }
+
+    .data-table {
+      width: 100%; border-collapse: collapse; margin-bottom: 0.5rem;
+      font-family: 'Outfit', sans-serif; font-size: 0.78rem;
+    }
+    .data-table td {
+      padding: 4px 8px; border: 1px solid #e0e0e0;
+    }
+    .data-table td.lbl {
+      background: #f8f9fc; font-weight: 800; color: #001850;
+      width: 24%; text-transform: uppercase; font-size: 0.65rem;
+    }
+    .data-table td.val {
+      color: #111; font-weight: 600;
+    }
+
+    /* ── Cláusulas / Texto Legal ── */
+    .clauses-text {
+      font-size: 0.72rem; line-height: 1.35; color: #222;
+      text-align: justify; margin-bottom: 0.6rem;
+    }
+    .clauses-text p { margin-bottom: 0.3rem; }
+    .clauses-text ol { margin-left: 1.2rem; margin-bottom: 0.3rem; }
+    .clauses-text li { margin-bottom: 0.2rem; }
+
+    /* ── Data e Local ── */
+    .date-location {
+      text-align: right; font-family: 'Outfit', sans-serif;
+      font-size: 0.75rem; font-weight: 700; color: #333;
+      margin-bottom: 1.2rem; margin-top: 0.6rem;
+    }
+
+    /* ── Assinaturas (Espaço amplo para carimbo) ── */
+    .signatures-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+      margin-top: 2.2rem; font-family: 'Outfit', sans-serif;
+    }
+    .sig-block { text-align: center; }
+    .sig-line {
+      border-top: 1.2px solid #222; padding-top: 5px;
+      font-size: 0.75rem; font-weight: 800; color: #111;
+    }
+    .sig-sub { font-size: 0.68rem; color: #555; margin-top: 1px; }
+
+    /* ── Impressão Estrita em 1 Página A4 ── */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 3mm 6mm 3mm 6mm;
+      }
+      html, body {
+        width: 100% !important;
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+        overflow: hidden !important;
+      }
+      .no-print-bar { display: none !important; }
+      .page-a4 {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 2mm 3mm !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+      .page-a4::before, .page-a4::after { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="no-print-bar">
+    <div>
+      <div class="title">📜 Contrato / Termo de Recebimento Oficial (1 Página A4)</div>
+      <div style="font-size:0.75rem;opacity:0.85">Conforme Redação Oficial do Governo Federal · Escola Municipal Castro Alves</div>
+    </div>
+    <button class="btn-print-doc" onclick="window.print()">🖨️ Imprimir Termo / Salvar PDF</button>
+  </div>
+
+  <div class="page-a4">
+    <!-- Cabeçalho Oficial Redação Governo Federal -->
+    <div class="header-doc">
+      <img src="logo oficial da escola.png" class="logo-doc" alt="Logo Escola" onerror="this.style.display='none'">
+      <div class="h-gov">Estado de Goiás · Prefeitura Municipal de Planaltina de Goiás</div>
+      <div class="h-school">ESCOLA MUNICIPAL CASTRO ALVES</div>
+      <div class="h-info">Quadra 04, Área Especial, Setor Sul — Planaltina de Goiás / GO · Tel: (61) 99262-1474</div>
+      <div class="h-info" style="font-weight:700">Código INEP: 52050858</div>
+      <div class="h-sub">Atendimento Educacional Especializado (AEE)</div>
+    </div>
+
+    <!-- Título do Documento -->
+    <div class="doc-title-box">
+      <h1>TERMO DE DECLARAÇÃO, COMPROMISSO E RETIRADA DE CARTEIRINHA</h1>
+      <div style="font-size:0.72rem;font-weight:700;color:#444;margin-top:1px;">Saída Antecipada AEE — Identificação Digital Escolar</div>
+      <div class="protocol-num" id="doc-protocolo">PROTOCOLO Nº: TR-2026-AL0000</div>
+    </div>
+
+    <!-- Tipo de Emissão -->
+    <div class="tipo-emissao-row">
+      <div class="box-check"><span class="sq-check checked">✓</span> 1ª VIA — EMISSÃO INICIAL</div>
+      <div class="box-check"><span class="sq-check"></span> 2ª VIA — SEGUNDA EMISSÃO</div>
+    </div>
+
+    <!-- Seção I: Dados do Aluno -->
+    <div class="sec-title">I. Identificação do Aluno(a) Beneficiário(a)</div>
+    <table class="data-table">
+      <tr>
+        <td class="lbl">Nome do Aluno(a):</td>
+        <td class="val" id="doc-nome-aluno" style="font-size:0.85rem;font-weight:800">PEDRO ISRAEL ARAÚJO MENDES</td>
+        <td class="lbl">Matrícula:</td>
+        <td class="val" id="doc-matricula">2513109542-7</td>
+      </tr>
+      <tr>
+        <td class="lbl">Turma / Turno:</td>
+        <td class="val" id="doc-turma-turno">G04 · Vespertino</td>
+        <td class="lbl">Professor(a):</td>
+        <td class="val" id="doc-professor">Prof. Izaura Negrão</td>
+      </tr>
+    </table>
+
+    <!-- Seção II: Dados do Responsável Legal -->
+    <div class="sec-title">II. Identificação do Responsável Legal</div>
+    <table class="data-table">
+      <tr>
+        <td class="lbl">Responsável Legal:</td>
+        <td class="val" id="doc-responsavel" style="font-weight:700">NAELY REGINA DA SILVA OLIVEIRA (Mãe)</td>
+        <td class="lbl">Telefone:</td>
+        <td class="val" id="doc-telefone">(61) 99912-5637</td>
+      </tr>
+      <tr>
+        <td class="lbl">CPF do Responsável:</td>
+        <td class="val" colspan="3" style="color:#444">____________________________________________________</td>
+      </tr>
+    </table>
+
+    <!-- Seção III: Pessoas Autorizadas a Retirar o Aluno na Portaria -->
+    <div class="sec-title">III. Pessoas Autorizadas a Retirar o Aluno na Portaria</div>
+    <table class="data-table" id="doc-tabela-autorizados">
+      <!-- Preenchido via Javascript -->
+    </table>
+
+    <!-- Seção IV: Cláusulas do Contrato / Termo -->
+    <div class="sec-title">IV. Cláusulas de Compromisso e Responsabilidade</div>
+    <div class="clauses-text">
+      <p>Pelo presente instrumento público escolar, o(a) Responsável Legal ou Recebedor(a) devidamente autorizado(a) <strong>DECLARA ter recebido</strong> a Carteirinha de Identificação Escolar para Saída Antecipada (AEE) de seu(sua) dependente e <strong>ASSUME inteira responsabilidade</strong> pelas seguintes obrigações:</p>
+      
+      <ol>
+        <li><strong>APRESENTAÇÃO OBRIGATÓRIA:</strong> Apresentar obrigatoriamente a carteirinha física à pessoa responsável pelo portão no momento da retirada do aluno.</li>
+        <li><strong>USO PESSOAL E INTRANSFERÍVEL:</strong> A carteirinha é de uso exclusivo do aluno e das pessoas autorizadas listadas neste termo.</li>
+        <li><strong>GUARDA E CONSERVAÇÃO:</strong> Zelar pela conservação do documento. Em caso de perda, roubo ou danificação, comunicar imediatamente à secretaria escolar.</li>
+        <li><strong>VALIDADE INSTITUCIONAL:</strong> Documento válido para o ano letivo corrente com vencimento em <strong>31/12/2026</strong>.</li>
+      </ol>
+    </div>
+
+    <!-- Data e Local -->
+    <div class="date-location">
+      Planaltina de Goiás — GO, <span id="doc-data-hoje">_____ de __________________ de 2026</span>.
+    </div>
+
+    <!-- Assinaturas -->
+    <div class="signatures-grid" style="margin-top: 5.5rem;">
+      <div class="sig-block">
+        <div class="sig-line">Assinatura do(a) Responsável Legal / Recebedor(a)</div>
+      </div>
+      <div class="sig-block">
+        <div class="sig-line">SECRETARIA / DIREÇÃO ESCOLAR</div>
+        <div class="sig-sub">Escola Municipal Castro Alves</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function formatPhoneClean(tel) {
+      if (!tel) return '—';
+      const clean = String(tel).replace(/\D/g, '');
+      if (clean.length === 11) return `(${clean.slice(0,2)}) ${clean.slice(2,7)}-${clean.slice(7)}`;
+      if (clean.length === 10) return `(${clean.slice(0,2)}) ${clean.slice(2,6)}-${clean.slice(6)}`;
+      return String(tel);
+    }
+
+    function carregarDadosTermo() {
+      const params = new URLSearchParams(window.location.search);
+      const nome = params.get('nome') || 'Nome do Aluno';
+      const mat = params.get('mat') || '—';
+      const turma = params.get('turma') || '—';
+      const turno = params.get('turno') || '—';
+      const prof = params.get('prof') || '—';
+      const respFull = params.get('resp') || '—';
+      const cod = params.get('cod') || 'AL0000';
+      const auth = params.get('auth') || '';
+
+      // Separar Nome do Responsável e Telefone limpos (sem duplicar telefone)
+      let respNomeApenas = respFull;
+      let respTelExtra = '';
+      
+      if (respFull.includes('· 📞')) {
+        const parts = respFull.split('· 📞');
+        respNomeApenas = parts[0].trim();
+        respTelExtra = parts[1].trim();
+      } else if (respFull.includes('·')) {
+        const parts = respFull.split('·');
+        respNomeApenas = parts[0].trim();
+        respTelExtra = parts[1].trim();
+      }
+
+      document.getElementById('doc-nome-aluno').innerText = nome;
+      document.getElementById('doc-matricula').innerText = mat;
+      document.getElementById('doc-turma-turno').innerText = turma + (turno ? ' · ' + turno : '');
+      document.getElementById('doc-professor').innerText = prof;
+      document.getElementById('doc-responsavel').innerText = respNomeApenas;
+      document.getElementById('doc-telefone').innerText = respTelExtra ? formatPhoneClean(respTelExtra) : '(61) 99912-5637';
+      document.getElementById('doc-protocolo').innerText = 'PROTOCOLO Nº: TR-2026-' + cod;
+
+      // Data de hoje formatada
+      const d = new Date();
+      const meses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+      document.getElementById('doc-data-hoje').innerText = `${d.getDate()} de ${meses[d.getMonth()]} de ${d.getFullYear()}`;
+
+      // Pessoas Autorizadas (com espaço para Nome Completo, Parentesco, Telefone e CPF)
+      let autorizadosLista = [];
+      if (auth) {
+        try {
+          autorizadosLista = JSON.parse(decodeURIComponent(auth)) || [];
+        } catch(e) {}
+      }
+
+      let htmlAuth = '';
+      let index = 1;
+
+      // Se houver autorizados cadastrados
+      if (autorizadosLista.length > 0) {
+        autorizadosLista.forEach(p => {
+          const t = formatPhoneClean(p.telefone);
+          htmlAuth += `
+            <tr>
+              <td class="lbl">${index}. Autorizado(a):</td>
+              <td class="val">
+                <strong>${p.nome}</strong> ${p.parentesco ? '('+p.parentesco+')' : ''} 
+                ${t !== '—' ? '· Tel: '+t : ''} 
+                · CPF: ____________________
+              </td>
+            </tr>`;
+          index++;
+        });
+      } else if (respNomeApenas && respNomeApenas !== '—') {
+        htmlAuth += `
+          <tr>
+            <td class="lbl">${index}. Autorizado(a):</td>
+            <td class="val"><strong>${respNomeApenas}</strong> · CPF: ____________________</td>
+          </tr>`;
+        index++;
+      }
+
+      // Adicionar sempre 2 linhas em branco completas (Nome, Parentesco, Telefone, CPF) para preenchimento manual
+      htmlAuth += `
+        <tr>
+          <td class="lbl">${index}. Autorizado(a):</td>
+          <td class="val" style="color:#666">
+            Nome: ____________________________ Parentesco: _________ Tel: (___) ___________ CPF: _______________
+          </td>
+        </tr>`;
+      index++;
+      htmlAuth += `
+        <tr>
+          <td class="lbl">${index}. Autorizado(a):</td>
+          <td class="val" style="color:#666">
+            Nome: ____________________________ Parentesco: _________ Tel: (___) ___________ CPF: _______________
+          </td>
+        </tr>`;
+
+      document.getElementById('doc-tabela-autorizados').innerHTML = htmlAuth;
+    }
+
+    window.onload = carregarDadosTermo;
+  </script>
+</body>
+</html>

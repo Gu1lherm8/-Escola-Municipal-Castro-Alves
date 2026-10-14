@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Validador | Saída Antecipada AEE — Escola Municipal Castro Alves</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #0033A0;
+    --blue-dark: #001850;
+    --orange: #FF8200;
+    --bg: #030a1c;
+    --green: #1a7a35;
+    --green-bg: #e8f5ec;
+    --red: #c62828;
+    --red-bg: #fdeaea;
+    --yellow: #f9a825;
+    --yellow-bg: #fef9e1;
+  }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    min-height: 100vh;
+    display: flex; align-items: flex-start; justify-content: center;
+    padding: 1rem 0.75rem 3rem;
+    background-image:
+      radial-gradient(ellipse at 12% 10%, rgba(0,51,160,0.45) 0%, transparent 50%),
+      radial-gradient(ellipse at 88% 90%, rgba(255,130,0,0.08) 0%, transparent 50%);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Loading ── */
+  .loading-card {
+    width: 100%; max-width: 460px;
+    text-align: center; padding: 4rem 2rem;
+    background: rgba(0,51,160,0.15);
+    border: 1px solid rgba(255,130,0,0.2);
+    border-radius: 18px;
+    backdrop-filter: blur(12px);
+    animation: fadeUp 0.3s ease both;
+  }
+  .spinner {
+    width: 48px; height: 48px; border: 4px solid rgba(255,130,0,0.2);
+    border-top-color: var(--orange); border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 1.2rem;
+  }
+  .loading-card .lt { font-size: 1rem; font-weight: 700; color: #fff; }
+  .loading-card .ls { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 0.4rem; }
+
+  /* ── Card Principal ── */
+  .card {
+    width: 100%; max-width: 460px;
+    background: #ffffff;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,130,0,0.15);
+    animation: fadeUp 0.4s ease both;
+  }
+
+  /* ── Header ── */
+  .card-header {
+    background: linear-gradient(135deg, var(--bg) 0%, var(--blue-dark) 40%, var(--blue) 100%);
+    padding: 16px 20px;
+    display: flex; align-items: center; gap: 14px;
+    border-bottom: 3px solid var(--orange);
+  }
+  .h-logo {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: #fff; border: 2px solid var(--orange);
+    overflow: hidden; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 4px rgba(255,130,0,0.15);
+  }
+  .h-logo img { width: 100%; height: 100%; object-fit: contain; }
+  .h-text { flex: 1; }
+  .h-text .h1 { font-size: 0.62rem; color: var(--orange); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
+  .h-text .h2 { font-size: 1.15rem; font-weight: 900; color: #fff; line-height: 1.1; }
+  .h-text .h3 { font-size: 0.65rem; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+  /* ── Banner Status ── */
+  .banner {
+    padding: 16px 20px;
+    font-size: 1.15rem; font-weight: 900;
+    text-align: center; text-transform: uppercase;
+    letter-spacing: 1.5px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+  }
+  .banner.ok { background: var(--green-bg); color: var(--green); border-bottom: 3px solid var(--green); }
+  .banner.no { background: var(--red-bg); color: var(--red); border-bottom: 3px solid var(--red); }
+  .banner.ex { background: var(--yellow-bg); color: #7a5c00; border-bottom: 3px solid var(--yellow); }
+  .banner .b-icon { font-size: 1.5rem; }
+
+  /* ── Scan timestamp ── */
+  .scan-time {
+    background: #f0f4ff; padding: 8px 20px;
+    font-size: 0.72rem; color: var(--blue); font-weight: 600;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  /* ── Aluno Section ── */
+  .aluno-section {
+    display: flex; gap: 16px; padding: 18px 20px;
+    background: #fff; border-bottom: 1px solid #eee;
+  }
+  .aluno-foto {
+    width: 100px; height: 120px; border-radius: 10px;
+    border: 2px solid var(--blue); overflow: hidden;
+    flex-shrink: 0; background: #e8eeff;
+  }
+  .aluno-foto img { width: 100%; height: 100%; object-fit: cover; }
+  .aluno-foto .placeholder {
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem; font-weight: 900; color: #fff;
+  }
+  .aluno-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+  .aluno-nome {
+    font-size: 1.1rem; font-weight: 900; color: #111;
+    line-height: 1.15; margin-bottom: 4px;
+  }
+  .aluno-id {
+    display: inline-block;
+    background: var(--blue); color: #fff;
+    font-size: 0.68rem; font-weight: 800;
+    padding: 2px 10px; border-radius: 4px;
+    font-family: monospace; letter-spacing: 1px;
+    margin-bottom: 6px; width: fit-content;
+  }
+
+  /* ── Data Grid ── */
+  .data-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border-bottom: 1px solid #eee;
+  }
+  .d-cell {
+    padding: 10px 20px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .d-cell:nth-child(odd) { border-right: 1px solid #f0f0f0; }
+  .d-cell .dl { font-size: 0.6rem; font-weight: 700; color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; }
+  .d-cell .dv { font-size: 0.88rem; font-weight: 600; color: #222; margin-top: 1px; }
+  .d-cell.full { grid-column: 1 / -1; border-right: none; }
+
+  /* ── Responsável Section ── */
+  .resp-section {
+    padding: 14px 20px;
+    background: #f8faff;
+    border-bottom: 1px solid #eee;
+  }
+  .resp-title {
+    font-size: 0.65rem; font-weight: 800; color: var(--blue);
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+  }
+  .resp-card {
+    background: #fff; border: 1px solid #e0e8f5;
+    border-radius: 10px; padding: 12px 14px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .resp-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; font-weight: 900; color: #fff; flex-shrink: 0;
+  }
+  .resp-info { flex: 1; }
+  .resp-name { font-size: 0.92rem; font-weight: 700; color: #111; }
+  .resp-rel { font-size: 0.72rem; color: #666; }
+  .resp-tel {
+    font-size: 0.78rem; font-weight: 700; color: var(--blue);
+    display: flex; align-items: center; gap: 4px;
+    text-decoration: none;
+  }
+
+  /* ── Autorizados Section ── */
+  .auth-section {
+    padding: 14px 20px;
+    background: #fff;
+    border-bottom: 1px solid #eee;
+  }
+  .auth-title {
+    font-size: 0.65rem; font-weight: 800; color: var(--orange);
+    text-transform: uppercase; letter-spacing: 1px;
+    margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+  }
+  .auth-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0; flex-wrap: wrap;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .auth-item:last-child { border-bottom: none; }
+  .auth-num {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--orange), #e67300);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 900; color: #fff; flex-shrink: 0;
+  }
+  .auth-name { font-size: 0.88rem; font-weight: 700; color: #222; flex: 1; }
+  .auth-rel {
+    font-size: 0.68rem; color: #fff; font-weight: 700;
+    background: var(--blue); padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .auth-tel { font-size: 0.72rem; color: var(--blue); font-weight: 600; }
+
+  /* ── Observação ── */
+  .obs-box {
+    margin: 0; padding: 10px 20px;
+    background: #fffbea; border-left: 4px solid var(--orange);
+    font-size: 0.82rem; color: #7a5c00; font-weight: 600;
+  }
+
+  /* ── Footer ── */
+  .card-footer {
+    background: linear-gradient(135deg, var(--bg), var(--blue-dark));
+    padding: 12px 20px; font-size: 0.68rem;
+    color: rgba(255,255,255,0.5);
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 2px solid var(--orange);
+  }
+  .card-footer .ft-label { font-weight: 800; color: var(--orange); }
+
+  /* ── Erro Card ── */
+  .error-card {
+    width: 100%; max-width: 460px;
+    text-align: center; padding: 3rem 2rem;
+    background: #fff; border-radius: 18px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    animation: fadeUp 0.4s ease both;
+  }
+  .error-card .e-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+  .error-card .e-title { font-size: 1.3rem; font-weight: 900; color: var(--red); }
+  .error-card .e-msg { font-size: 0.88rem; color: #555; margin-top: 0.5rem; line-height: 1.5; }
+  .error-card .e-warn {
+    display: inline-block; margin-top: 1rem;
+    background: var(--red-bg); color: var(--red);
+    font-weight: 900; font-size: 1rem;
+    padding: 10px 24px; border-radius: 8px;
+    border: 2px solid var(--red);
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  </style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwxGnKgPOTcEnbrkXg4iWxEss7AXj21IyNeRRYx-UxXtjC5aWC2hlGMWt6oJnFR1f-mFg/exec';
+
+function photoHTML(foto, nome) {
+  if (foto && (foto.startsWith('http') || foto.startsWith('data:'))) {
+    return `<img src="${foto}" alt="Foto" onerror="this.parentElement.innerHTML='<div class=placeholder>${(nome||'?').charAt(0).toUpperCase()}</div>'">`;
+  }
+  const ini = nome ? nome.charAt(0).toUpperCase() : '?';
+  return `<div class="placeholder">${ini}</div>`;
+}
+
+function formatDate() {
+  const d = new Date();
+  const dia = String(d.getDate()).padStart(2,'0');
+  const mes = String(d.getMonth()+1).padStart(2,'0');
+  const ano = d.getFullYear();
+  const hr = String(d.getHours()).padStart(2,'0');
+  const min = String(d.getMinutes()).padStart(2,'0');
+  const seg = String(d.getSeconds()).padStart(2,'0');
+  return `${dia}/${mes}/${ano} às ${hr}:${min}:${seg}`;
+}
+
+function formatTel(tel) {
+  if (!tel) return '';
+  const t = String(tel).replace(/\D/g, '');
+  if (t.length === 11) return `(${t.slice(0,2)}) ${t.slice(2,7)}-${t.slice(7)}`;
+  if (t.length === 10) return `(${t.slice(0,2)}) ${t.slice(2,6)}-${t.slice(6)}`;
+  return String(tel);
+}
+
+async function render() {
+  const params = new URLSearchParams(window.location.search);
+  const id = (params.get('id') || '').toUpperCase().trim();
+  const app = document.getElementById('app');
+
+  if (!id) {
+    app.innerHTML = `
+      <div class="error-card">
+        <div class="e-icon">🔍</div>
+        <div class="e-title">Código não informado</div>
+        <div class="e-msg">Escaneie o QR Code da carteirinha física para validar o acesso.</div>
+      </div>`;
+    return;
+  }
+
+  app.innerHTML = `
+    <div class="loading-card">
+      <div class="spinner"></div>
+      <div class="lt">Validando Acesso...</div>
+      <div class="ls">Consultando banco de dados oficial</div>
+    </div>`;
+
+  try {
+    const resp = await fetch(SHEET_URL + '?acao=validaQr&id=' + encodeURIComponent(id) + '&t=' + Date.now());
+    const res = await resp.json();
+
+    if (res.status !== 'OK' || !res.valido || !res.aluno) {
+      throw new Error(res.mensagem || 'Carteirinha não encontrada');
+    }
+
+    const a = res.aluno;
+    const sit = a['SITUAÇÃO'] || a.SITUACAO || 'Ativo';
+    const isOk = sit === 'Ativo';
+    const isCanceled = sit === 'Cancelada' || sit === 'Cancelado' || sit === 'Inativo';
+
+    const bannerClass = isOk ? 'ok' : isCanceled ? 'no' : 'ex';
+    const bannerIcon = isOk ? '✅' : isCanceled ? '🚫' : '⚠️';
+    const bannerText = isOk ? 'Saída Autorizada' : isCanceled ? 'Não Autorizada' : 'Carteirinha Vencida';
+
+    const rp = res.responsavelPrincipal;
+    const respNome = rp ? rp.nome : (a.RESPONSAVEL || 'Não informado');
+    const respPar = rp ? (rp.parentesco || '') : '';
+    const respTel = rp ? formatTel(rp.telefone) : '';
+    const respIni = respNome ? respNome.charAt(0).toUpperCase() : '?';
+
+    const autorizados = res.pessoasAutorizadas || [];
+    
+    // Lista completa de autorizados (Responsável Principal + Pessoas Autorizadas adicionais)
+    let listaFinalAutorizados = [];
+    if (rp && rp.nome) {
+      listaFinalAutorizados.push({
+        nome: rp.nome,
+        parentesco: rp.parentesco || 'Responsável Principal',
+        telefone: rp.telefone || ''
+      });
+    }
+    autorizados.forEach(p => {
+      if (p.nome && (!rp || p.nome.trim().toLowerCase() !== rp.nome.trim().toLowerCase())) {
+        listaFinalAutorizados.push(p);
+      }
+    });
+
+    const authHTML = listaFinalAutorizados.length > 0 ? listaFinalAutorizados.map((p, i) => {
+      const tel = formatTel(p.telefone);
+      return `
+        <div class="auth-item">
+          <div class="auth-num">${i+1}</div>
+          <span class="auth-name">${p.nome}</span>
+          ${p.parentesco ? `<span class="auth-rel">${p.parentesco}</span>` : ''}
+          ${tel ? `<span class="auth-tel">📞 ${tel}</span>` : ''}
+        </div>`;
+    }).join('') : '<p style="font-size:0.82rem;color:#888;padding:4px 0;">Nenhuma pessoa autorizada cadastrada.</p>';
+
+    const turma = a.TURMA || a['SÉRIE'] || '';
+
+    app.innerHTML = `
+      <div class="card">
+        <div class="card-header">
+          <div class="h-logo">
+            <img src="logo oficial da escola.png" onerror="this.parentElement.innerHTML='<span style=font-size:1.2rem;font-weight:900;color:#0033A0>CA</span>'" alt="Logo">
+          </div>
+          <div class="h-text">
+            <div class="h1">Escola Municipal</div>
+            <div class="h2">Castro Alves</div>
+            <div class="h3">Saída Antecipada AEE · Validação Digital</div>
+          </div>
+        </div>
+
+        <div class="banner ${bannerClass}">
+          <span class="b-icon">${bannerIcon}</span> ${bannerText}
+        </div>
+
+        <div class="scan-time">
+          <span>📋 Consulta realizada em:</span>
+          <span>${formatDate()}</span>
+        </div>
+
+        <div class="aluno-section">
+          <div class="aluno-foto">
+            ${photoHTML(a.FOTO, a.NOME)}
+          </div>
+          <div class="aluno-info">
+            <div class="aluno-nome">${a.NOME}</div>
+            <div class="aluno-id">${a.ID_ALUNO || id}</div>
+            <div style="font-size:0.78rem;color:#555;margin-top:auto;">
+              ${a['MATRÍCULA'] || a.MATRICULA ? '🪪 Mat: ' + (a['MATRÍCULA'] || a.MATRICULA) : ''}
+            </div>
+          </div>
+        </div>
+
+        <div class="data-grid">
+          <div class="d-cell">
+            <div class="dl">Turma</div>
+            <div class="dv">${turma}</div>
+          </div>
+          <div class="d-cell">
+            <div class="dl">Turno</div>
+            <div class="dv">${a.TURNO || '—'}</div>
+          </div>
+          <div class="d-cell">
+            <div class="dl">Professor(a)</div>
+            <div class="dv">${a.PROFESSOR || '—'}</div>
+          </div>
+          <div class="d-cell">
+            <div class="dl">Situação</div>
+            <div class="dv" style="color:${isOk ? 'var(--green)' : 'var(--red)'};font-weight:800">${sit}</div>
+          </div>
+          <div class="d-cell">
+            <div class="dl">Validade</div>
+            <div class="dv">31/12/2026</div>
+          </div>
+          <div class="d-cell">
+            <div class="dl">Carteirinha</div>
+            <div class="dv">${res.carteirinha || id}</div>
+          </div>
+        </div>
+
+        <div class="resp-section">
+          <div class="resp-title">👤 Responsável Principal</div>
+          <div class="resp-card">
+            <div class="resp-avatar">${respIni}</div>
+            <div class="resp-info">
+              <div class="resp-name">${respNome}</div>
+              ${respPar ? `<div class="resp-rel">${respPar}</div>` : ''}
+            </div>
+            ${respTel ? `<a href="tel:${respTel.replace(/\\D/g,'')}" class="resp-tel">📞 ${respTel}</a>` : ''}
+          </div>
+        </div>
+
+        <div class="auth-section">
+          <div class="auth-title">👥 Pessoas Autorizadas a Retirar</div>
+          ${authHTML}
+        </div>
+
+        ${a['OBSERVAÇÃO'] || a.OBSERVACAO ? `<div class="obs-box">⚠️ ${a['OBSERVAÇÃO'] || a.OBSERVACAO}</div>` : ''}
+
+        <div class="card-footer">
+          <span class="ft-label">Saída Antecipada AEE</span>
+          <span>Escola Municipal Castro Alves</span>
+        </div>
+      </div>`;
+
+  } catch (err) {
+    app.innerHTML = `
+      <div class="error-card">
+        <div class="e-icon">🚫</div>
+        <div class="e-title">Carteirinha Não Encontrada</div>
+        <div class="e-msg">O código <strong>${id}</strong> não consta no banco de dados oficial da escola.</div>
+        <div class="e-warn">⛔ Não Autorizar a Saída</div>
+      </div>`;
+  }
+}
+
+window.onload = render;
+</script>
+</body>
+</html>

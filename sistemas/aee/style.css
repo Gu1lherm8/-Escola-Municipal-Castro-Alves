@@ -1,0 +1,1032 @@
+/* ==========================================================================
+   SIGEA - DESIGN SYSTEM & ESTILOS GLOBAIS
+   Escola Municipal Castro Alves - Sistema de Acesso e Autorização
+   ========================================================================== */
+
+/* RESET E CONFIGURAÇÕES BÁSICAS */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg-dark: #121f19;
+    --bg-panel: #1b2e25;
+    --bg-input: #0f1c16;
+    --primary: #6db87a;
+    --primary-hover: #88d496;
+    --accent: #ffd43b;
+    --border-color: rgba(109, 184, 122, 0.25);
+    --text-light: #fdfaf7;
+    --text-muted: #8fa89b;
+    
+    /* Cores de Status */
+    --status-valid-bg: #1c3524;
+    --status-valid-text: #6db87a;
+    --status-valid-border: #2a5136;
+    
+    --status-invalid-bg: #401919;
+    --status-invalid-text: #ff6b6b;
+    --status-invalid-border: #6b2828;
+    
+    --status-expired-bg: #3d3110;
+    --status-expired-text: #ffd43b;
+    --status-expired-border: #5e4b16;
+}
+
+body {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    min-height: 100vh;
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+/* CAROUSEL / FADE ANIMATIONS */
+.fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   ESTILOS DE LOGIN (login.html)
+   ========================================================================== */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 1.5rem;
+    position: relative;
+}
+
+.login-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 2.5rem 2.2rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.login-logo-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 1.5rem;
+}
+
+.login-logo {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: #fff;
+    padding: 2px;
+}
+
+.login-title-h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--text-light);
+    margin-bottom: 0.2rem;
+}
+
+.login-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.form-group {
+    margin-bottom: 1.2rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--primary);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.05em;
+}
+
+.input-icon-wrapper {
+    position: relative;
+}
+
+.input-icon-wrapper svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    opacity: 0.6;
+}
+
+.form-control {
+    width: 100%;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-light);
+    padding: 0.75rem 0.9rem 0.75rem 2.6rem;
+    font-family: inherit;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(109, 184, 122, 0.2);
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 0.85rem;
+    background: linear-gradient(135deg, var(--primary), #489e5a);
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 15px rgba(109, 184, 122, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(109, 184, 122, 0.45);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.error-message {
+    display: none;
+    background: rgba(255, 107, 107, 0.15);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.82rem;
+    color: #ff8787;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.error-message.show {
+    display: block;
+}
+
+/* ==========================================================================
+   PAINEL ADMINISTRATIVO (index.html)
+   ========================================================================== */
+.admin-header {
+    background-color: var(--bg-panel);
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.admin-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.admin-logo {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid var(--primary);
+}
+
+.admin-title-h1 {
+    font-size: 1.25rem;
+    font-weight: 800;
+}
+
+.admin-subtitle {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.btn-logout {
+    background: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    border-radius: 8px;
+    color: #ff8787;
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.45rem 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-logout:hover {
+    background-color: rgba(255, 107, 107, 0.2);
+}
+
+.admin-container {
+    max-width: 1300px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 2rem;
+}
+
+/* Painel de Controles Lateral */
+.control-sidebar {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    height: fit-content;
+    position: sticky;
+    top: 1.5rem;
+}
+
+.sidebar-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Tabela e Busca */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.search-box {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.2rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.search-control {
+    flex: 1;
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: #fff;
+    padding: 0.65rem 0.85rem;
+    font-family: inherit;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.search-control:focus {
+    border-color: var(--primary);
+}
+
+.table-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+.data-table th, .data-table td {
+    padding: 0.9rem 1.2rem;
+    border-bottom: 1px solid rgba(109, 184, 122, 0.15);
+}
+
+.data-table th {
+    background-color: rgba(109, 184, 122, 0.08);
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.data-table tr:hover {
+    background-color: rgba(109, 184, 122, 0.03);
+}
+
+.student-row-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #fff;
+}
+
+/* ==========================================================================
+   TELA DO VALIDADOR DO PORTEIRO (validador.html)
+   ========================================================================== */
+.validador-container {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.validador-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+}
+
+.validador-header {
+    background-color: rgba(27, 46, 37, 0.85);
+    padding: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.validador-header .school-info {
+    text-align: right;
+}
+
+.validador-header .school-name-1 {
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+.validador-header .school-name-2 {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #fff;
+}
+
+.status-banner {
+    padding: 1.4rem;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.status-banner.valid {
+    background-color: var(--status-valid-bg);
+    color: var(--status-valid-text);
+    border-bottom: 2px solid var(--status-valid-border);
+}
+
+.status-banner.invalid {
+    background-color: var(--status-invalid-bg);
+    color: var(--status-invalid-text);
+    border-bottom: 2px solid var(--status-invalid-border);
+}
+
+.status-banner.expired {
+    background-color: var(--status-expired-bg);
+    color: var(--status-expired-text);
+    border-bottom: 2px solid var(--status-expired-border);
+}
+
+.validador-body {
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.validador-photo-frame {
+    width: 140px;
+    height: 170px;
+    border-radius: 12px;
+    border: 3px solid var(--primary);
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.validador-photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.validador-name {
+    font-size: 1.4rem;
+    font-weight: 800;
+    text-align: center;
+    color: #fff;
+}
+
+.validador-class {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-top: -1rem;
+}
+
+.validador-meta-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 1rem 0;
+    margin-top: 0.5rem;
+}
+
+.validador-meta-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.validador-meta-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.validador-meta-value {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.authorized-list-box {
+    width: 100%;
+    background-color: rgba(0,0,0,0.25);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    padding: 1.2rem;
+}
+
+.authorized-title {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--primary);
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.05em;
+}
+
+.authorized-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.authorized-item:last-child {
+    border-bottom: none;
+}
+
+.authorized-item .check-icon {
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+.authorized-item .name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.authorized-item .relation {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-left: auto;
+}
+
+.validador-obs-box {
+    width: 100%;
+    background-color: rgba(255, 212, 59, 0.05);
+    border-left: 4px solid var(--accent);
+    padding: 0.8rem 1rem;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.85rem;
+    color: #ffe066;
+}
+
+.validador-footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+
+/* ==========================================================================
+   ESTRUTURA FÍSICA DE LAYOUT DE IMPRESSÃO (CARTEIRINHAS FÍSICAS)
+   Valores absolutos em Milímetros (mm) para Fidelidade Absoluta.
+   ========================================================================== */
+
+/* Container da Folha A4 para Visualização na Tela */
+.folha-a4-preview {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 10mm;
+    margin: 2rem auto;
+    background: #ffffff;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 8mm;
+    align-items: center;
+}
+
+.folha-a4-titulo {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-top: 2rem;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/* A Grade que organiza as frentes e os versos */
+.grade-impressao-carteirinhas {
+    display: grid;
+    grid-template-columns: 100mm 100mm;
+    gap: 4mm;
+    justify-content: center;
+}
+
+/* Forçar ordenamento reverso horizontal para os Versos (Espelhamento do Verso)
+   Se o Aluno 1 está na esquerda e o Aluno 2 na direita na folha de frente,
+   na folha de verso o Verso do Aluno 1 DEVE ficar na direita e o Verso do
+   Aluno 2 na esquerda para baterem no verso perfeito do papel. */
+.grade-impressao-carteirinhas.versos-espelhados {
+    direction: rtl; /* Inverte a ordenação horizontal das colunas no grid */
+}
+
+/* O crachá físico 10x7cm */
+.carteirinha-fisica {
+    width: 100mm;
+    height: 70mm;
+    background-color: #ffffff;
+    color: #111111;
+    border: 0.2mm solid #cccccc;
+    border-radius: 3mm;
+    overflow: hidden;
+    position: relative;
+    font-family: 'Outfit', sans-serif;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    /* Garante isolamento absoluto de layout */
+    page-break-inside: avoid;
+    box-sizing: border-box;
+}
+
+/* Barra Lateral Colorida (Esquerda na Frente, Direita no Verso) */
+.carteirinha-fisica .barra-lateral-verde {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8mm;
+    height: 70mm;
+    background-color: #1e3d2f;
+    z-index: 2;
+}
+
+/* No verso, a barra lateral fica à direita */
+.carteirinha-fisica.verso-card .barra-lateral-verde {
+    left: auto;
+    right: 0;
+    width: 25mm; /* Mais larga para abrigar a logo e o QR code */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 3mm 0;
+}
+
+.carteirinha-fisica.verso-card .barra-lateral-verde .logo-mini-verso {
+    width: 14mm;
+    height: 14mm;
+    background-color: #fff;
+    border-radius: 50%;
+    padding: 1.5px;
+    border: 0.8mm solid #F5C030;
+}
+
+.carteirinha-fisica.verso-card .barra-lateral-verde .qr-code-fisico {
+    width: 20mm;
+    height: 20mm;
+    background-color: #fff;
+    padding: 1mm;
+    border-radius: 1mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Corpo Principal (Frente) */
+.carteirinha-fisica .card-frente-body {
+    position: absolute;
+    left: 8mm;
+    top: 0;
+    width: 92mm;
+    height: 70mm;
+    padding: 3mm 4mm;
+    background-color: #fdfaf7;
+}
+
+/* Topo / Cabeçalho da Carteirinha */
+.carteirinha-fisica .card-header-top {
+    height: 12mm;
+    display: flex;
+    align-items: center;
+    gap: 3mm;
+    border-bottom: 0.15mm solid rgba(92, 35, 8, 0.15);
+    padding-bottom: 1.5mm;
+}
+
+.carteirinha-fisica .card-header-top .logo-escola-crachas {
+    width: 10mm;
+    height: 10mm;
+    border-radius: 50%;
+    background-color: #fff;
+    border: 0.4mm solid #F5C030;
+    object-fit: contain;
+}
+
+.carteirinha-fisica .card-header-top .header-text-school {
+    display: flex;
+    flex-direction: column;
+}
+
+.carteirinha-fisica .card-header-top .header-line1 {
+    font-size: 1.8mm;
+    text-transform: uppercase;
+    color: #5C2308;
+    font-weight: 500;
+}
+
+.carteirinha-fisica .card-header-top .header-line2 {
+    font-size: 3mm;
+    font-weight: 900;
+    color: #1e3d2f;
+    line-height: 1.1;
+}
+
+/* Área de Conteúdo da Frente (Grid Esquerda/Direita) */
+.carteirinha-fisica .card-frente-content {
+    margin-top: 2.5mm;
+    display: flex;
+    gap: 4mm;
+}
+
+/* Foto do Aluno */
+.carteirinha-fisica .frente-foto-moldura {
+    width: 25mm;
+    height: 32mm;
+    border: 0.5mm solid #C07030;
+    border-radius: 1.5mm;
+    overflow: hidden;
+    background-color: #ddd;
+    flex-shrink: 0;
+}
+
+.carteirinha-fisica .frente-foto-moldura img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Dados Textuais do Aluno */
+.carteirinha-fisica .frente-dados-texto {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2mm;
+}
+
+.carteirinha-fisica .dado-item-fisico {
+    display: flex;
+    flex-direction: column;
+}
+
+.carteirinha-fisica .dado-label-fisico {
+    font-size: 1.7mm;
+    font-weight: 700;
+    color: #5C2308;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+}
+
+.carteirinha-fisica .dado-value-fisico {
+    font-size: 2.6mm;
+    font-weight: 600;
+    color: #222;
+    line-height: 1.2;
+}
+
+.carteirinha-fisica .dado-value-fisico.nome-aluno-destaque {
+    font-size: 3.5mm;
+    font-weight: 900;
+    color: #000;
+}
+
+/* Validade Vermelha em Destaque na Frente */
+.carteirinha-fisica .caixa-validade-fisica {
+    position: absolute;
+    right: 4mm;
+    top: 17mm;
+    background-color: #5c1d1d;
+    color: #ffffff;
+    border-radius: 1mm;
+    padding: 1mm 2mm;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.carteirinha-fisica .caixa-validade-fisica .lbl {
+    font-size: 1.4mm;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #ffa8a8;
+}
+
+.carteirinha-fisica .caixa-validade-fisica .val {
+    font-size: 2.8mm;
+    font-weight: 900;
+}
+
+/* Rodapé da Frente */
+.carteirinha-fisica .card-frente-footer {
+    position: absolute;
+    bottom: 2mm;
+    left: 12mm;
+    right: 4mm;
+    border-top: 0.15mm solid rgba(92, 35, 8, 0.15);
+    padding-top: 1.5mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.carteirinha-fisica .card-frente-footer .tipo-documento {
+    font-size: 2mm;
+    font-weight: 900;
+    color: #5c1d1d;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.carteirinha-fisica .card-frente-footer .codigo-id {
+    font-size: 2.2mm;
+    font-weight: 800;
+    color: #5C2308;
+}
+
+/* ==========================================
+   Corpo Principal (Verso)
+   ========================================== */
+.carteirinha-fisica .card-verso-body {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 75mm; /* Deixa livre os 25mm da barra lateral direita do verso */
+    height: 70mm;
+    padding: 3mm 4mm;
+    background-color: #fdfaf7;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.carteirinha-fisica .card-verso-title {
+    font-size: 2.4mm;
+    font-weight: 900;
+    color: #1e3d2f;
+    border-bottom: 0.15mm solid rgba(0,0,0,0.1);
+    padding-bottom: 1mm;
+    margin-bottom: 1.5mm;
+}
+
+.carteirinha-fisica .verso-dados-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5mm;
+}
+
+.carteirinha-fisica .verso-dados-lista .item {
+    display: flex;
+    flex-direction: column;
+}
+
+.carteirinha-fisica .verso-dados-lista .label {
+    font-size: 1.8mm;
+    font-weight: 700;
+    color: #5C2308;
+    text-transform: uppercase;
+}
+
+.carteirinha-fisica .verso-dados-lista .value {
+    font-size: 2.6mm;
+    font-weight: 600;
+    color: #333;
+}
+
+.carteirinha-fisica .instrucao-uso {
+    font-size: 1.8mm;
+    font-style: italic;
+    color: #666;
+    line-height: 1.2;
+    margin-top: 1mm;
+    border-left: 0.4mm solid #C07030;
+    padding-left: 1.5mm;
+}
+
+/* Área de Assinatura e Carimbo */
+.carteirinha-fisica .area-assinatura-carimbo {
+    display: flex;
+    gap: 4mm;
+    margin-top: 2mm;
+    border-top: 0.15mm solid rgba(0,0,0,0.1);
+    padding-top: 2mm;
+}
+
+.carteirinha-fisica .bloco-assinatura {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.carteirinha-fisica .bloco-assinatura .linha-ass {
+    width: 100%;
+    border-bottom: 0.15mm solid #000;
+    height: 5mm;
+}
+
+.carteirinha-fisica .bloco-assinatura .cargo-ass {
+    font-size: 1.5mm;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #555;
+    margin-top: 0.8mm;
+}
+
+.carteirinha-fisica .bloco-carimbo-inep {
+    width: 26mm;
+    height: 14mm;
+    border: 0.2mm dashed #888;
+    border-radius: 1mm;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4mm;
+    color: #888;
+    text-align: center;
+    font-weight: 600;
+    background-color: rgba(0,0,0,0.02);
+}
+
+.carteirinha-fisica .bloco-carimbo-inep .title {
+    font-size: 1.3mm;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin-bottom: 0.5mm;
+}
+
+/* Código de Barras Decorativo no Verso */
+.carteirinha-fisica .codigo-barras-decorativo {
+    height: 6mm;
+    width: 100%;
+    margin-top: 1.5mm;
+    background: repeating-linear-gradient(
+        90deg,
+        #111,
+        #111 1px,
+        transparent 1px,
+        transparent 3px,
+        #111 3px,
+        #111 4px,
+        transparent 4px,
+        transparent 6px
+    );
+    opacity: 0.85;
+}
+
+.carteirinha-fisica .verso-footer-note {
+    font-size: 1.4mm;
+    text-align: center;
+    color: #777;
+    margin-top: 0.8mm;
+    font-weight: 500;
+}
+
+
+/* ==========================================================================
+   DIRETRIZES EXCLUSIVAS DE IMPRESSÃO (@media print)
+   ========================================================================== */
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 0; /* Desativa margens padrão da impressora */
+    }
+    
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        text-rendering: optimizeLegibility !important;
+    }
+    
+    /* Oculta tudo que não faz parte do documento físico */
+    body {
+        background: #ffffff !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .admin-header,
+    .admin-container,
+    .folha-a4-titulo,
+    #login-wrapper,
+    .validador-container {
+        display: none !important;
+    }
+    
+    /* Torna a folha A4 um elemento sem bordas na tela e perfeitamente ajustado na página */
+    .folha-a4-preview {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 10mm 5mm 5mm 5mm !important;
+        margin: 0 !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        page-break-after: always;
+        display: flex !important;
+    }
+    
+    /* Grade de carteirinhas na impressão */
+    .grade-impressao-carteirinhas {
+        display: grid !important;
+        grid-template-columns: 100mm 100mm !important;
+        gap: 4mm !important;
+        justify-content: center !important;
+    }
+    
+    /* Garante a precisão milimétrica de renderização */
+    .carteirinha-fisica {
+        box-shadow: none !important;
+        border: 0.2mm solid #999999 !important;
+        background-color: #ffffff !important;
+    }
+    
+    img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
