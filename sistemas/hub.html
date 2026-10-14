@@ -3,20 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Central de Sistemas | Escola Municipal Castro Alves</title>
+  <title>Central de Gestão · Escola Municipal Castro Alves</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #06120b;
-      --card-bg: rgba(11, 28, 19, 0.82);
-      --accent: #f9c31f;
+      --bg: #091710;
+      --surface: #0f241a;
+      --surface-raised: #142e22;
+      --surface-highlight: #1a382a;
+      --border: rgba(181, 201, 154, 0.16);
+      --border-accent: rgba(249, 195, 31, 0.35);
+      --gold: #f9c31f;
+      --gold-deep: #c9980e;
       --emerald: #00a878;
-      --blue: #3b82f6;
-      --text: #f4f9f4;
-      --muted: #a3c2b0;
+      --text: #f0f6f2;
+      --text-muted: #9bb7a7;
       --danger: #ef4444;
+      --danger-bg: rgba(239, 68, 68, 0.1);
+      --shadow-soft: 0 16px 36px -10px rgba(0, 0, 0, 0.55), 0 4px 10px rgba(0, 0, 0, 0.25);
+      --shadow-hover: 0 24px 48px -12px rgba(0, 0, 0, 0.7), 0 6px 14px rgba(0, 0, 0, 0.3);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * {
@@ -25,297 +33,212 @@
       padding: 0;
     }
 
+    ::selection {
+      background: var(--gold);
+      color: #091710;
+    }
+
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Outfit', sans-serif;
       background-color: var(--bg);
       color: var(--text);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      background-image: 
-        radial-gradient(at 10% 10%, rgba(0, 168, 120, 0.18) 0px, transparent 50%),
-        radial-gradient(at 90% 90%, rgba(249, 195, 31, 0.12) 0px, transparent 50%),
-        radial-gradient(at 50% 50%, rgba(9, 24, 16, 0.9) 0px, transparent 100%);
+      background-image: linear-gradient(180deg, #07130d 0%, #091710 50%, #06110a 100%);
       background-attachment: fixed;
     }
 
     /* Barra Superior */
     .topbar {
       width: 100%;
-      background: rgba(10, 28, 19, 0.85);
-      border-bottom: 1px solid rgba(181, 201, 154, 0.2);
+      background: rgba(11, 28, 20, 0.9);
+      border-bottom: 1px solid var(--border);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      padding: 1rem 2rem;
+      padding: 0.95rem 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 50;
     }
 
     .topbar-brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       text-decoration: none;
       color: inherit;
     }
 
-    .topbar-logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(249, 195, 31, 0.4);
+    .topbar-emblem {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #ffffff;
+      padding: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      border: 1px solid rgba(249, 195, 31, 0.5);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     }
 
-    .topbar-logo img {
+    .topbar-emblem img {
       width: 100%;
       height: 100%;
       object-fit: contain;
-      padding: 4px;
     }
 
-    .topbar-info h2 {
-      font-family: 'Outfit', sans-serif;
+    .topbar-identity h2 {
+      font-family: 'Cinzel', serif;
       font-size: 1.05rem;
-      font-weight: 800;
+      font-weight: 700;
       color: #ffffff;
       line-height: 1.1;
+      letter-spacing: 0.02em;
     }
 
-    .topbar-info p {
+    .topbar-identity p {
       font-size: 0.74rem;
-      color: var(--muted);
+      color: var(--text-muted);
     }
 
     .topbar-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .btn-action {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(181, 201, 154, 0.2);
-      color: var(--muted);
-      border-radius: 10px;
-      padding: 0.5rem 0.95rem;
+    .nav-btn {
+      background: var(--surface-raised);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 8px;
+      padding: 0.48rem 0.95rem;
       font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       text-decoration: none;
-      transition: all 0.2s ease;
+      transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
     }
 
-    .btn-action:hover {
-      background: rgba(255, 255, 255, 0.12);
+    .nav-btn:hover {
+      background: var(--surface-highlight);
       color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.3);
+      border-color: rgba(255, 255, 255, 0.25);
     }
 
-    .btn-logout {
+    .nav-btn-logout {
       color: #fca5a5;
-      border-color: rgba(239, 68, 68, 0.3);
-      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.28);
+      background: var(--danger-bg);
     }
 
-    .btn-logout:hover {
-      background: rgba(239, 68, 68, 0.2);
+    .nav-btn-logout:hover {
+      background: rgba(239, 68, 68, 0.22);
       color: #fee2e2;
-      border-color: rgba(239, 68, 68, 0.5);
+      border-color: rgba(239, 68, 68, 0.45);
     }
 
     /* Conteúdo Principal */
-    .container {
-      max-width: 1080px;
+    .workspace-container {
+      max-width: 1060px;
       margin: 0 auto;
-      padding: 3.5rem 1.5rem 4rem;
+      padding: 3.5rem 1.5rem 4.5rem;
       width: 100%;
       flex: 1;
     }
 
-    .hero-header {
+    .workspace-header {
       text-align: center;
       margin-bottom: 3.5rem;
     }
 
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 14px;
-      border-radius: 9999px;
-      background: rgba(0, 168, 120, 0.15);
-      border: 1px solid rgba(0, 168, 120, 0.35);
-      color: var(--accent);
-      font-size: 0.74rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 0.9rem;
-    }
-
-    .hero-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: clamp(2rem, 4vw, 2.7rem);
-      font-weight: 900;
+    .workspace-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.9rem, 4vw, 2.6rem);
+      font-weight: 800;
       color: #ffffff;
-      line-height: 1.15;
+      line-height: 1.2;
       margin-bottom: 0.75rem;
     }
 
-    .hero-title span {
-      background: linear-gradient(135deg, #f9c31f, #ffdc69);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-desc {
-      font-size: 0.98rem;
-      color: var(--muted);
-      max-width: 580px;
+    .workspace-desc {
+      font-family: 'Newsreader', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 620px;
       margin: 0 auto;
       line-height: 1.6;
     }
 
-    /* ===== Grid dos Sistemas com Efeito 21st.dev Border Beam ===== */
-    .systems-grid {
+    /* Grid de Módulos (Design Clean & Focado) */
+    .modules-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
       gap: 2rem;
     }
 
-    .beam-card-wrapper {
-      position: relative;
-      border-radius: 26px;
-      padding: 2px;
-      overflow: hidden;
-      background: rgba(255, 255, 255, 0.08);
-      box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.5);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
-    }
-
-    .beam-card-wrapper:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7);
-    }
-
-    /* Feixe de Luz para Transporte (Dourado + Âmbar) */
-    .wrapper-transporte::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(
-        from 0deg,
-        transparent 0deg,
-        transparent 90deg,
-        #f9c31f 130deg,
-        #c84b1f 170deg,
-        transparent 210deg,
-        transparent 360deg
-      );
-      animation: rotateBeam 5s linear infinite;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    /* Feixe de Luz para AEE (Azul Royal + Ciano) */
-    .wrapper-aee::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(
-        from 0deg,
-        transparent 0deg,
-        transparent 90deg,
-        #60a5fa 130deg,
-        #0033a0 170deg,
-        transparent 210deg,
-        transparent 360deg
-      );
-      animation: rotateBeam 5s linear infinite;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    @keyframes rotateBeam {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
-    }
-
-    .system-card {
-      background: var(--card-bg);
-      border-radius: 24px;
-      padding: 2.4rem 2rem;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2.25rem 2rem;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       height: 100%;
-      position: relative;
-      z-index: 2;
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), border-color 0.25s ease;
     }
 
-    .system-icon-wrapper {
-      width: 64px;
-      height: 64px;
-      border-radius: 20px;
-      display: flex;
+    .module-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: var(--border-accent);
+    }
+
+    .module-badge {
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      margin-bottom: 1.4rem;
-      font-size: 2rem;
+      gap: 7px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: #92b8a0;
+      margin-bottom: 1.2rem;
     }
 
-    .wrapper-transporte .system-icon-wrapper {
-      background: rgba(249, 195, 31, 0.15);
-      border: 1px solid rgba(249, 195, 31, 0.4);
-      color: var(--accent);
-      box-shadow: 0 8px 24px rgba(249, 195, 31, 0.15);
+    .badge-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
     }
 
-    .wrapper-aee .system-icon-wrapper {
-      background: rgba(59, 130, 246, 0.15);
-      border: 1px solid rgba(59, 130, 246, 0.4);
-      color: #93c5fd;
-      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
-    }
-
-    .system-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 800;
+    .module-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.45rem;
+      font-weight: 700;
       color: #ffffff;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.65rem;
       line-height: 1.25;
     }
 
-    .system-desc {
-      font-size: 0.9rem;
-      color: var(--muted);
+    .module-summary {
+      font-size: 0.92rem;
+      color: var(--text-muted);
       line-height: 1.6;
-      margin-bottom: 1.8rem;
+      margin-bottom: 1.75rem;
     }
 
-    .features-list {
+    .module-capabilities {
       list-style: none;
       margin-bottom: 2rem;
       display: flex;
@@ -323,77 +246,61 @@
       gap: 0.65rem;
     }
 
-    .features-list li {
-      font-size: 0.84rem;
-      color: rgba(244, 249, 244, 0.9);
+    .module-capabilities li {
+      font-size: 0.85rem;
+      color: var(--text);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 9px;
     }
 
-    .features-list li svg {
-      color: var(--emerald);
+    .module-capabilities li svg {
+      color: var(--gold);
       flex-shrink: 0;
     }
 
-    .btn-enter {
+    /* Botões de Abertura */
+    .btn-module-open {
       width: 100%;
-      padding: 0.92rem 1.2rem;
-      border-radius: 12px;
+      padding: 0.88rem 1.25rem;
+      border-radius: 10px;
       font-family: inherit;
-      font-size: 0.98rem;
-      font-weight: 800;
+      font-size: 0.92rem;
+      font-weight: 700;
       text-decoration: none;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: all 0.25s ease;
       cursor: pointer;
-      border: none;
+      border: 1px solid transparent;
+      transition: background-color 0.18s ease, transform 0.12s var(--ease-out);
     }
 
-    .wrapper-transporte .btn-enter {
-      background: linear-gradient(135deg, #c84b1f, #e8763a);
+    .card-transporte .btn-module-open {
+      background: var(--gold);
+      color: #091710;
+      border-color: var(--gold-deep);
+    }
+
+    .card-transporte .btn-module-open:hover {
+      background: #ffcf33;
+      transform: translateY(-1px);
+    }
+
+    .card-aee .btn-module-open {
+      background: #1d4ed8;
       color: #ffffff;
-      box-shadow: 0 8px 24px -5px rgba(200, 75, 31, 0.55);
-    }
-    .wrapper-transporte .btn-enter:hover {
-      background: linear-gradient(135deg, #e8763a, #f9c31f);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 28px -5px rgba(200, 75, 31, 0.75);
+      border-color: #1e40af;
     }
 
-    .wrapper-aee .btn-enter {
-      background: linear-gradient(135deg, #0033a0, #0056b3);
-      color: #ffffff;
-      box-shadow: 0 8px 24px -5px rgba(0, 51, 160, 0.55);
-    }
-    .wrapper-aee .btn-enter:hover {
-      background: linear-gradient(135deg, #0056b3, #3b82f6);
-      transform: translateY(-2px);
-      box-shadow: 0 12px 28px -5px rgba(0, 51, 160, 0.75);
-    }
-
-    .connection-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.75rem;
-      color: var(--muted);
-      margin-bottom: 1.2rem;
-    }
-
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #10b981;
-      box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+    .card-aee .btn-module-open:hover {
+      background: #2563eb;
+      transform: translateY(-1px);
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .beam-card-wrapper::before, .beam-card-wrapper, .btn-enter {
+      .module-card, .btn-module-open {
         animation: none !important;
         transition: none !important;
       }
@@ -403,10 +310,10 @@
       .topbar {
         padding: 0.85rem 1rem;
       }
-      .container {
+      .workspace-container {
         padding: 2rem 1rem 3rem;
       }
-      .systems-grid {
+      .modules-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -414,113 +321,102 @@
 </head>
 <body>
 
-  <!-- Topbar -->
+  <!-- Barra de Navegação Superior -->
   <nav class="topbar">
-    <a href="/" class="topbar-brand" title="Voltar ao site público">
-      <div class="topbar-logo">
-        <img src="/logo.png" alt="Logo" onerror="this.style.display='none'">
+    <a href="/" class="topbar-brand" title="Voltar ao portal da escola">
+      <div class="topbar-emblem">
+        <img src="/logo.png" alt="Brasão Castro Alves" onerror="this.style.display='none'">
       </div>
-      <div class="topbar-info">
+      <div class="topbar-identity">
         <h2>Castro Alves</h2>
-        <p>Central de Gestão</p>
+        <p>Administração Escolar</p>
       </div>
     </a>
 
     <div class="topbar-actions">
-      <a href="/" class="btn-action">
+      <a href="/" class="nav-btn">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-        <span>Site Público</span>
+        <span>Portal Público</span>
       </a>
-      <button class="btn-action btn-logout" onclick="fazerLogout()" title="Encerrar sessão de trabalho">
+      <button class="nav-btn nav-btn-logout" onclick="encerrarSessao()" title="Sair da sessão">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        <span>Sair</span>
+        <span>Encerrar</span>
       </button>
     </div>
   </nav>
 
-  <!-- Container -->
-  <main class="container">
-    <header class="hero-header">
-      <span class="hero-badge">Painel de Controle Oficial</span>
-      <h1 class="hero-title">Sistemas e <span>Carteirinhas</span></h1>
-      <p class="hero-desc">Selecione o módulo administrativo que deseja gerenciar. Os sistemas operam conectados às planilhas em tempo real.</p>
+  <!-- Área de Trabalho -->
+  <main class="workspace-container">
+    <header class="workspace-header">
+      <h1 class="workspace-title">Central de Carteirinhas</h1>
+      <p class="workspace-desc">Plataforma de controle operacional e emissão documental com sincronização contínua às planilhas institucionais.</p>
     </header>
 
-    <div class="systems-grid">
+    <div class="modules-grid">
       
-      <!-- Card 1: Transporte Escolar com 21st.dev Border Beam -->
-      <div class="beam-card-wrapper wrapper-transporte">
-        <article class="system-card">
-          <div>
-            <div class="system-icon-wrapper">
-              🚌
-            </div>
-            <span class="connection-status">
-              <span class="status-dot"></span>
-              <span>Planilha Google Conectada</span>
-            </span>
-            <h2 class="system-title">Transporte Escolar</h2>
-            <p class="system-desc">Emissão de carteirinhas para as linhas do transporte municipal, busca por matrícula e geração de QR Code de contato.</p>
-            
-            <ul class="features-list">
-              <li>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Geração em lote com dados ativos</span>
-              </li>
-              <li>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Layout oficial de impressão 10x7</span>
-              </li>
-              <li>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>QR Code para WhatsApp do responsável</span>
-              </li>
-            </ul>
+      <!-- Módulo Transporte Escolar -->
+      <article class="module-card card-transporte">
+        <div>
+          <div class="module-badge">
+            <span class="badge-indicator"></span>
+            <span>Planilha Google Conectada</span>
           </div>
+          <h2 class="module-title">Transporte Escolar</h2>
+          <p class="module-summary">Emissão de credenciais para transporte municipal, pesquisa de matrícula e geração de QR Code de contato familiar.</p>
+          
+          <ul class="module-capabilities">
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Emissão em lote via planilha ativa</span>
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Padronização oficial de impressão 10x7</span>
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Acesso rápido ao contato do responsável</span>
+            </li>
+          </ul>
+        </div>
 
-          <a href="/sistemas/transporte/index.html" class="btn-enter">
-            <span>Abrir Módulo de Transporte</span>
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </a>
-        </article>
-      </div>
+        <a href="/sistemas/transporte/index.html" class="btn-module-open">
+          <span>Acessar Transporte</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </article>
 
-      <!-- Card 2: AEE (Saída Antecipada) com 21st.dev Border Beam -->
-      <div class="beam-card-wrapper wrapper-aee">
-        <article class="system-card">
-          <div>
-            <div class="system-icon-wrapper">
-              ♿
-            </div>
-            <span class="connection-status">
-              <span class="status-dot"></span>
-              <span>Apps Script / Planilha Ativa</span>
-            </span>
-            <h2 class="system-title">Saída Antecipada (AEE)</h2>
-            <p class="system-desc">Gestão de autorizações e carteirinhas para estudantes do Atendimento Educacional Especializado com validador público.</p>
-            
-            <ul class="features-list">
-              <li>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Emissão com identificação institucional</span>
-              </li>
-              <li>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Página de Validação Pública por QR Code</span>
-              </li>
-              <li>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Termo de responsabilidade digital</span>
-              </li>
-            </ul>
+      <!-- Módulo Saída Antecipada (AEE) -->
+      <article class="module-card card-aee">
+        <div>
+          <div class="module-badge">
+            <span class="badge-indicator"></span>
+            <span>Base AEE Conectada</span>
           </div>
+          <h2 class="module-title">Saída Antecipada (AEE)</h2>
+          <p class="module-summary">Gerenciamento de autorizações e carteirinhas para o Atendimento Educacional Especializado com checagem pública.</p>
+          
+          <ul class="module-capabilities">
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Emissão com identificação institucional</span>
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Validador digital aberto por QR Code</span>
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Termo digital de compromisso e guarda</span>
+            </li>
+          </ul>
+        </div>
 
-          <a href="/sistemas/aee/index.html" class="btn-enter">
-            <span>Abrir Módulo AEE</span>
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </a>
-        </article>
-      </div>
+        <a href="/sistemas/aee/index.html" class="btn-module-open">
+          <span>Acessar Módulo AEE</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </article>
 
     </div>
   </main>
@@ -530,7 +426,7 @@
       window.location.replace('/sistemas/index.html');
     }
 
-    function fazerLogout() {
+    function encerrarSessao() {
       sessionStorage.removeItem('castro_alves_auth');
       localStorage.removeItem('sigea_auth');
       window.location.replace('/sistemas/index.html');
