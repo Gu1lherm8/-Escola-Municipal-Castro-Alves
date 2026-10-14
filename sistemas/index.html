@@ -22,6 +22,8 @@
       --placeholder: #8db59f;
       --danger: #f87171;
       --danger-bg: rgba(220, 38, 38, 0.12);
+      --success: #34d399;
+      --success-bg: rgba(16, 185, 129, 0.12);
       --shadow-elevation: 0 20px 48px -12px rgba(0, 0, 0, 0.65), 0 4px 12px rgba(0, 0, 0, 0.35);
       --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -54,7 +56,7 @@
     /* Card Administrativo */
     .login-sheet {
       width: 100%;
-      max-width: 410px;
+      max-width: 420px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 16px;
@@ -172,6 +174,26 @@
       color: var(--gold);
     }
 
+    .form-aux {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: -0.35rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .link-forgot {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s ease;
+      cursor: pointer;
+    }
+
+    .link-forgot:hover {
+      color: var(--gold);
+      text-decoration: underline;
+    }
+
     /* Ação Primária */
     .btn-primary {
       width: 100%;
@@ -188,7 +210,6 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      margin-top: 1.75rem;
       transition: background-color 0.18s ease, transform 0.12s var(--ease-out);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
     }
@@ -208,7 +229,7 @@
       transform: none;
     }
 
-    /* Alerta de Erro */
+    /* Banners de Notificação */
     .alert-banner {
       display: none;
       align-items: center;
@@ -224,6 +245,24 @@
     }
 
     .alert-banner.active {
+      display: flex;
+    }
+
+    .success-banner {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: var(--success-bg);
+      border: 1px solid rgba(52, 211, 153, 0.4);
+      border-radius: 8px;
+      color: #a7f3d0;
+      font-size: 0.84rem;
+      line-height: 1.4;
+      padding: 0.75rem 1rem;
+      margin-top: 1.25rem;
+    }
+
+    .success-banner.active {
       display: flex;
     }
 
@@ -266,19 +305,19 @@
       <p class="sheet-subtitle">Escola Municipal Castro Alves · Planaltina-GO</p>
     </header>
 
-    <form id="accessForm" onsubmit="processAuthentication(event)">
+    <form id="accessForm">
       <div class="form-group">
-        <label class="form-label" for="username">Identificação do Usuário</label>
+        <label class="form-label" for="userEmail">E-mail Institucional</label>
         <div class="field-wrapper">
           <span class="field-icon" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           </span>
-          <input type="text" id="username" class="text-input" placeholder="Digite seu usuário" required autocomplete="username" autofocus>
+          <input type="email" id="userEmail" class="text-input" placeholder="seu.email@escola.gov.br" required autocomplete="email" autofocus>
         </div>
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="passcode">Chave de Acesso</label>
+        <label class="form-label" for="passcode">Senha de Acesso</label>
         <div class="field-wrapper">
           <span class="field-icon" aria-hidden="true">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -287,14 +326,23 @@
         </div>
       </div>
 
+      <div class="form-aux">
+        <a id="btnForgot" class="link-forgot">Esqueceu sua senha?</a>
+      </div>
+
       <button type="submit" id="btnSubmit" class="btn-primary">
-        <span>Entrar no Painel</span>
+        <span>Acessar Painel Seguro</span>
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
       </button>
 
       <div id="errorNotification" class="alert-banner" role="alert">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <span>Credenciais não reconhecidas. Verifique usuário e senha.</span>
+        <span id="errorMessage">Credenciais não reconhecidas.</span>
+      </div>
+
+      <div id="successNotification" class="success-banner" role="status">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><polyline points="20 6 9 17 4 12"/></svg>
+        <span id="successMessage">Link de redefinição enviado com sucesso!</span>
       </div>
     </form>
 
@@ -303,40 +351,110 @@
     </footer>
   </main>
 
-  <script>
-    if (sessionStorage.getItem('castro_alves_auth') === 'true') {
-      window.location.replace('/sistemas/hub.html');
-    }
+  <script type="module">
+    import { 
+      auth, 
+      signInWithEmailAndPassword, 
+      onAuthStateChanged,
+      sendPasswordResetEmail,
+      obterPerfilUsuario 
+    } from "./firebase-config.js";
 
-    const VALID_USERS = {
-      admin: 'castro2026'
-    };
+    const accessForm = document.getElementById('accessForm');
+    const emailInput = document.getElementById('userEmail');
+    const passInput = document.getElementById('passcode');
+    const btnSubmit = document.getElementById('btnSubmit');
+    const btnForgot = document.getElementById('btnForgot');
+    const errBox = document.getElementById('errorNotification');
+    const errMsg = document.getElementById('errorMessage');
+    const succBox = document.getElementById('successNotification');
+    const succMsg = document.getElementById('successMessage');
 
-    function processAuthentication(e) {
-      e.preventDefault();
-      const user = document.getElementById('username').value.trim();
-      const pass = document.getElementById('passcode').value;
-      const err = document.getElementById('errorNotification');
-      const btn = document.getElementById('btnSubmit');
-
-      err.classList.remove('active');
-
-      if (VALID_USERS[user] && VALID_USERS[user] === pass) {
-        btn.disabled = true;
-        btn.innerHTML = '<span>Autenticando...</span>';
-        
+    // Se já estiver logado com Firebase, vai direto para o Hub
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const perfil = await obterPerfilUsuario(user);
+        sessionStorage.setItem('castro_alves_user', JSON.stringify(perfil));
         sessionStorage.setItem('castro_alves_auth', 'true');
         localStorage.setItem('sigea_auth', 'ok');
-        
+        window.location.replace('/sistemas/hub.html');
+      }
+    });
+
+    // Processamento do Login com Firebase
+    accessForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errBox.classList.remove('active');
+      succBox.classList.remove('active');
+
+      const email = emailInput.value.trim();
+      const password = passInput.value;
+
+      btnSubmit.disabled = true;
+      btnSubmit.innerHTML = `
+        <svg class="animate-spin" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
+        <span>Verificando com o Google...</span>
+      `;
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        const perfil = await obterPerfilUsuario(user);
+
+        sessionStorage.setItem('castro_alves_user', JSON.stringify(perfil));
+        sessionStorage.setItem('castro_alves_auth', 'true');
+        localStorage.setItem('sigea_auth', 'ok');
+
+        btnSubmit.innerHTML = '<span>Autenticado com sucesso!</span>';
         setTimeout(() => {
           window.location.replace('/sistemas/hub.html');
-        }, 250);
-      } else {
-        err.classList.add('active');
-        document.getElementById('passcode').value = '';
-        document.getElementById('passcode').focus();
+        }, 300);
+
+      } catch (error) {
+        console.error("Erro Firebase Auth:", error);
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = `
+          <span>Acessar Painel Seguro</span>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        `;
+
+        if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+          errMsg.textContent = 'E-mail ou senha incorretos. Verifique e tente novamente.';
+        } else if (error.code === 'auth/too-many-requests') {
+          errMsg.textContent = 'Muitas tentativas sem sucesso. Aguarde alguns instantes.';
+        } else if (error.code === 'auth/invalid-email') {
+          errMsg.textContent = 'Formato de e-mail inválido.';
+        } else {
+          errMsg.textContent = 'Não foi possível autenticar. Verifique sua conexão.';
+        }
+        errBox.classList.add('active');
+        passInput.value = '';
+        passInput.focus();
       }
-    }
+    });
+
+    // Recuperação de Senha Segura via Firebase
+    btnForgot.addEventListener('click', async () => {
+      const email = emailInput.value.trim();
+      errBox.classList.remove('active');
+      succBox.classList.remove('active');
+
+      if (!email) {
+        errMsg.textContent = 'Digite seu e-mail no campo acima antes de solicitar a recuperação.';
+        errBox.classList.add('active');
+        emailInput.focus();
+        return;
+      }
+
+      try {
+        await sendPasswordResetEmail(auth, email);
+        succMsg.textContent = `Instruções de redefinição de senha enviadas para ${email}!`;
+        succBox.classList.add('active');
+      } catch (error) {
+        errMsg.textContent = 'Não foi possível enviar o e-mail de recuperação. Verifique o endereço digitado.';
+        errBox.classList.add('active');
+      }
+    });
   </script>
 </body>
 </html>

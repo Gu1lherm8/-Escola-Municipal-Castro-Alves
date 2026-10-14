@@ -18,6 +18,7 @@
       --gold: #f9c31f;
       --gold-deep: #c9980e;
       --emerald: #00a878;
+      --blue: #3b82f6;
       --text: #f0f6f2;
       --text-muted: #9bb7a7;
       --danger: #ef4444;
@@ -109,7 +110,60 @@
     .topbar-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
+    }
+
+    /* Crachá do Usuário Logado */
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface-raised);
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+    }
+
+    .user-pill .user-role {
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .role-secretaria {
+      background: rgba(249, 195, 31, 0.2);
+      color: var(--gold);
+      border: 1px solid rgba(249, 195, 31, 0.4);
+    }
+
+    .role-voluntarios {
+      background: rgba(0, 168, 120, 0.2);
+      color: #34d399;
+      border: 1px solid rgba(0, 168, 120, 0.4);
+    }
+
+    .role-aee {
+      background: rgba(59, 130, 246, 0.2);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+    }
+
+    .role-transporte {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+
+    .user-email-text {
+      color: var(--text);
+      max-width: 180px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .nav-btn {
@@ -148,21 +202,21 @@
 
     /* Conteúdo Principal */
     .workspace-container {
-      max-width: 1060px;
+      max-width: 1120px;
       margin: 0 auto;
-      padding: 3.5rem 1.5rem 4.5rem;
+      padding: 3rem 1.5rem 4.5rem;
       width: 100%;
       flex: 1;
     }
 
     .workspace-header {
       text-align: center;
-      margin-bottom: 3.5rem;
+      margin-bottom: 2.75rem;
     }
 
     .workspace-title {
       font-family: 'Cinzel', serif;
-      font-size: clamp(1.9rem, 4vw, 2.6rem);
+      font-size: clamp(1.9rem, 4vw, 2.5rem);
       font-weight: 800;
       color: #ffffff;
       line-height: 1.2;
@@ -174,16 +228,35 @@
       font-style: italic;
       font-size: 1.15rem;
       color: var(--text-muted);
-      max-width: 620px;
+      max-width: 660px;
       margin: 0 auto;
       line-height: 1.6;
     }
 
-    /* Grid de Módulos (Design Clean & Focado) */
+    /* Faixa de Informação de Permissão */
+    .permission-notice {
+      background: rgba(16, 36, 27, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.85rem 1.25rem;
+      max-width: 760px;
+      margin: 0 auto 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    .permission-notice strong {
+      color: #ffffff;
+    }
+
+    /* Grid de Módulos */
     .modules-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
-      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.75rem;
     }
 
     .module-card {
@@ -197,6 +270,7 @@
       height: 100%;
       box-shadow: var(--shadow-soft);
       transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out), border-color 0.25s ease;
+      position: relative;
     }
 
     .module-card:hover {
@@ -222,9 +296,17 @@
       background: #10b981;
     }
 
+    .badge-indicator-gold {
+      background: var(--gold);
+    }
+
+    .badge-indicator-blue {
+      background: var(--blue);
+    }
+
     .module-title {
       font-family: 'Cinzel', serif;
-      font-size: 1.45rem;
+      font-size: 1.35rem;
       font-weight: 700;
       color: #ffffff;
       margin-bottom: 0.65rem;
@@ -248,22 +330,21 @@
 
     .module-capabilities li {
       font-size: 0.85rem;
-      color: var(--text);
+      color: #c5dbcf;
       display: flex;
       align-items: center;
       gap: 9px;
     }
 
     .module-capabilities li svg {
-      color: var(--gold);
+      color: var(--emerald);
       flex-shrink: 0;
     }
 
-    /* Botões de Abertura */
     .btn-module-open {
       width: 100%;
-      padding: 0.88rem 1.25rem;
       border-radius: 10px;
+      padding: 0.85rem 1.25rem;
       font-family: inherit;
       font-size: 0.92rem;
       font-weight: 700;
@@ -272,15 +353,13 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      cursor: pointer;
-      border: 1px solid transparent;
       transition: background-color 0.18s ease, transform 0.12s var(--ease-out);
     }
 
     .card-transporte .btn-module-open {
       background: var(--gold);
       color: #091710;
-      border-color: var(--gold-deep);
+      border: 1px solid var(--gold-deep);
     }
 
     .card-transporte .btn-module-open:hover {
@@ -289,93 +368,151 @@
     }
 
     .card-aee .btn-module-open {
-      background: #1d4ed8;
+      background: #1e3a8a;
       color: #ffffff;
-      border-color: #1e40af;
+      border: 1px solid #2563eb;
     }
 
     .card-aee .btn-module-open:hover {
-      background: #2563eb;
+      background: #1d4ed8;
       transform: translateY(-1px);
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .module-card, .btn-module-open {
-        animation: none !important;
-        transition: none !important;
-      }
+    .card-voluntarios .btn-module-open {
+      background: #064e3b;
+      color: #6ee7b7;
+      border: 1px solid #059669;
     }
 
-    @media (max-width: 640px) {
+    .card-voluntarios .btn-module-open:hover {
+      background: #047857;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    /* Estado de Carregamento Inicial */
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      z-index: 100;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+
+    #loadingOverlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid rgba(249, 195, 31, 0.2);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
       .topbar {
         padding: 0.85rem 1rem;
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
       }
-      .workspace-container {
-        padding: 2rem 1rem 3rem;
+      .topbar-actions {
+        justify-content: space-between;
       }
-      .modules-grid {
-        grid-template-columns: 1fr;
+      .user-pill {
+        max-width: 220px;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Barra de Navegação Superior -->
-  <nav class="topbar">
-    <a href="/" class="topbar-brand" title="Voltar ao portal da escola">
+  <!-- Overlay de Carregamento Seguro -->
+  <div id="loadingOverlay">
+    <div class="spinner"></div>
+    <p style="font-size: 0.9rem; color: var(--text-muted);">Verificando credenciais no Google...</p>
+  </div>
+
+  <!-- Barra Superior -->
+  <header class="topbar">
+    <a href="/sistemas/hub.html" class="topbar-brand">
       <div class="topbar-emblem">
-        <img src="/logo.png" alt="Brasão Castro Alves" onerror="this.style.display='none'">
+        <img src="/logo.png" alt="Castro Alves" onerror="this.style.display='none'">
       </div>
       <div class="topbar-identity">
-        <h2>Castro Alves</h2>
-        <p>Administração Escolar</p>
+        <h2>Painel Administrativo</h2>
+        <p>Escola Municipal Castro Alves</p>
       </div>
     </a>
 
     <div class="topbar-actions">
-      <a href="/" class="nav-btn">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-        <span>Portal Público</span>
+      <div class="user-pill" id="userPill">
+        <span class="user-email-text" id="userEmailDisplay">Carregando...</span>
+        <span class="user-role role-secretaria" id="userRoleBadge">SECRETARIA</span>
+      </div>
+
+      <a href="/" class="nav-btn" target="_blank">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        <span>Ver Portal</span>
       </a>
-      <button class="nav-btn nav-btn-logout" onclick="encerrarSessao()" title="Sair da sessão">
+
+      <button id="btnLogout" class="nav-btn nav-btn-logout">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        <span>Encerrar</span>
+        <span>Sair</span>
       </button>
     </div>
-  </nav>
+  </header>
 
-  <!-- Área de Trabalho -->
+  <!-- Conteúdo Principal -->
   <main class="workspace-container">
     <header class="workspace-header">
-      <h1 class="workspace-title">Central de Carteirinhas</h1>
-      <p class="workspace-desc">Plataforma de controle operacional e emissão documental com sincronização contínua às planilhas institucionais.</p>
+      <h1 class="workspace-title">Módulos Operacionais</h1>
+      <p class="workspace-desc">Selecione o sistema desejado para emissão de carteirinhas, gestão de autorizações ou controle de frequência.</p>
     </header>
 
+    <div class="permission-notice" id="permissionNotice">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <span id="permissionText">Você está conectado com privilégios de <strong>Secretaria Geral</strong>. Todos os módulos estão liberados para consulta e alteração.</span>
+    </div>
+
     <div class="modules-grid">
-      
+
       <!-- Módulo Transporte Escolar -->
-      <article class="module-card card-transporte">
+      <article class="module-card card-transporte" id="cardTransporte">
         <div>
           <div class="module-badge">
-            <span class="badge-indicator"></span>
-            <span>Planilha Google Conectada</span>
+            <span class="badge-indicator badge-indicator-gold"></span>
+            <span>Planilha de Transporte Conectada</span>
           </div>
           <h2 class="module-title">Transporte Escolar</h2>
-          <p class="module-summary">Emissão de credenciais para transporte municipal, pesquisa de matrícula e geração de QR Code de contato familiar.</p>
+          <p class="module-summary">Consulta e geração individual ou em lote de carteirinhas estudantis integradas à base oficial de rotas.</p>
           
           <ul class="module-capabilities">
             <li>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>Emissão em lote via planilha ativa</span>
+              <span>Filtro por Rota, Turno e Turma</span>
             </li>
             <li>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>Padronização oficial de impressão 10x7</span>
+              <span>Exportação pronta para impressão</span>
             </li>
             <li>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-              <span>Acesso rápido ao contato do responsável</span>
+              <span>Sincronização com dados do Google Sheets</span>
             </li>
           </ul>
         </div>
@@ -387,10 +524,10 @@
       </article>
 
       <!-- Módulo Saída Antecipada (AEE) -->
-      <article class="module-card card-aee">
+      <article class="module-card card-aee" id="cardAEE">
         <div>
           <div class="module-badge">
-            <span class="badge-indicator"></span>
+            <span class="badge-indicator badge-indicator-blue"></span>
             <span>Base AEE Conectada</span>
           </div>
           <h2 class="module-title">Saída Antecipada (AEE)</h2>
@@ -418,19 +555,129 @@
         </a>
       </article>
 
+      <!-- Módulo Gestão de Voluntários Sociais (Novo) -->
+      <article class="module-card card-voluntarios" id="cardVoluntarios">
+        <div>
+          <div class="module-badge">
+            <span class="badge-indicator"></span>
+            <span>Gestão de Frequência & Faltas</span>
+          </div>
+          <h2 class="module-title">Voluntários Sociais</h2>
+          <p class="module-summary">Registro de faltas, controle de justificativas, agendamento de reposição de dias e relatórios da equipe de apoio.</p>
+          
+          <ul class="module-capabilities">
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Lançamento rápido de faltas em 3 toques</span>
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Controle de reposição: agendado vs cumprido</span>
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Relatórios mensais para prestação de contas</span>
+            </li>
+          </ul>
+        </div>
+
+        <a href="/sistemas/voluntarios/index.html" class="btn-module-open" id="btnLinkVoluntarios">
+          <span>Acessar Gestão de Faltas</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </article>
+
     </div>
   </main>
 
-  <script>
-    if (sessionStorage.getItem('castro_alves_auth') !== 'true') {
-      window.location.replace('/sistemas/index.html');
+  <script type="module">
+    import { 
+      auth, 
+      signOut, 
+      onAuthStateChanged, 
+      obterPerfilUsuario 
+    } from "./firebase-config.js";
+
+    const loadingOverlay = document.getElementById('loadingOverlay');
+    const userEmailDisplay = document.getElementById('userEmailDisplay');
+    const userRoleBadge = document.getElementById('userRoleBadge');
+    const permissionText = document.getElementById('permissionText');
+    const btnLogout = document.getElementById('btnLogout');
+
+    const cardTransporte = document.getElementById('cardTransporte');
+    const cardAEE = document.getElementById('cardAEE');
+    const cardVoluntarios = document.getElementById('cardVoluntarios');
+
+    // Validação de Sessão com Firebase em Tempo Real
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        // Não está logado: redireciona para a tela de login
+        sessionStorage.clear();
+        localStorage.removeItem('sigea_auth');
+        window.location.replace('/sistemas/index.html');
+        return;
+      }
+
+      // Usuário autenticado pelo Google! Obter perfil e permissões
+      const perfil = await obterPerfilUsuario(user);
+      aplicarPermissoes(perfil);
+      
+      loadingOverlay.classList.add('hidden');
+    });
+
+    function aplicarPermissoes(perfil) {
+      userEmailDisplay.textContent = perfil.email || 'Usuário';
+      const role = (perfil.perfil || 'secretaria').toLowerCase();
+
+      // Configuração visual do crachá
+      userRoleBadge.className = 'user-role';
+
+      if (role === 'secretaria') {
+        userRoleBadge.classList.add('role-secretaria');
+        userRoleBadge.textContent = 'SECRETARIA · TUDO';
+        permissionText.innerHTML = 'Você está conectado como <strong>Secretaria Geral</strong>. Todos os módulos estão liberados para consulta e emissão.';
+        cardTransporte.style.display = 'flex';
+        cardAEE.style.display = 'flex';
+        cardVoluntarios.style.display = 'flex';
+      } 
+      else if (role === 'voluntarios') {
+        userRoleBadge.classList.add('role-voluntarios');
+        userRoleBadge.textContent = 'VOLUNTÁRIOS';
+        permissionText.innerHTML = 'Você está conectado como <strong>Coordenação de Voluntários</strong>. Apenas o módulo de frequência e faltas está ativo para seu perfil.';
+        cardTransporte.style.display = 'none';
+        cardAEE.style.display = 'none';
+        cardVoluntarios.style.display = 'flex';
+      } 
+      else if (role === 'aee') {
+        userRoleBadge.classList.add('role-aee');
+        userRoleBadge.textContent = 'AEE / SALA DE RECURSOS';
+        permissionText.innerHTML = 'Você está conectado como <strong>Sala de Recursos (AEE)</strong>. Apenas as carteirinhas de AEE estão liberadas.';
+        cardTransporte.style.display = 'none';
+        cardAEE.style.display = 'flex';
+        cardVoluntarios.style.display = 'none';
+      } 
+      else if (role === 'transporte') {
+        userRoleBadge.classList.add('role-transporte');
+        userRoleBadge.textContent = 'TRANSPORTE';
+        permissionText.innerHTML = 'Você está conectado como <strong>Transporte Escolar</strong>. Apenas as carteirinhas de transporte estão liberadas.';
+        cardTransporte.style.display = 'flex';
+        cardAEE.style.display = 'none';
+        cardVoluntarios.style.display = 'none';
+      }
     }
 
-    function encerrarSessao() {
-      sessionStorage.removeItem('castro_alves_auth');
-      localStorage.removeItem('sigea_auth');
-      window.location.replace('/sistemas/index.html');
-    }
+    // Ação de Logout Seguro
+    btnLogout.addEventListener('click', async () => {
+      try {
+        await signOut(auth);
+        sessionStorage.clear();
+        localStorage.removeItem('sigea_auth');
+        window.location.replace('/sistemas/index.html');
+      } catch (err) {
+        console.error("Erro ao sair:", err);
+        window.location.replace('/sistemas/index.html');
+      }
+    });
   </script>
 </body>
 </html>
