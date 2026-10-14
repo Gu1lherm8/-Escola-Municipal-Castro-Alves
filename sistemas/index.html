@@ -358,7 +358,7 @@
       onAuthStateChanged,
       sendPasswordResetEmail,
       obterPerfilUsuario 
-    } from "./firebase-config.js";
+    } from "./firebase-config.js?v=2";
 
     const accessForm = document.getElementById('accessForm');
     const emailInput = document.getElementById('userEmail');
@@ -373,6 +373,7 @@
     // Se já estiver logado com Firebase, vai direto para o Hub
     onAuthStateChanged(auth, async (user) => {
       if (user) {
+        console.log("Usuário já autenticado:", user.email);
         const perfil = await obterPerfilUsuario(user);
         sessionStorage.setItem('castro_alves_user', JSON.stringify(perfil));
         sessionStorage.setItem('castro_alves_auth', 'true');
@@ -392,8 +393,7 @@
 
       btnSubmit.disabled = true;
       btnSubmit.innerHTML = `
-        <svg class="animate-spin" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10"/></svg>
-        <span>Verificando com o Google...</span>
+        <span>Validando com o Google...</span>
       `;
 
       try {
@@ -405,10 +405,8 @@
         sessionStorage.setItem('castro_alves_auth', 'true');
         localStorage.setItem('sigea_auth', 'ok');
 
-        btnSubmit.innerHTML = '<span>Autenticado com sucesso!</span>';
-        setTimeout(() => {
-          window.location.replace('/sistemas/hub.html');
-        }, 300);
+        btnSubmit.innerHTML = '<span>Entrando no painel...</span>';
+        window.location.replace('/sistemas/hub.html');
 
       } catch (error) {
         console.error("Erro Firebase Auth:", error);
@@ -419,16 +417,17 @@
         `;
 
         if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
-          errMsg.textContent = 'E-mail ou senha incorretos. Verifique e tente novamente.';
+          errMsg.textContent = 'E-mail ou senha incorretos no Firebase. Verifique e tente novamente.';
+        } else if (error.code === 'auth/unauthorized-domain') {
+          errMsg.textContent = 'Domínio Vercel ainda não autorizado no Firebase. Autorize "escola-municipal-castro-alves.vercel.app" nas configurações do Firebase.';
         } else if (error.code === 'auth/too-many-requests') {
-          errMsg.textContent = 'Muitas tentativas sem sucesso. Aguarde alguns instantes.';
+          errMsg.textContent = 'Muitas tentativas. Aguarde 1 minuto e tente novamente.';
         } else if (error.code === 'auth/invalid-email') {
           errMsg.textContent = 'Formato de e-mail inválido.';
         } else {
-          errMsg.textContent = 'Não foi possível autenticar. Verifique sua conexão.';
+          errMsg.textContent = `Aviso do Google: ${error.message} (${error.code || 'erro'})`;
         }
         errBox.classList.add('active');
-        passInput.value = '';
         passInput.focus();
       }
     });

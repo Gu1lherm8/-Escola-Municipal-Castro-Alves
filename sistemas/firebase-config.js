@@ -11,9 +11,7 @@ import {
   getFirestore, 
   doc, 
   getDoc, 
-  setDoc,
-  collection,
-  getDocs
+  setDoc 
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -30,58 +28,57 @@ export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
+// Lista de e-mails com permissão de Secretaria Geral (Super Administrador)
+const ADMIN_EMAILS = [
+  'jfernandes.guilherme.lima@gmail.com',
+  'secretaria@castroalves.escola',
+  'admin@castroalves.escola'
+];
+
 /**
- * Perfis disponíveis no sistema:
- * - 'secretaria': Acesso total a todos os módulos e configurações
- * - 'voluntarios': Lançamento e consulta de faltas e reposições de voluntários sociais
- * - 'aee': Carteirinhas e autorizações do AEE (Sala de Recursos)
- * - 'transporte': Carteirinhas do Transporte Escolar
+ * Obtém o perfil do usuário garantindo que NUNCA trave (com timeout de 2 segundos)
  */
 export async function obterPerfilUsuario(user) {
   if (!user) return null;
-  
-  try {
-    const docRef = doc(db, "usuarios", user.uid);
-    const docSnap = await getDoc(docRef);
-    
-    if (docSnap.exists()) {
-      return { uid: user.uid, email: user.email, ...docSnap.data() };
-    } else {
-      // Perfil padrão caso o documento ainda não tenha sido criado no Firestore
-      // Se for o primeiro usuário ou e-mail de secretaria/admin, recebe perfil 'secretaria'
-      const isMasterAdmin = user.email.toLowerCase().includes('admin') || 
-                            user.email.toLowerCase().includes('secretaria') ||
-                            user.email.toLowerCase().includes('direcao');
-      
-      const perfilPadrao = {
-        uid: user.uid,
-        email: user.email,
-        nome: user.displayName || user.email.split('@')[0],
-        perfil: isMasterAdmin ? 'secretaria' : 'voluntarios',
-        ativo: true,
-        criadoEm: new Date().toISOString()
-      };
 
-      // Tenta salvar no Firestore para os próximos acessos
-      try {
-        await setDoc(docRef, perfilPadrao, { merge: true });
-      } catch (err) {
-        console.warn("Não foi possível salvar perfil inicial no Firestore:", err);
+  const emailLower = (user.email || '').toLowerCase();
+  const isMasterAdmin = ADMIN_EMAILS.includes(emailLower) || 
+                        emailLower.includes('admin') || 
+                        emailLower.includes('secretaria') ||
+                        emailLower.includes('direcao');
+
+  const perfilPadrao = {
+    uid: user.uid,
+    email: user.email,
+    nome: user.displayName || user.email.split('@')[0],
+    perfil: isMasterAdmin ? 'secretaria' : 'voluntarios',
+    ativo: true,
+    carregadoEm: new Date().toISOString()
+  };
+
+  // Promessa com timeout de 2 segundos para o Firestore nunca travar a tela
+  const promessaFirestore = async () => {
+    try {
+      const docRef = doc(db, "usuarios", user.uid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        return { uid: user.uid, email: user.email, ...docSnap.data() };
+      } else {
+        // Tenta salvar em segundo plano sem travar
+        setDoc(docRef, perfilPadrao, { merge: true }).catch(() => {});
+        return perfilPadrao;
       }
-
+    } catch (err) {
+      console.warn("Firestore offline ou aguardando regras:", err);
       return perfilPadrao;
     }
-  } catch (error) {
-    console.error("Erro ao obter perfil do usuário:", error);
-    // Fallback seguro em caso de timeout de rede
-    return {
-      uid: user.uid,
-      email: user.email,
-      nome: user.email.split('@')[0],
-      perfil: user.email.toLowerCase().includes('secretaria') ? 'secretaria' : 'voluntarios',
-      ativo: true
-    };
-  }
+  };
+
+  const timeoutPromessa = new Promise((resolve) => {
+    setTimeout(() => resolve(perfilPadrao), 1800);
+  });
+
+  return Promise.race([promessaFirestore(), timeoutPromessa]);
 }
 
 export { signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail };

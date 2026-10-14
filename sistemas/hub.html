@@ -596,7 +596,7 @@
       signOut, 
       onAuthStateChanged, 
       obterPerfilUsuario 
-    } from "./firebase-config.js";
+    } from "./firebase-config.js?v=2";
 
     const loadingOverlay = document.getElementById('loadingOverlay');
     const userEmailDisplay = document.getElementById('userEmailDisplay');
@@ -607,6 +607,11 @@
     const cardTransporte = document.getElementById('cardTransporte');
     const cardAEE = document.getElementById('cardAEE');
     const cardVoluntarios = document.getElementById('cardVoluntarios');
+
+    // Timer de segurança para nunca travar a tela
+    setTimeout(() => {
+      if (loadingOverlay) loadingOverlay.classList.add('hidden');
+    }, 2500);
 
     // Validação de Sessão com Firebase em Tempo Real
     onAuthStateChanged(auth, async (user) => {
