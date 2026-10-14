@@ -608,26 +608,40 @@
     const cardAEE = document.getElementById('cardAEE');
     const cardVoluntarios = document.getElementById('cardVoluntarios');
 
-    // Timer de segurança para nunca travar a tela
-    setTimeout(() => {
-      if (loadingOverlay) loadingOverlay.classList.add('hidden');
-    }, 2500);
+    // 1. Aplicação instantânea do perfil salvo na sessão (zero flicker)
+    const perfilSalvoStr = sessionStorage.getItem('castro_alves_user');
+    const authAtiva = sessionStorage.getItem('castro_alves_auth') === 'true';
 
-    // Validação de Sessão com Firebase em Tempo Real
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        // Não está logado: redireciona para a tela de login
-        sessionStorage.clear();
-        localStorage.removeItem('sigea_auth');
-        window.location.replace('/sistemas/index.html');
-        return;
+    if (perfilSalvoStr) {
+      try {
+        const perfilInicial = JSON.parse(perfilSalvoStr);
+        aplicarPermissoes(perfilInicial);
+        if (loadingOverlay) loadingOverlay.classList.add('hidden');
+      } catch (err) {
+        console.warn("Erro ao ler perfil salvo:", err);
       }
+    }
 
-      // Usuário autenticado pelo Google! Obter perfil e permissões
-      const perfil = await obterPerfilUsuario(user);
-      aplicarPermissoes(perfil);
-      
-      loadingOverlay.classList.add('hidden');
+    // 2. Validação oficial com Firebase Auth em segundo plano
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const perfil = await obterPerfilUsuario(user);
+        sessionStorage.setItem('castro_alves_user', JSON.stringify(perfil));
+        sessionStorage.setItem('castro_alves_auth', 'true');
+        localStorage.setItem('sigea_auth', 'ok');
+        aplicarPermissoes(perfil);
+        if (loadingOverlay) loadingOverlay.classList.add('hidden');
+      } else {
+        // Só redireciona se realmente não houver nenhuma sessão válida
+        if (!sessionStorage.getItem('castro_alves_auth')) {
+          sessionStorage.clear();
+          localStorage.removeItem('sigea_auth');
+          window.location.replace('/sistemas/index.html');
+        } else {
+          // Mantém o painel visível se já autenticado na sessão
+          if (loadingOverlay) loadingOverlay.classList.add('hidden');
+        }
+      }
     });
 
     function aplicarPermissoes(perfil) {

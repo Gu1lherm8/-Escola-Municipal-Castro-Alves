@@ -368,12 +368,15 @@
     const errBox = document.getElementById('errorNotification');
     const errMsg = document.getElementById('errorMessage');
     const succBox = document.getElementById('successNotification');
-    const succMsg = document.getElementById('successMessage');
+    // Se já estiver logado na sessão atual, vai direto para o Hub
+    if (sessionStorage.getItem('castro_alves_auth') === 'true') {
+      window.location.replace('/sistemas/hub.html');
+    }
 
     // Se já estiver logado com Firebase, vai direto para o Hub
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        console.log("Usuário já autenticado:", user.email);
+        console.log("Usuário já autenticado no Firebase:", user.email);
         const perfil = await obterPerfilUsuario(user);
         sessionStorage.setItem('castro_alves_user', JSON.stringify(perfil));
         sessionStorage.setItem('castro_alves_auth', 'true');
