@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestão de Voluntários & Faltas · Escola Municipal Castro Alves</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07150e;
+      --surface: #0d2217;
+      --surface-raised: #132c1f;
+      --surface-highlight: #183727;
+      --border: rgba(181, 201, 154, 0.16);
+      --border-focus: #f9c31f;
+      --gold: #f9c31f;
+      --gold-deep: #c9980e;
+      --emerald: #10b981;
+      --emerald-dark: #064e3b;
+      --emerald-light: #6ee7b7;
+      --amber: #f59e0b;
+      --amber-bg: rgba(245, 158, 11, 0.12);
+      --danger: #ef4444;
+      --danger-bg: rgba(239, 68, 68, 0.12);
+      --text: #f0f6f2;
+      --text-muted: #9bb7a7;
+      --placeholder: #8db59f;
+      --shadow-card: 0 16px 36px -10px rgba(0, 0, 0, 0.55), 0 4px 10px rgba(0, 0, 0, 0.25);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    ::selection {
+      background: var(--gold);
+      color: #07150e;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-image: linear-gradient(180deg, #05100a 0%, #07150e 45%, #05100a 100%);
+      background-attachment: fixed;
+    }
+
+    /* Barra Superior Fixa */
+    .topbar {
+      width: 100%;
+      background: rgba(13, 34, 23, 0.92);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      padding: 0.85rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-back-hub {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.45rem 0.8rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      transition: background-color 0.18s ease, color 0.18s ease;
+    }
+
+    .btn-back-hub:hover {
+      background: var(--surface-raised);
+      color: #ffffff;
+    }
+
+    .brand-title h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+
+    .brand-title p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .user-tag {
+      background: var(--surface-raised);
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.8rem;
+      border-radius: 9999px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .user-tag strong {
+      color: var(--emerald-light);
+    }
+
+    /* Conteúdo */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.25rem 1.5rem 4rem;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* Cabeçalho da Página */
+    .page-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .header-info h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .header-info p {
+      font-family: 'Newsreader', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      background: var(--emerald);
+      color: #062b1a;
+      border: 1px solid #059669;
+      border-radius: 10px;
+      padding: 0.7rem 1.2rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      transition: background-color 0.18s ease, transform 0.12s var(--ease-out);
+    }
+
+    .btn-primary:hover {
+      background: #34d399;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--surface-raised);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.7rem 1.1rem;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: background-color 0.18s ease, color 0.18s ease;
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-highlight);
+      color: #ffffff;
+    }
+
+    /* Métricas / Cards Rápidos (REA Tangerino / Pontomais) */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.25rem;
+    }
+
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem 1.4rem;
+      box-shadow: var(--shadow-card);
+      position: relative;
+    }
+
+    .metric-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.6rem;
+    }
+
+    .metric-value {
+      font-family: 'Cinzel', serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1;
+    }
+
+    .metric-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.45rem;
+    }
+
+    .metric-danger .metric-value { color: #fca5a5; }
+    .metric-amber .metric-value { color: #fde047; }
+    .metric-emerald .metric-value { color: #6ee7b7; }
+
+    /* Segmented Control / Abas (REA iOS / Linear) */
+    .segmented-nav {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px;
+      display: inline-flex;
+      gap: 4px;
+      margin-bottom: 1.75rem;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.65rem 0.9rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 0.18s ease, color 0.18s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--surface-raised);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Lista e Feed de Faltas */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .feed-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .feed-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-chip {
+      background: var(--surface-raised);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .filter-chip.active {
+      background: rgba(249, 195, 31, 0.15);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* Cartão Individual de Falta */
+    .absence-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .absence-card {
+      background: var(--surface-raised);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      transition: border-color 0.18s ease;
+    }
+
+    .absence-card:hover {
+      border-color: rgba(249, 195, 31, 0.35);
+    }
+
+    .absence-main {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .absence-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: #183d2a;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #6ee7b7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .absence-details h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .absence-meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .absence-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .badge-pending {
+      background: var(--amber-bg);
+      color: #fde047;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .badge-done {
+      background: rgba(16, 185, 129, 0.15);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .badge-no-repay {
+      background: var(--danger-bg);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .absence-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-resolve {
+      background: var(--emerald-dark);
+      border: 1px solid var(--emerald);
+      color: var(--emerald-light);
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.5rem 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.18s ease, color 0.18s ease;
+    }
+
+    .btn-resolve:hover {
+      background: var(--emerald);
+      color: #062b1a;
+    }
+
+    .btn-delete {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      border-radius: 8px;
+      padding: 0.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .btn-delete:hover {
+      color: #f87171;
+      background: var(--danger-bg);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3.5rem 1.5rem;
+      color: var(--text-muted);
+    }
+
+    .empty-state svg {
+      color: #4b6b59;
+      margin-bottom: 1rem;
+    }
+
+    .empty-state h3 {
+      font-size: 1.1rem;
+      color: #ffffff;
+      margin-bottom: 0.4rem;
+    }
+
+    /* Modal / Bottom Sheet (REA Emil Kowalski + Apple) */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.22s var(--ease-out), visibility 0.22s var(--ease-out);
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-sheet {
+      width: 100%;
+      max-width: 520px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2.25rem;
+      box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.85);
+      transform: translateY(18px);
+      transition: transform 0.25s var(--ease-out);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-overlay.active .modal-sheet {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.75rem;
+    }
+
+    .modal-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 4px;
+    }
+
+    .modal-close:hover {
+      color: #ffffff;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.45rem;
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      background: var(--surface-raised);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 0.92rem;
+      padding: 0.78rem 1rem;
+      outline: none;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--border-focus);
+      background: #183827;
+    }
+
+    .repay-toggle-box {
+      background: var(--surface-raised);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .toggle-label-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .toggle-label-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Switch iOS */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background-color: #2a4738;
+      transition: 0.25s var(--ease-out);
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.25s var(--ease-out);
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--emerald);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+
+    .repay-details {
+      display: none;
+      margin-top: 1.1rem;
+      padding-top: 1.1rem;
+      border-top: 1px dashed var(--border);
+    }
+
+    .repay-details.active {
+      display: block;
+      animation: fadeIn 0.25s var(--ease-out);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      .topbar { padding: 0.75rem 1rem; }
+      .container { padding: 1.5rem 1rem 3rem; }
+      .header-actions { width: 100%; }
+      .btn-primary, .btn-secondary { flex: 1; justify-content: center; }
+      .absence-card { flex-direction: column; align-items: flex-start; }
+      .absence-actions { width: 100%; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 10px; margin-top: 6px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barra Superior -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <a href="/sistemas/hub.html" class="btn-back-hub">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        <span>Voltar ao Painel</span>
+      </a>
+      <div class="brand-title">
+        <h1>Voluntários Sociais</h1>
+        <p>Controle de Frequência & Reposição</p>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <div class="user-tag">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+        <span id="userConnectedText">Conectado</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main class="container">
+    <div class="page-header">
+      <div class="header-info">
+        <h2>Registro de Ausências</h2>
+        <p>Acompanhamento de faltas, justificativas legais e agendamento de dias de reposição.</p>
+      </div>
+
+      <div class="header-actions">
+        <button id="btnNovoVoluntario" class="btn-secondary">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+          <span>Cadastrar Voluntário</span>
+        </button>
+
+        <button id="btnLancarFalta" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>Lançar Falta</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Indicadores / Métricas Rápidas -->
+    <section class="metrics-grid">
+      <div class="metric-card metric-danger">
+        <div class="metric-label">
+          <span>Faltas no Mês</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="metric-value" id="metricFaltas">0</div>
+        <div class="metric-sub">Lançadas no ciclo atual</div>
+      </div>
+
+      <div class="metric-card metric-amber">
+        <div class="metric-label">
+          <span>Reposições Pendentes</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="metric-value" id="metricPendentes">0</div>
+        <div class="metric-sub">Dias combinados a pagar</div>
+      </div>
+
+      <div class="metric-card metric-emerald">
+        <div class="metric-label">
+          <span>Reposições Cumpridas</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div class="metric-value" id="metricCumpridas">0</div>
+        <div class="metric-sub">Dias regularizados</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-label">
+          <span>Equipe Ativa</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="metric-value" id="metricVoluntarios">0</div>
+        <div class="metric-sub">Voluntários no cadastro</div>
+      </div>
+    </section>
+
+    <!-- Abas / Segmented Control -->
+    <nav class="segmented-nav" aria-label="Seções do módulo">
+      <button class="tab-btn active" data-tab="tabFaltas">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span>Painel de Faltas</span>
+      </button>
+
+      <button class="tab-btn" data-tab="tabVoluntarios">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        <span>Lista da Equipe</span>
+      </button>
+    </nav>
+
+    <!-- Aba 1: Painel de Faltas -->
+    <section id="tabFaltas" class="tab-content active">
+      <div class="feed-panel">
+        <div class="feed-header">
+          <div class="filter-group">
+            <button class="filter-chip active" data-filter="todos">Todas as Faltas</button>
+            <button class="filter-chip" data-filter="pendente">Aguardando Reposição</button>
+            <button class="filter-chip" data-filter="cumprido">Reposições Cumpridas</button>
+            <button class="filter-chip" data-filter="sem_reposicao">Sem Reposição</button>
+          </div>
+
+          <button id="btnExportarCsv" class="btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Baixar Relatório (Excel)</span>
+          </button>
+        </div>
+
+        <div id="absenceListContainer" class="absence-list">
+          <div class="empty-state">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <h3>Nenhuma falta registrada até o momento</h3>
+            <p>Clique em "+ Lançar Falta" acima para registrar a primeira ausência.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Aba 2: Lista da Equipe -->
+    <section id="tabVoluntarios" class="tab-content">
+      <div class="feed-panel">
+        <div class="feed-header">
+          <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff;">Voluntários Sociais Cadastrados</h3>
+        </div>
+
+        <div id="volunteersListContainer" class="absence-list">
+          <div class="empty-state">
+            <h3>Nenhum voluntário cadastrado</h3>
+            <p>Adicione os nomes da sua equipe clicando em "Cadastrar Voluntário".</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal: Lançar Falta -->
+  <div id="modalFalta" class="modal-overlay">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3 class="modal-title">Lançar Ausência</h3>
+        <button class="modal-close" id="btnCloseModalFalta" aria-label="Fechar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <form id="formFalta">
+        <div class="form-group">
+          <label class="form-label" for="selectVoluntario">Nome do Voluntário Social *</label>
+          <select id="selectVoluntario" class="form-select" required>
+            <option value="">Selecione o voluntário...</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="inputDataFalta">Data da Ausência / Falta *</label>
+          <input type="date" id="inputDataFalta" class="form-input" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="selectMotivo">Motivo da Ausência *</label>
+          <select id="selectMotivo" class="form-select" required>
+            <option value="Atestado Médico">Atestado Médico / Consulta</option>
+            <option value="Problema Pessoal / Familiar">Problema Pessoal / Familiar</option>
+            <option value="Transporte / Chuva">Imprevisto de Transporte</option>
+            <option value="Falta sem Justificativa">Falta sem Justificativa Prévia</option>
+            <option value="Outro">Outro Motivo</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="inputDescricao">Observação / Justificativa detalhada</label>
+          <textarea id="inputDescricao" class="form-textarea" rows="2" placeholder="Ex: Apresentou atestado de 1 dia ou comunicou com antecedência..."></textarea>
+        </div>
+
+        <!-- Pergunta de Ouro: Irá Repor? -->
+        <div class="repay-toggle-box">
+          <div class="toggle-row">
+            <div>
+              <div class="toggle-label-title">Irá repor o dia de trabalho?</div>
+              <div class="toggle-label-desc">Marque SIM para agendar a data de compensação</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="checkIraRepor">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div id="repayDetails" class="repay-details">
+            <div class="form-group">
+              <label class="form-label" for="inputDataRepor">Data Combinada para a Reposição *</label>
+              <input type="date" id="inputDataRepor" class="form-input">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="selectTurnoRepor">Turno da Reposição</label>
+              <select id="selectTurnoRepor" class="form-select">
+                <option value="Matutino">Turno Matutino</option>
+                <option value="Vespertino">Turno Vespertino</option>
+                <option value="Integral">Dia Integral</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 0.9rem;">
+          <span>Registrar Ausência no Sistema</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Cadastrar Voluntário -->
+  <div id="modalVoluntario" class="modal-overlay">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3 class="modal-title">Novo Voluntário Social</h3>
+        <button class="modal-close" id="btnCloseModalVoluntario" aria-label="Fechar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <form id="formVoluntario">
+        <div class="form-group">
+          <label class="form-label" for="inputVoluntarioNome">Nome Completo *</label>
+          <input type="text" id="inputVoluntarioNome" class="form-input" placeholder="Ex: Maria das Graças Silva" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="inputVoluntarioFuncao">Função / Setor *</label>
+          <select id="inputVoluntarioFuncao" class="form-select" required>
+            <option value="Apoio Pedagógico">Apoio Pedagógico</option>
+            <option value="Apoio Sala de Recursos (AEE)">Apoio Sala de Recursos (AEE)</option>
+            <option value="Monitoria de Pátio">Monitoria de Pátio</option>
+            <option value="Cozinha / Merenda">Cozinha / Merenda</option>
+            <option value="Portaria e Recepção">Portaria e Recepção</option>
+            <option value="Outro Setor">Outro Setor</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="selectVoluntarioTurno">Turno de Atuação *</label>
+          <select id="selectVoluntarioTurno" class="form-select" required>
+            <option value="Matutino">Matutino</option>
+            <option value="Vespertino">Vespertino</option>
+            <option value="Integral">Integral</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="inputVoluntarioTelefone">Telefone / WhatsApp</label>
+          <input type="tel" id="inputVoluntarioTelefone" class="form-input" placeholder="(61) 99999-9999">
+        </div>
+
+        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 0.9rem;">
+          <span>Salvar Voluntário</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { 
+      auth, 
+      db, 
+      onAuthStateChanged, 
+      obterPerfilUsuario 
+    } from "../firebase-config.js?v=2";
+    import { 
+      collection, 
+      addDoc, 
+      getDocs, 
+      doc, 
+      updateDoc, 
+      deleteDoc, 
+      query, 
+      orderBy 
+    } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+
+    // Elementos da Interface
+    const userConnectedText = document.getElementById('userConnectedText');
+    const metricFaltas = document.getElementById('metricFaltas');
+    const metricPendentes = document.getElementById('metricPendentes');
+    const metricCumpridas = document.getElementById('metricCumpridas');
+    const metricVoluntarios = document.getElementById('metricVoluntarios');
+
+    const modalFalta = document.getElementById('modalFalta');
+    const modalVoluntario = document.getElementById('modalVoluntario');
+    const btnLancarFalta = document.getElementById('btnLancarFalta');
+    const btnNovoVoluntario = document.getElementById('btnNovoVoluntario');
+    const btnCloseModalFalta = document.getElementById('btnCloseModalFalta');
+    const btnCloseModalVoluntario = document.getElementById('btnCloseModalVoluntario');
+    const checkIraRepor = document.getElementById('checkIraRepor');
+    const repayDetails = document.getElementById('repayDetails');
+
+    const formFalta = document.getElementById('formFalta');
+    const formVoluntario = document.getElementById('formVoluntario');
+    const selectVoluntario = document.getElementById('selectVoluntario');
+    const absenceListContainer = document.getElementById('absenceListContainer');
+    const volunteersListContainer = document.getElementById('volunteersListContainer');
+    const btnExportarCsv = document.getElementById('btnExportarCsv');
+
+    let currentUser = null;
+    let listaVoluntarios = [];
+    let listaFaltas = [];
+    let filtroAtual = 'todos';
+
+    // 1. Verificação de Autenticação
+    onAuthStateChanged(auth, async (user) => {
+      if (!user && !sessionStorage.getItem('castro_alves_auth')) {
+        window.location.replace('/sistemas/index.html');
+        return;
+      }
+      currentUser = user;
+      userConnectedText.textContent = user ? user.email.split('@')[0] : 'Usuário Autenticado';
+      carregarDados();
+    });
+
+    // 2. Alternador de Abas (Segmented Control)
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    // 3. Filtros Rápidos de Faltas
+    document.querySelectorAll('.filter-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        filtroAtual = chip.dataset.filter;
+        renderizarFaltas();
+      });
+    });
+
+    // 4. Modais
+    btnLancarFalta.addEventListener('click', () => {
+      document.getElementById('inputDataFalta').valueAsDate = new Date();
+      modalFalta.classList.add('active');
+    });
+
+    btnNovoVoluntario.addEventListener('click', () => {
+      modalVoluntario.classList.add('active');
+    });
+
+    btnCloseModalFalta.addEventListener('click', () => modalFalta.classList.remove('active'));
+    btnCloseModalVoluntario.addEventListener('click', () => modalVoluntario.classList.remove('active'));
+
+    checkIraRepor.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        repayDetails.classList.add('active');
+        document.getElementById('inputDataRepor').required = true;
+      } else {
+        repayDetails.classList.remove('active');
+        document.getElementById('inputDataRepor').required = false;
+      }
+    });
+
+    // 5. Carregamento de Dados (Firestore)
+    async function carregarDados() {
+      try {
+        // Carrega Voluntários
+        const snapVol = await getDocs(collection(db, "voluntarios"));
+        listaVoluntarios = [];
+        snapVol.forEach(docSnap => {
+          listaVoluntarios.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        // Carrega Faltas
+        const snapFaltas = await getDocs(collection(db, "faltas"));
+        listaFaltas = [];
+        snapFaltas.forEach(docSnap => {
+          listaFaltas.push({ id: docSnap.id, ...docSnap.data() });
+        });
+
+        // Ordena por data decrescente
+        listaFaltas.sort((a, b) => new Date(b.dataFalta) - new Date(a.dataFalta));
+
+        atualizarMetricas();
+        popularSelectVoluntarios();
+        renderizarFaltas();
+        renderizarVoluntarios();
+
+      } catch (err) {
+        console.warn("Erro ao buscar no Firestore, carregando armazenamento local:", err);
+        // Fallback local se estiver offline
+        listaVoluntarios = JSON.parse(localStorage.getItem('castro_voluntarios') || '[]');
+        listaFaltas = JSON.parse(localStorage.getItem('castro_faltas') || '[]');
+        atualizarMetricas();
+        popularSelectVoluntarios();
+        renderizarFaltas();
+        renderizarVoluntarios();
+      }
+    }
+
+    function popularSelectVoluntarios() {
+      selectVoluntario.innerHTML = '<option value="">Selecione o voluntário...</option>';
+      listaVoluntarios.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v.id || v.nome;
+        opt.textContent = `${v.nome} (${v.funcao || 'Apoio'})`;
+        selectVoluntario.appendChild(opt);
+      });
+    }
+
+    function atualizarMetricas() {
+      metricFaltas.textContent = listaFaltas.length;
+      metricPendentes.textContent = listaFaltas.filter(f => f.status === 'pendente').length;
+      metricCumpridas.textContent = listaFaltas.filter(f => f.status === 'cumprido').length;
+      metricVoluntarios.textContent = listaVoluntarios.length;
+    }
+
+    function renderizarFaltas() {
+      const filtradas = listaFaltas.filter(f => {
+        if (filtroAtual === 'pendente') return f.status === 'pendente';
+        if (filtroAtual === 'cumprido') return f.status === 'cumprido';
+        if (filtroAtual === 'sem_reposicao') return f.status === 'sem_reposicao';
+        return true;
+      });
+
+      if (filtradas.length === 0) {
+        absenceListContainer.innerHTML = `
+          <div class="empty-state">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <h3>Nenhuma falta encontrada neste filtro</h3>
+            <p>Alterne para "Todas as Faltas" ou cadastre um novo registro.</p>
+          </div>
+        `;
+        return;
+      }
+
+      absenceListContainer.innerHTML = '';
+      filtradas.forEach(f => {
+        const card = document.createElement('article');
+        card.className = 'absence-card';
+
+        let badgeHtml = '';
+        if (f.status === 'pendente') {
+          badgeHtml = `<span class="absence-badge badge-pending">Reposição em ${formatarData(f.dataRepor)}</span>`;
+        } else if (f.status === 'cumprido') {
+          badgeHtml = `<span class="absence-badge badge-done">Reposição Cumprida ✓</span>`;
+        } else {
+          badgeHtml = `<span class="absence-badge badge-no-repay">Sem Reposição</span>`;
+        }
+
+        const inicial = (f.voluntarioNome || 'V')[0].toUpperCase();
+
+        card.innerHTML = `
+          <div class="absence-main">
+            <div class="absence-avatar">${inicial}</div>
+            <div class="absence-details">
+              <h3>${f.voluntarioNome}</h3>
+              <div class="absence-meta">
+                <span>📅 Falta: <strong>${formatarData(f.dataFalta)}</strong></span>
+                <span>• Motivo: ${f.motivo}</span>
+                ${badgeHtml}
+              </div>
+              ${f.descricao ? `<p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">💬 "${f.descricao}"</p>` : ''}
+            </div>
+          </div>
+
+          <div class="absence-actions">
+            ${f.status === 'pendente' ? `
+              <button class="btn-resolve" onclick="window.marcarComoCumprido('${f.id}')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Confirmar Reposição</span>
+              </button>
+            ` : ''}
+
+            <button class="btn-delete" title="Excluir Registro" onclick="window.excluirFalta('${f.id}')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </button>
+          </div>
+        `;
+        absenceListContainer.appendChild(card);
+      });
+    }
+
+    function renderizarVoluntarios() {
+      if (listaVoluntarios.length === 0) {
+        volunteersListContainer.innerHTML = `
+          <div class="empty-state">
+            <h3>Nenhum voluntário cadastrado</h3>
+            <p>Clique no botão "Cadastrar Voluntário" para adicionar membros da equipe.</p>
+          </div>
+        `;
+        return;
+      }
+
+      volunteersListContainer.innerHTML = '';
+      listaVoluntarios.forEach(v => {
+        const item = document.createElement('div');
+        item.className = 'absence-card';
+        const inicial = (v.nome || 'V')[0].toUpperCase();
+
+        item.innerHTML = `
+          <div class="absence-main">
+            <div class="absence-avatar">${inicial}</div>
+            <div class="absence-details">
+              <h3>${v.nome}</h3>
+              <div class="absence-meta">
+                <span>🏷️ ${v.funcao || 'Apoio'}</span>
+                <span>• Turno: ${v.turno || 'Matutino'}</span>
+                ${v.telefone ? `<span>• 📞 ${v.telefone}</span>` : ''}
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-delete" title="Remover Voluntário" onclick="window.excluirVoluntario('${v.id}')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          </button>
+        `;
+        volunteersListContainer.appendChild(item);
+      });
+    }
+
+    // 6. Envio de Formulários
+    formFalta.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const voluntarioSelect = selectVoluntario;
+      const voluntarioNome = voluntarioSelect.options[voluntarioSelect.selectedIndex].text.split(' (')[0];
+      const dataFalta = document.getElementById('inputDataFalta').value;
+      const motivo = document.getElementById('selectMotivo').value;
+      const descricao = document.getElementById('inputDescricao').value;
+      const iraRepor = checkIraRepor.checked;
+      const dataRepor = iraRepor ? document.getElementById('inputDataRepor').value : null;
+      const turnoRepor = iraRepor ? document.getElementById('selectTurnoRepor').value : null;
+
+      const novaFalta = {
+        voluntarioNome,
+        dataFalta,
+        motivo,
+        descricao,
+        iraRepor,
+        dataRepor,
+        turnoRepor,
+        status: iraRepor ? 'pendente' : 'sem_reposicao',
+        registradoPor: currentUser ? currentUser.email : 'secretaria',
+        criadoEm: new Date().toISOString()
+      };
+
+      try {
+        const docRef = await addDoc(collection(db, "faltas"), novaFalta);
+        novaFalta.id = docRef.id;
+      } catch (err) {
+        novaFalta.id = 'local_' + Date.now();
+      }
+
+      listaFaltas.unshift(novaFalta);
+      localStorage.setItem('castro_faltas', JSON.stringify(listaFaltas));
+
+      atualizarMetricas();
+      renderizarFaltas();
+      modalFalta.classList.remove('active');
+      formFalta.reset();
+      repayDetails.classList.remove('active');
+    });
+
+    formVoluntario.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nome = document.getElementById('inputVoluntarioNome').value.trim();
+      const funcao = document.getElementById('inputVoluntarioFuncao').value;
+      const turno = document.getElementById('selectVoluntarioTurno').value;
+      const telefone = document.getElementById('inputVoluntarioTelefone').value.trim();
+
+      const novoVol = {
+        nome,
+        funcao,
+        turno,
+        telefone,
+        ativo: true,
+        criadoEm: new Date().toISOString()
+      };
+
+      try {
+        const docRef = await addDoc(collection(db, "voluntarios"), novoVol);
+        novoVol.id = docRef.id;
+      } catch (err) {
+        novoVol.id = 'local_' + Date.now();
+      }
+
+      listaVoluntarios.push(novoVol);
+      localStorage.setItem('castro_voluntarios', JSON.stringify(listaVoluntarios));
+
+      atualizarMetricas();
+      popularSelectVoluntarios();
+      renderizarVoluntarios();
+      modalVoluntario.classList.remove('active');
+      formVoluntario.reset();
+    });
+
+    // 7. Funções Globais de Ação
+    window.marcarComoCumprido = async (id) => {
+      const falta = listaFaltas.find(f => f.id === id);
+      if (!falta) return;
+
+      if (confirm(`Confirmar que ${falta.voluntarioNome} compareceu e cumpriu o dia de reposição?`)) {
+        falta.status = 'cumprido';
+        falta.cumpridoEm = new Date().toISOString();
+
+        try {
+          await updateDoc(doc(db, "faltas", id), { status: 'cumprido', cumpridoEm: falta.cumpridoEm });
+        } catch (e) {}
+
+        localStorage.setItem('castro_faltas', JSON.stringify(listaFaltas));
+        atualizarMetricas();
+        renderizarFaltas();
+      }
+    };
+
+    window.excluirFalta = async (id) => {
+      if (confirm('Tem certeza que deseja excluir este registro de falta?')) {
+        listaFaltas = listaFaltas.filter(f => f.id !== id);
+        try {
+          await deleteDoc(doc(db, "faltas", id));
+        } catch (e) {}
+        localStorage.setItem('castro_faltas', JSON.stringify(listaFaltas));
+        atualizarMetricas();
+        renderizarFaltas();
+      }
+    };
+
+    window.excluirVoluntario = async (id) => {
+      if (confirm('Tem certeza que deseja remover este voluntário do cadastro?')) {
+        listaVoluntarios = listaVoluntarios.filter(v => v.id !== id);
+        try {
+          await deleteDoc(doc(db, "voluntarios", id));
+        } catch (e) {}
+        localStorage.setItem('castro_voluntarios', JSON.stringify(listaVoluntarios));
+        atualizarMetricas();
+        popularSelectVoluntarios();
+        renderizarVoluntarios();
+      }
+    };
+
+    function formatarData(dataStr) {
+      if (!dataStr) return '--';
+      const [ano, mes, dia] = dataStr.split('-');
+      return `${dia}/${mes}/${ano}`;
+    }
+
+    // 8. Exportação para Excel (CSV)
+    btnExportarCsv.addEventListener('click', () => {
+      if (listaFaltas.length === 0) {
+        alert('Não há faltas para exportar no momento.');
+        return;
+      }
+
+      let csv = 'Voluntário;Data da Falta;Motivo;Justificativa;Irá Repor?;Data Reposição;Turno Reposição;Status\n';
+      listaFaltas.forEach(f => {
+        csv += `"${f.voluntarioNome}";"${formatarData(f.dataFalta)}";"${f.motivo}";"${f.descricao || ''}";"${f.iraRepor ? 'SIM' : 'NÃO'}";"${f.dataRepor ? formatarData(f.dataRepor) : '--'}";"${f.turnoRepor || '--'}";"${f.status}"\n`;
+      });
+
+      const blob = new Blob(["\ufeff" + csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `relatorio_faltas_voluntarios_castro_alves_${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
