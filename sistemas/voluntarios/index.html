@@ -21,9 +21,13 @@
       --emerald-dark: #064e3b;
       --emerald-light: #6ee7b7;
       --amber: #f59e0b;
-      --amber-bg: rgba(245, 158, 11, 0.12);
+      --amber-bg: rgba(245, 158, 11, 0.14);
       --danger: #ef4444;
-      --danger-bg: rgba(239, 68, 68, 0.12);
+      --danger-bg: rgba(239, 68, 68, 0.14);
+      --terracotta: #f97316;
+      --terracotta-bg: rgba(249, 115, 22, 0.14);
+      --slate: #94a3b8;
+      --slate-bg: rgba(148, 163, 184, 0.12);
       --text: #f0f6f2;
       --text-muted: #9bb7a7;
       --placeholder: #8db59f;
@@ -132,7 +136,7 @@
 
     /* Conteúdo */
     .container {
-      max-width: 1100px;
+      max-width: 1120px;
       margin: 0 auto;
       padding: 2.25rem 1.5rem 4rem;
       width: 100%;
@@ -214,12 +218,12 @@
       color: #ffffff;
     }
 
-    /* Métricas / Cards Rápidos (REA Tangerino / Pontomais) */
+    /* Métricas / Cards Rápidos */
     .metrics-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.25rem;
-      margin-bottom: 2.25rem;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.15rem;
+      margin-bottom: 2rem;
     }
 
     .metric-card {
@@ -260,8 +264,173 @@
     .metric-danger .metric-value { color: #fca5a5; }
     .metric-amber .metric-value { color: #fde047; }
     .metric-emerald .metric-value { color: #6ee7b7; }
+    .metric-terracotta .metric-value { color: #fdba74; }
 
-    /* Segmented Control / Abas (REA iOS / Linear) */
+    /* Barra de Filtros Inteligentes (Ano, Mês, Voluntário e Status) */
+    .filter-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      box-shadow: var(--shadow-card);
+    }
+
+    .filter-controls-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .filter-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      min-width: 160px;
+    }
+
+    .filter-item label {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .filter-select {
+      background: var(--surface-raised);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 0.86rem;
+      padding: 0.55rem 0.85rem;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .filter-select:focus {
+      border-color: var(--border-focus);
+    }
+
+    .filter-chips-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .chips-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-chip {
+      background: var(--surface-raised);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.35rem 0.75rem;
+      border-radius: 9999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .filter-chip.active {
+      background: rgba(249, 195, 31, 0.15);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .filter-chip.chip-alert.active {
+      background: var(--danger-bg);
+      border-color: var(--danger);
+      color: #fca5a5;
+    }
+
+    .filter-chip.chip-payroll.active {
+      background: rgba(249, 195, 31, 0.15);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* Cartão do Dossiê do Voluntário Selecionado */
+    .volunteer-dossier {
+      display: none;
+      background: #112d1f;
+      border: 1px solid var(--emerald);
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      animation: fadeIn 0.25s var(--ease-out);
+    }
+
+    .volunteer-dossier.active {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .dossier-info h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .dossier-meta {
+      font-size: 0.84rem;
+      color: #c5dbcf;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .dossier-stats {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .dossier-stat-box {
+      text-align: center;
+      background: rgba(7, 21, 14, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.45rem 0.9rem;
+    }
+
+    .dossier-stat-num {
+      font-family: 'Cinzel', serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .dossier-stat-lbl {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* Segmented Control / Abas */
     .segmented-nav {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -269,7 +438,7 @@
       padding: 4px;
       display: inline-flex;
       gap: 4px;
-      margin-bottom: 1.75rem;
+      margin-bottom: 1.5rem;
       width: 100%;
       max-width: 480px;
     }
@@ -298,7 +467,6 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    /* Lista e Feed de Faltas */
     .tab-content {
       display: none;
     }
@@ -315,42 +483,7 @@
       box-shadow: var(--shadow-card);
     }
 
-    .feed-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .filter-group {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .filter-chip {
-      background: var(--surface-raised);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 0.35rem 0.75rem;
-      border-radius: 9999px;
-      cursor: pointer;
-      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-    }
-
-    .filter-chip.active {
-      background: rgba(249, 195, 31, 0.15);
-      border-color: var(--gold);
-      color: var(--gold);
-    }
-
-    /* Cartão Individual de Falta */
+    /* Cartão de Falta */
     .absence-list {
       display: flex;
       flex-direction: column;
@@ -368,10 +501,16 @@
       flex-wrap: wrap;
       gap: 14px;
       transition: border-color 0.18s ease;
+      position: relative;
     }
 
     .absence-card:hover {
       border-color: rgba(249, 195, 31, 0.35);
+    }
+
+    .absence-card.card-overdue-15 {
+      border-left: 4px solid var(--danger);
+      background: linear-gradient(90deg, rgba(239, 68, 68, 0.08) 0%, var(--surface-raised) 25%);
     }
 
     .absence-main {
@@ -439,6 +578,18 @@
       border: 1px solid rgba(239, 68, 68, 0.35);
     }
 
+    .badge-payroll {
+      background: rgba(249, 195, 31, 0.12);
+      color: #fde047;
+      border: 1px solid rgba(249, 195, 31, 0.35);
+    }
+
+    .badge-overdue {
+      background: var(--danger-bg);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.5);
+    }
+
     .absence-actions {
       display: flex;
       align-items: center;
@@ -463,6 +614,27 @@
     .btn-resolve:hover {
       background: var(--emerald);
       color: #062b1a;
+    }
+
+    .btn-send-payroll {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--gold);
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.5rem 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+    }
+
+    .btn-send-payroll:hover {
+      background: #193828;
+      border-color: var(--gold);
+      color: #ffffff;
     }
 
     .btn-delete {
@@ -499,7 +671,7 @@
       margin-bottom: 0.4rem;
     }
 
-    /* Modal / Bottom Sheet (REA Emil Kowalski + Apple) */
+    /* Modal / Bottom Sheet */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -523,7 +695,7 @@
 
     .modal-sheet {
       width: 100%;
-      max-width: 520px;
+      max-width: 540px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 18px;
@@ -680,6 +852,15 @@
       animation: fadeIn 0.25s var(--ease-out);
     }
 
+    /* Seção de Controle da Secretaria (Envio na Frequência) */
+    .payroll-section {
+      background: rgba(249, 195, 31, 0.05);
+      border: 1px solid rgba(249, 195, 31, 0.2);
+      border-radius: 12px;
+      padding: 1.1rem;
+      margin-bottom: 1.25rem;
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-6px); }
       to { opacity: 1; transform: translateY(0); }
@@ -692,6 +873,7 @@
       .btn-primary, .btn-secondary { flex: 1; justify-content: center; }
       .absence-card { flex-direction: column; align-items: flex-start; }
       .absence-actions { width: 100%; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 10px; margin-top: 6px; }
+      .filter-controls-row { flex-direction: column; }
     }
   </style>
 </head>
@@ -706,7 +888,7 @@
       </a>
       <div class="brand-title">
         <h1>Voluntários Sociais</h1>
-        <p>Controle de Frequência & Reposição</p>
+        <p>Controle de Frequência, Reposição & Folha</p>
       </div>
     </div>
 
@@ -723,7 +905,7 @@
     <div class="page-header">
       <div class="header-info">
         <h2>Registro de Ausências</h2>
-        <p>Acompanhamento de faltas, justificativas legais e agendamento de dias de reposição.</p>
+        <p>Acompanhamento de faltas, justificativas, reposições e sinalização de corte em folha.</p>
       </div>
 
       <div class="header-actions">
@@ -743,40 +925,122 @@
     <section class="metrics-grid">
       <div class="metric-card metric-danger">
         <div class="metric-label">
-          <span>Faltas no Mês</span>
+          <span>Faltas Filtradas</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
         </div>
         <div class="metric-value" id="metricFaltas">0</div>
-        <div class="metric-sub">Lançadas no ciclo atual</div>
+        <div class="metric-sub" id="metricFaltasSub">No período selecionado</div>
       </div>
 
       <div class="metric-card metric-amber">
         <div class="metric-label">
-          <span>Reposições Pendentes</span>
+          <span>Aguardando Reposição</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         </div>
         <div class="metric-value" id="metricPendentes">0</div>
-        <div class="metric-sub">Dias combinados a pagar</div>
+        <div class="metric-sub">Dias a compensar</div>
+      </div>
+
+      <div class="metric-card metric-terracotta">
+        <div class="metric-label">
+          <span>Alerta de 15+ Dias</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="metric-value" id="metricOverdue">0</div>
+        <div class="metric-sub">Prazo excedido sem repor</div>
       </div>
 
       <div class="metric-card metric-emerald">
         <div class="metric-label">
-          <span>Reposições Cumpridas</span>
+          <span>Reposições Concluídas</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         </div>
         <div class="metric-value" id="metricCumpridas">0</div>
         <div class="metric-sub">Dias regularizados</div>
       </div>
+    </section>
 
-      <div class="metric-card">
-        <div class="metric-label">
-          <span>Equipe Ativa</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    <!-- Barra de Filtros Inteligente: Ano, Mês, Voluntário e Chips -->
+    <section class="filter-bar">
+      <div class="filter-controls-row">
+        <div class="filter-item">
+          <label for="selectFiltroAno">Ano Letivo</label>
+          <select id="selectFiltroAno" class="filter-select">
+            <option value="todos">Todos os Anos</option>
+            <option value="2026" selected>2026</option>
+            <option value="2025">2025</option>
+          </select>
         </div>
-        <div class="metric-value" id="metricVoluntarios">0</div>
-        <div class="metric-sub">Voluntários no cadastro</div>
+
+        <div class="filter-item">
+          <label for="selectFiltroMes">Mês de Referência</label>
+          <select id="selectFiltroMes" class="filter-select">
+            <option value="todos">Todos os Meses</option>
+            <option value="01">Janeiro</option>
+            <option value="02">Fevereiro</option>
+            <option value="03">Março</option>
+            <option value="04">Abril</option>
+            <option value="05">Maio</option>
+            <option value="06">Junho</option>
+            <option value="07">Julho</option>
+            <option value="08">Agosto</option>
+            <option value="09">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+          </select>
+        </div>
+
+        <div class="filter-item" style="flex: 1.5;">
+          <label for="selectFiltroVoluntario">Filtrar por Voluntário (Dossiê Individual)</label>
+          <select id="selectFiltroVoluntario" class="filter-select">
+            <option value="todos">Todos os Voluntários</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="filter-chips-row">
+        <div class="chips-group">
+          <button class="filter-chip active" data-filter="todos">Todas as Ausências</button>
+          <button class="filter-chip" data-filter="pendente">Aguardando Reposição</button>
+          <button class="filter-chip chip-alert" data-filter="overdue15">⚠️ Alerta 15+ Dias</button>
+          <button class="filter-chip chip-payroll" data-filter="frequencia">Folha / Desconto Frequência</button>
+          <button class="filter-chip" data-filter="cumprido">Reposições Cumpridas</button>
+        </div>
+
+        <button id="btnExportarExcel" class="btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem; background: #064e3b; border-color: #10b981; color: #6ee7b7;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+          <span>Baixar Planilha Excel (.XLS)</span>
+        </button>
       </div>
     </section>
+
+    <!-- Dossiê do Voluntário Selecionado -->
+    <div id="volunteerDossier" class="volunteer-dossier">
+      <div class="dossier-info">
+        <h3 id="dossierNome">Nome do Voluntário</h3>
+        <div class="dossier-meta">
+          <span id="dossierTurma">Turma: --</span>
+          <span id="dossierFuncao">Função: --</span>
+          <span id="dossierTurno">Turno: --</span>
+          <span id="dossierTelefone">Contato: --</span>
+        </div>
+      </div>
+      <div class="dossier-stats">
+        <div class="dossier-stat-box">
+          <div class="dossier-stat-num" id="dossierTotalFaltas">0</div>
+          <div class="dossier-stat-lbl">Faltas no Total</div>
+        </div>
+        <div class="dossier-stat-box">
+          <div class="dossier-stat-num" style="color: #fde047;" id="dossierPendentes">0</div>
+          <div class="dossier-stat-lbl">A Repor</div>
+        </div>
+        <div class="dossier-stat-box">
+          <div class="dossier-stat-num" style="color: #6ee7b7;" id="dossierCumpridas">0</div>
+          <div class="dossier-stat-lbl">Cumpridas</div>
+        </div>
+      </div>
+    </div>
 
     <!-- Abas / Segmented Control -->
     <nav class="segmented-nav" aria-label="Seções do módulo">
@@ -787,27 +1051,13 @@
 
       <button class="tab-btn" data-tab="tabVoluntarios">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-        <span>Lista da Equipe</span>
+        <span>Lista da Equipe (<span id="tabCountVoluntarios">0</span>)</span>
       </button>
     </nav>
 
     <!-- Aba 1: Painel de Faltas -->
     <section id="tabFaltas" class="tab-content active">
       <div class="feed-panel">
-        <div class="feed-header">
-          <div class="filter-group">
-            <button class="filter-chip active" data-filter="todos">Todas as Faltas</button>
-            <button class="filter-chip" data-filter="pendente">Aguardando Reposição</button>
-            <button class="filter-chip" data-filter="cumprido">Reposições Cumpridas</button>
-            <button class="filter-chip" data-filter="sem_reposicao">Sem Reposição</button>
-          </div>
-
-          <button id="btnExportarCsv" class="btn-secondary" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            <span>Baixar Relatório (Excel)</span>
-          </button>
-        </div>
-
         <div id="absenceListContainer" class="absence-list">
           <div class="empty-state">
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
@@ -821,10 +1071,6 @@
     <!-- Aba 2: Lista da Equipe -->
     <section id="tabVoluntarios" class="tab-content">
       <div class="feed-panel">
-        <div class="feed-header">
-          <h3 style="font-size: 1.1rem; font-weight: 700; color: #ffffff;">Voluntários Sociais Cadastrados</h3>
-        </div>
-
         <div id="volunteersListContainer" class="absence-list">
           <div class="empty-state">
             <h3>Nenhum voluntário cadastrado</h3>
@@ -871,15 +1117,15 @@
 
         <div class="form-group">
           <label class="form-label" for="inputDescricao">Observação / Justificativa detalhada</label>
-          <textarea id="inputDescricao" class="form-textarea" rows="2" placeholder="Ex: Apresentou atestado de 1 dia ou comunicou com antecedência..."></textarea>
+          <textarea id="inputDescricao" class="form-textarea" rows="2" placeholder="Ex: Apresentou atestado ou comunicou com antecedência..."></textarea>
         </div>
 
-        <!-- Pergunta de Ouro: Irá Repor? -->
+        <!-- Pergunta de Ouro: Irá Repor? (Data Opcional) -->
         <div class="repay-toggle-box">
           <div class="toggle-row">
             <div>
               <div class="toggle-label-title">Irá repor o dia de trabalho?</div>
-              <div class="toggle-label-desc">Marque SIM para agendar a data de compensação</div>
+              <div class="toggle-label-desc">Ligue para registrar a intenção de reposição (com data ou a combinar)</div>
             </div>
             <label class="switch">
               <input type="checkbox" id="checkIraRepor">
@@ -889,7 +1135,7 @@
 
           <div id="repayDetails" class="repay-details">
             <div class="form-group">
-              <label class="form-label" for="inputDataRepor">Data Combinada para a Reposição *</label>
+              <label class="form-label" for="inputDataRepor">Data Combinada para a Reposição (Opcional - deixe em branco se for a combinar)</label>
               <input type="date" id="inputDataRepor" class="form-input">
             </div>
 
@@ -904,6 +1150,32 @@
           </div>
         </div>
 
+        <!-- Seção de Controle da Secretaria (Envio na Frequência para Desconto) -->
+        <div class="payroll-section">
+          <div class="toggle-row">
+            <div>
+              <div class="toggle-label-title" style="color: #e9d5ff;">Controle de Frequência da Secretaria</div>
+              <div class="toggle-label-desc">Sinalizar se esta falta deve ser enviada para desconto na frequência</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="checkEnviarFrequencia">
+              <span class="slider" style="background-color: #4c1d95;"></span>
+            </label>
+          </div>
+
+          <div id="payrollDetails" class="repay-details">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="selectMesFrequencia">Mês de Envio da Frequência</label>
+              <select id="selectMesFrequencia" class="form-select">
+                <option value="Outubro/2026">Frequência de Outubro/2026</option>
+                <option value="Novembro/2026">Frequência de Novembro/2026</option>
+                <option value="Dezembro/2026">Frequência de Dezembro/2026</option>
+                <option value="Setembro/2026">Frequência de Setembro/2026</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; padding: 0.9rem;">
           <span>Registrar Ausência no Sistema</span>
         </button>
@@ -911,7 +1183,7 @@
     </div>
   </div>
 
-  <!-- Modal: Cadastrar Voluntário -->
+  <!-- Modal: Cadastrar Voluntário (Com Turma e Série) -->
   <div id="modalVoluntario" class="modal-overlay">
     <div class="modal-sheet">
       <div class="modal-header">
@@ -928,11 +1200,16 @@
         </div>
 
         <div class="form-group">
+          <label class="form-label" for="inputVoluntarioTurma">Turma e Série de Atuação *</label>
+          <input type="text" id="inputVoluntarioTurma" class="form-input" placeholder="Ex: 1º Ano A, 2º Ano B, Sala de Recursos..." required>
+        </div>
+
+        <div class="form-group">
           <label class="form-label" for="inputVoluntarioFuncao">Função / Setor *</label>
           <select id="inputVoluntarioFuncao" class="form-select" required>
-            <option value="Apoio Pedagógico">Apoio Pedagógico</option>
-            <option value="Apoio Sala de Recursos (AEE)">Apoio Sala de Recursos (AEE)</option>
-            <option value="Monitoria de Pátio">Monitoria de Pátio</option>
+            <option value="Apoio Pedagógico">Apoio Pedagógico em Sala</option>
+            <option value="Sala de Recursos (AEE)">Apoio Sala de Recursos (AEE)</option>
+            <option value="Monitoria de Pátio">Monitoria de Pátio / Corredor</option>
             <option value="Cozinha / Merenda">Cozinha / Merenda</option>
             <option value="Portaria e Recepção">Portaria e Recepção</option>
             <option value="Outro Setor">Outro Setor</option>
@@ -973,17 +1250,31 @@
       getDocs, 
       doc, 
       updateDoc, 
-      deleteDoc, 
-      query, 
-      orderBy 
+      deleteDoc 
     } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
     // Elementos da Interface
     const userConnectedText = document.getElementById('userConnectedText');
     const metricFaltas = document.getElementById('metricFaltas');
+    const metricFaltasSub = document.getElementById('metricFaltasSub');
     const metricPendentes = document.getElementById('metricPendentes');
+    const metricOverdue = document.getElementById('metricOverdue');
     const metricCumpridas = document.getElementById('metricCumpridas');
-    const metricVoluntarios = document.getElementById('metricVoluntarios');
+    const tabCountVoluntarios = document.getElementById('tabCountVoluntarios');
+
+    const selectFiltroAno = document.getElementById('selectFiltroAno');
+    const selectFiltroMes = document.getElementById('selectFiltroMes');
+    const selectFiltroVoluntario = document.getElementById('selectFiltroVoluntario');
+
+    const volunteerDossier = document.getElementById('volunteerDossier');
+    const dossierNome = document.getElementById('dossierNome');
+    const dossierTurma = document.getElementById('dossierTurma');
+    const dossierFuncao = document.getElementById('dossierFuncao');
+    const dossierTurno = document.getElementById('dossierTurno');
+    const dossierTelefone = document.getElementById('dossierTelefone');
+    const dossierTotalFaltas = document.getElementById('dossierTotalFaltas');
+    const dossierPendentes = document.getElementById('dossierPendentes');
+    const dossierCumpridas = document.getElementById('dossierCumpridas');
 
     const modalFalta = document.getElementById('modalFalta');
     const modalVoluntario = document.getElementById('modalVoluntario');
@@ -991,20 +1282,23 @@
     const btnNovoVoluntario = document.getElementById('btnNovoVoluntario');
     const btnCloseModalFalta = document.getElementById('btnCloseModalFalta');
     const btnCloseModalVoluntario = document.getElementById('btnCloseModalVoluntario');
+    
     const checkIraRepor = document.getElementById('checkIraRepor');
     const repayDetails = document.getElementById('repayDetails');
+    const checkEnviarFrequencia = document.getElementById('checkEnviarFrequencia');
+    const payrollDetails = document.getElementById('payrollDetails');
 
     const formFalta = document.getElementById('formFalta');
     const formVoluntario = document.getElementById('formVoluntario');
     const selectVoluntario = document.getElementById('selectVoluntario');
     const absenceListContainer = document.getElementById('absenceListContainer');
     const volunteersListContainer = document.getElementById('volunteersListContainer');
-    const btnExportarCsv = document.getElementById('btnExportarCsv');
+    const btnExportarExcel = document.getElementById('btnExportarExcel');
 
     let currentUser = null;
     let listaVoluntarios = [];
     let listaFaltas = [];
-    let filtroAtual = 'todos';
+    let filtroStatus = 'todos';
 
     // 1. Verificação de Autenticação
     onAuthStateChanged(auth, async (user) => {
@@ -1017,7 +1311,7 @@
       carregarDados();
     });
 
-    // 2. Alternador de Abas (Segmented Control)
+    // 2. Alternador de Abas
     document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -1027,17 +1321,24 @@
       });
     });
 
-    // 3. Filtros Rápidos de Faltas
+    // 3. Ouvintes dos Filtros
+    selectFiltroAno.addEventListener('change', aplicarFiltros);
+    selectFiltroMes.addEventListener('change', aplicarFiltros);
+    selectFiltroVoluntario.addEventListener('change', () => {
+      atualizarDossier();
+      aplicarFiltros();
+    });
+
     document.querySelectorAll('.filter-chip').forEach(chip => {
       chip.addEventListener('click', () => {
         document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
         chip.classList.add('active');
-        filtroAtual = chip.dataset.filter;
-        renderizarFaltas();
+        filtroStatus = chip.dataset.filter;
+        aplicarFiltros();
       });
     });
 
-    // 4. Modais
+    // 4. Modais e Toggles
     btnLancarFalta.addEventListener('click', () => {
       document.getElementById('inputDataFalta').valueAsDate = new Date();
       modalFalta.classList.add('active');
@@ -1053,98 +1354,187 @@
     checkIraRepor.addEventListener('change', (e) => {
       if (e.target.checked) {
         repayDetails.classList.add('active');
-        document.getElementById('inputDataRepor').required = true;
       } else {
         repayDetails.classList.remove('active');
-        document.getElementById('inputDataRepor').required = false;
+        document.getElementById('inputDataRepor').value = '';
       }
     });
 
-    // 5. Carregamento de Dados (Firestore)
+    checkEnviarFrequencia.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        payrollDetails.classList.add('active');
+      } else {
+        payrollDetails.classList.remove('active');
+      }
+    });
+
+    // 5. Carregamento de Dados
     async function carregarDados() {
       try {
-        // Carrega Voluntários
         const snapVol = await getDocs(collection(db, "voluntarios"));
         listaVoluntarios = [];
         snapVol.forEach(docSnap => {
           listaVoluntarios.push({ id: docSnap.id, ...docSnap.data() });
         });
 
-        // Carrega Faltas
         const snapFaltas = await getDocs(collection(db, "faltas"));
         listaFaltas = [];
         snapFaltas.forEach(docSnap => {
           listaFaltas.push({ id: docSnap.id, ...docSnap.data() });
         });
 
-        // Ordena por data decrescente
         listaFaltas.sort((a, b) => new Date(b.dataFalta) - new Date(a.dataFalta));
-
-        atualizarMetricas();
         popularSelectVoluntarios();
-        renderizarFaltas();
+        aplicarFiltros();
         renderizarVoluntarios();
 
       } catch (err) {
-        console.warn("Erro ao buscar no Firestore, carregando armazenamento local:", err);
-        // Fallback local se estiver offline
+        console.warn("Carregando offline/cache local:", err);
         listaVoluntarios = JSON.parse(localStorage.getItem('castro_voluntarios') || '[]');
         listaFaltas = JSON.parse(localStorage.getItem('castro_faltas') || '[]');
-        atualizarMetricas();
         popularSelectVoluntarios();
-        renderizarFaltas();
+        aplicarFiltros();
         renderizarVoluntarios();
       }
     }
 
     function popularSelectVoluntarios() {
       selectVoluntario.innerHTML = '<option value="">Selecione o voluntário...</option>';
+      selectFiltroVoluntario.innerHTML = '<option value="todos">Todos os Voluntários</option>';
+
+      listaVoluntarios.sort((a, b) => a.nome.localeCompare(b.nome));
+
       listaVoluntarios.forEach(v => {
-        const opt = document.createElement('option');
-        opt.value = v.id || v.nome;
-        opt.textContent = `${v.nome} (${v.funcao || 'Apoio'})`;
-        selectVoluntario.appendChild(opt);
+        const turmaTexto = v.turma ? ` [${v.turma}]` : '';
+        const optModal = document.createElement('option');
+        optModal.value = v.nome;
+        optModal.textContent = `${v.nome}${turmaTexto} (${v.funcao || 'Apoio'})`;
+        selectVoluntario.appendChild(optModal);
+
+        const optFiltro = document.createElement('option');
+        optFiltro.value = v.nome;
+        optFiltro.textContent = `${v.nome}${turmaTexto}`;
+        selectFiltroVoluntario.appendChild(optFiltro);
       });
+
+      tabCountVoluntarios.textContent = listaVoluntarios.length;
     }
 
-    function atualizarMetricas() {
-      metricFaltas.textContent = listaFaltas.length;
-      metricPendentes.textContent = listaFaltas.filter(f => f.status === 'pendente').length;
-      metricCumpridas.textContent = listaFaltas.filter(f => f.status === 'cumprido').length;
-      metricVoluntarios.textContent = listaVoluntarios.length;
+    // Calcula se uma falta passou de 15 dias sem reposição
+    function calcularDiasPassados(dataStr) {
+      if (!dataStr) return 0;
+      const partes = dataStr.split('-');
+      const dataFalta = new Date(partes[0], partes[1] - 1, partes[2]);
+      const hoje = new Date();
+      hoje.setHours(0, 0, 0, 0);
+      const diffMs = hoje - dataFalta;
+      return Math.floor(diffMs / (1000 * 60 * 60 * 24));
     }
 
-    function renderizarFaltas() {
+    function aplicarFiltros() {
+      const anoSel = selectFiltroAno.value;
+      const mesSel = selectFiltroMes.value;
+      const volSel = selectFiltroVoluntario.value;
+
       const filtradas = listaFaltas.filter(f => {
-        if (filtroAtual === 'pendente') return f.status === 'pendente';
-        if (filtroAtual === 'cumprido') return f.status === 'cumprido';
-        if (filtroAtual === 'sem_reposicao') return f.status === 'sem_reposicao';
+        const [ano, mes] = (f.dataFalta || '').split('-');
+        if (anoSel !== 'todos' && ano !== anoSel) return false;
+        if (mesSel !== 'todos' && mes !== mesSel) return false;
+        if (volSel !== 'todos' && f.voluntarioNome !== volSel) return false;
+
+        const diasPassados = calcularDiasPassados(f.dataFalta);
+        const ehOverdue15 = (f.status === 'pendente' && diasPassados >= 15);
+
+        if (filtroStatus === 'pendente') return f.status === 'pendente';
+        if (filtroStatus === 'cumprido') return f.status === 'cumprido';
+        if (filtroStatus === 'overdue15') return ehOverdue15;
+        if (filtroStatus === 'frequencia') return f.enviarFrequencia === true;
+
         return true;
       });
 
-      if (filtradas.length === 0) {
+      atualizarMetricasComLista(filtradas);
+      renderizarFaltas(filtradas);
+    }
+
+    function atualizarMetricasComLista(lista) {
+      metricFaltas.textContent = lista.length;
+      metricPendentes.textContent = lista.filter(f => f.status === 'pendente').length;
+      metricCumpridas.textContent = lista.filter(f => f.status === 'cumprido').length;
+
+      const overdues = lista.filter(f => f.status === 'pendente' && calcularDiasPassados(f.dataFalta) >= 15).length;
+      metricOverdue.textContent = overdues;
+
+      const anoTexto = selectFiltroAno.value === 'todos' ? 'Todos os anos' : `Ano ${selectFiltroAno.value}`;
+      const mesTexto = selectFiltroMes.value === 'todos' ? 'todos os meses' : `Mês ${selectFiltroMes.value}`;
+      metricFaltasSub.textContent = `${anoTexto} · ${mesTexto}`;
+    }
+
+    function atualizarDossier() {
+      const volNome = selectFiltroVoluntario.value;
+      if (volNome === 'todos') {
+        volunteerDossier.classList.remove('active');
+        return;
+      }
+
+      const voluntario = listaVoluntarios.find(v => v.nome === volNome);
+      const faltasDoVol = listaFaltas.filter(f => f.voluntarioNome === volNome);
+      const pendentes = faltasDoVol.filter(f => f.status === 'pendente').length;
+      const cumpridas = faltasDoVol.filter(f => f.status === 'cumprido').length;
+
+      dossierNome.textContent = volNome;
+      dossierTurma.textContent = `Turma/Série: ${voluntario?.turma || 'Não informada'}`;
+      dossierFuncao.textContent = `Função: ${voluntario?.funcao || 'Apoio'}`;
+      dossierTurno.textContent = `Turno: ${voluntario?.turno || 'Matutino'}`;
+      dossierTelefone.textContent = `Contato: ${voluntario?.telefone || '--'}`;
+
+      dossierTotalFaltas.textContent = faltasDoVol.length;
+      dossierPendentes.textContent = pendentes;
+      dossierCumpridas.textContent = cumpridas;
+
+      volunteerDossier.classList.add('active');
+    }
+
+    function renderizarFaltas(listaParaExibir) {
+      if (listaParaExibir.length === 0) {
         absenceListContainer.innerHTML = `
           <div class="empty-state">
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            <h3>Nenhuma falta encontrada neste filtro</h3>
-            <p>Alterne para "Todas as Faltas" ou cadastre um novo registro.</p>
+            <h3>Nenhuma falta encontrada para estes filtros</h3>
+            <p>Altere o mês, ano ou o filtro de status acima.</p>
           </div>
         `;
         return;
       }
 
       absenceListContainer.innerHTML = '';
-      filtradas.forEach(f => {
+      listaParaExibir.forEach(f => {
         const card = document.createElement('article');
-        card.className = 'absence-card';
+        const diasPassados = calcularDiasPassados(f.dataFalta);
+        const ehOverdue15 = (f.status === 'pendente' && diasPassados >= 15);
 
-        let badgeHtml = '';
+        card.className = `absence-card ${ehOverdue15 ? 'card-overdue-15' : ''}`;
+
+        let badgesHtml = '';
+
         if (f.status === 'pendente') {
-          badgeHtml = `<span class="absence-badge badge-pending">Reposição em ${formatarData(f.dataRepor)}</span>`;
+          if (f.dataRepor) {
+            badgesHtml += `<span class="absence-badge badge-pending">Reposição em ${formatarData(f.dataRepor)}</span>`;
+          } else {
+            badgesHtml += `<span class="absence-badge badge-pending">Reposição a Combinar</span>`;
+          }
+
+          if (ehOverdue15) {
+            badgesHtml += `<span class="absence-badge badge-overdue">⚠️ 15+ Dias Decorridos (${diasPassados}d)</span>`;
+          }
         } else if (f.status === 'cumprido') {
-          badgeHtml = `<span class="absence-badge badge-done">Reposição Cumprida ✓</span>`;
+          badgesHtml += `<span class="absence-badge badge-done">Reposição Cumprida ✓</span>`;
         } else {
-          badgeHtml = `<span class="absence-badge badge-no-repay">Sem Reposição</span>`;
+          badgesHtml += `<span class="absence-badge badge-no-repay">Sem Reposição</span>`;
+        }
+
+        if (f.enviarFrequencia) {
+          badgesHtml += `<span class="absence-badge badge-payroll">📋 Desconto em Folha (${f.mesFrequencia || 'Frequência'})</span>`;
         }
 
         const inicial = (f.voluntarioNome || 'V')[0].toUpperCase();
@@ -1153,11 +1543,11 @@
           <div class="absence-main">
             <div class="absence-avatar">${inicial}</div>
             <div class="absence-details">
-              <h3>${f.voluntarioNome}</h3>
+              <h3 style="cursor: pointer;" onclick="window.filtrarPorNome('${f.voluntarioNome}')" title="Ver dossiê deste voluntário">${f.voluntarioNome} 🔍</h3>
               <div class="absence-meta">
                 <span>📅 Falta: <strong>${formatarData(f.dataFalta)}</strong></span>
                 <span>• Motivo: ${f.motivo}</span>
-                ${badgeHtml}
+                ${badgesHtml}
               </div>
               ${f.descricao ? `<p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">💬 "${f.descricao}"</p>` : ''}
             </div>
@@ -1168,6 +1558,12 @@
               <button class="btn-resolve" onclick="window.marcarComoCumprido('${f.id}')">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                 <span>Confirmar Reposição</span>
+              </button>
+            ` : ''}
+
+            ${!f.enviarFrequencia ? `
+              <button class="btn-send-payroll" onclick="window.enviarParaFrequencia('${f.id}')" title="Marcar para envio na folha de ponto da secretaria">
+                <span>Enviar p/ Frequência</span>
               </button>
             ` : ''}
 
@@ -1196,6 +1592,7 @@
         const item = document.createElement('div');
         item.className = 'absence-card';
         const inicial = (v.nome || 'V')[0].toUpperCase();
+        const faltasDeste = listaFaltas.filter(f => f.voluntarioNome === v.nome).length;
 
         item.innerHTML = `
           <div class="absence-main">
@@ -1203,32 +1600,41 @@
             <div class="absence-details">
               <h3>${v.nome}</h3>
               <div class="absence-meta">
-                <span>🏷️ ${v.funcao || 'Apoio'}</span>
+                <span>🏫 Turma: <strong>${v.turma || 'Não informada'}</strong></span>
+                <span>• 🏷️ ${v.funcao || 'Apoio'}</span>
                 <span>• Turno: ${v.turno || 'Matutino'}</span>
                 ${v.telefone ? `<span>• 📞 ${v.telefone}</span>` : ''}
+                <span class="absence-badge badge-pending" style="cursor: pointer;" onclick="window.filtrarPorNome('${v.nome}')">Total: ${faltasDeste} faltas</span>
               </div>
             </div>
           </div>
 
-          <button class="btn-delete" title="Remover Voluntário" onclick="window.excluirVoluntario('${v.id}')">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-          </button>
+          <div class="absence-actions">
+            <button class="btn-secondary" style="padding: 0.45rem 0.8rem; font-size: 0.8rem;" onclick="window.filtrarPorNome('${v.nome}')">
+              <span>Ver Dossiê</span>
+            </button>
+            <button class="btn-delete" title="Remover Voluntário" onclick="window.excluirVoluntario('${v.id}')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            </button>
+          </div>
         `;
         volunteersListContainer.appendChild(item);
       });
     }
 
-    // 6. Envio de Formulários
+    // 6. Formulários de Envio
     formFalta.addEventListener('submit', async (e) => {
       e.preventDefault();
       const voluntarioSelect = selectVoluntario;
-      const voluntarioNome = voluntarioSelect.options[voluntarioSelect.selectedIndex].text.split(' (')[0];
+      const voluntarioNome = voluntarioSelect.options[voluntarioSelect.selectedIndex].text.split(' [')[0].split(' (')[0].trim();
       const dataFalta = document.getElementById('inputDataFalta').value;
       const motivo = document.getElementById('selectMotivo').value;
       const descricao = document.getElementById('inputDescricao').value;
       const iraRepor = checkIraRepor.checked;
       const dataRepor = iraRepor ? document.getElementById('inputDataRepor').value : null;
       const turnoRepor = iraRepor ? document.getElementById('selectTurnoRepor').value : null;
+      const enviarFrequencia = checkEnviarFrequencia.checked;
+      const mesFrequencia = enviarFrequencia ? document.getElementById('selectMesFrequencia').value : null;
 
       const novaFalta = {
         voluntarioNome,
@@ -1238,6 +1644,8 @@
         iraRepor,
         dataRepor,
         turnoRepor,
+        enviarFrequencia,
+        mesFrequencia,
         status: iraRepor ? 'pendente' : 'sem_reposicao',
         registradoPor: currentUser ? currentUser.email : 'secretaria',
         criadoEm: new Date().toISOString()
@@ -1253,22 +1661,24 @@
       listaFaltas.unshift(novaFalta);
       localStorage.setItem('castro_faltas', JSON.stringify(listaFaltas));
 
-      atualizarMetricas();
-      renderizarFaltas();
+      aplicarFiltros();
       modalFalta.classList.remove('active');
       formFalta.reset();
       repayDetails.classList.remove('active');
+      payrollDetails.classList.remove('active');
     });
 
     formVoluntario.addEventListener('submit', async (e) => {
       e.preventDefault();
       const nome = document.getElementById('inputVoluntarioNome').value.trim();
+      const turma = document.getElementById('inputVoluntarioTurma').value.trim();
       const funcao = document.getElementById('inputVoluntarioFuncao').value;
       const turno = document.getElementById('selectVoluntarioTurno').value;
       const telefone = document.getElementById('inputVoluntarioTelefone').value.trim();
 
       const novoVol = {
         nome,
+        turma,
         funcao,
         turno,
         telefone,
@@ -1286,14 +1696,22 @@
       listaVoluntarios.push(novoVol);
       localStorage.setItem('castro_voluntarios', JSON.stringify(listaVoluntarios));
 
-      atualizarMetricas();
       popularSelectVoluntarios();
+      aplicarFiltros();
       renderizarVoluntarios();
       modalVoluntario.classList.remove('active');
       formVoluntario.reset();
     });
 
-    // 7. Funções Globais de Ação
+    // 7. Ações Rápidas
+    window.filtrarPorNome = (nome) => {
+      selectFiltroVoluntario.value = nome;
+      atualizarDossier();
+      aplicarFiltros();
+      document.querySelector('[data-tab="tabFaltas"]').click();
+      window.scrollTo({ top: 320, behavior: 'smooth' });
+    };
+
     window.marcarComoCumprido = async (id) => {
       const falta = listaFaltas.find(f => f.id === id);
       if (!falta) return;
@@ -1301,14 +1719,29 @@
       if (confirm(`Confirmar que ${falta.voluntarioNome} compareceu e cumpriu o dia de reposição?`)) {
         falta.status = 'cumprido';
         falta.cumpridoEm = new Date().toISOString();
-
         try {
           await updateDoc(doc(db, "faltas", id), { status: 'cumprido', cumpridoEm: falta.cumpridoEm });
         } catch (e) {}
-
         localStorage.setItem('castro_faltas', JSON.stringify(listaFaltas));
-        atualizarMetricas();
-        renderizarFaltas();
+        aplicarFiltros();
+      }
+    };
+
+    window.enviarParaFrequencia = async (id) => {
+      const falta = listaFaltas.find(f => f.id === id);
+      if (!falta) return;
+
+      const mesPadrao = "Outubro/2026";
+      const mesConfirmado = prompt(`Confirmar envio de falta de ${falta.voluntarioNome} para a folha de frequência da secretaria?\nInforme o mês de referência:`, mesPadrao);
+
+      if (mesConfirmado) {
+        falta.enviarFrequencia = true;
+        falta.mesFrequencia = mesConfirmado;
+        try {
+          await updateDoc(doc(db, "faltas", id), { enviarFrequencia: true, mesFrequencia: mesConfirmado });
+        } catch (e) {}
+        localStorage.setItem('castro_faltas', JSON.stringify(listaFaltas));
+        aplicarFiltros();
       }
     };
 
@@ -1319,8 +1752,7 @@
           await deleteDoc(doc(db, "faltas", id));
         } catch (e) {}
         localStorage.setItem('castro_faltas', JSON.stringify(listaFaltas));
-        atualizarMetricas();
-        renderizarFaltas();
+        aplicarFiltros();
       }
     };
 
@@ -1331,8 +1763,8 @@
           await deleteDoc(doc(db, "voluntarios", id));
         } catch (e) {}
         localStorage.setItem('castro_voluntarios', JSON.stringify(listaVoluntarios));
-        atualizarMetricas();
         popularSelectVoluntarios();
+        aplicarFiltros();
         renderizarVoluntarios();
       }
     };
@@ -1343,23 +1775,78 @@
       return `${dia}/${mes}/${ano}`;
     }
 
-    // 8. Exportação para Excel (CSV)
-    btnExportarCsv.addEventListener('click', () => {
+    // 8. Download Real de Planilha Oficial Excel (.XLS)
+    btnExportarExcel.addEventListener('click', () => {
       if (listaFaltas.length === 0) {
-        alert('Não há faltas para exportar no momento.');
+        alert('Não há faltas cadastradas para exportar.');
         return;
       }
 
-      let csv = 'Voluntário;Data da Falta;Motivo;Justificativa;Irá Repor?;Data Reposição;Turno Reposição;Status\n';
+      const anoSel = selectFiltroAno.value;
+      const mesSel = selectFiltroMes.value;
+      const dataHoje = new Date().toLocaleDateString('pt-BR');
+
+      let tabelaHtml = `
+        <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+        <head>
+          <!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>Faltas Voluntários</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+          <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+          <style>
+            th { background-color: #0d2217; color: #f9c31f; font-family: Calibri, sans-serif; font-size: 11pt; border: 1px solid #999; padding: 6px; }
+            td { font-family: Calibri, sans-serif; font-size: 10pt; border: 1px solid #ccc; padding: 5px; }
+            .header-title { font-size: 14pt; font-weight: bold; color: #0d2217; }
+          </style>
+        </head>
+        <body>
+          <table>
+            <tr><td colspan="9" class="header-title">ESCOLA MUNICIPAL CASTRO ALVES - RELATÓRIO DE AUSÊNCIAS DE VOLUNTÁRIOS SOCIAIS</td></tr>
+            <tr><td colspan="9">Emitido em: ${dataHoje} | Filtro: Ano ${anoSel} / Mês ${mesSel}</td></tr>
+            <tr><td colspan="9"></td></tr>
+            <tr>
+              <th>Voluntário Social</th>
+              <th>Turma / Série</th>
+              <th>Data da Falta</th>
+              <th>Motivo Declarado</th>
+              <th>Justificativa / Observação</th>
+              <th>Irá Repor?</th>
+              <th>Data Combinada Reposição</th>
+              <th>Status da Reposição</th>
+              <th>Folha de Frequência (Secretaria)</th>
+            </tr>
+      `;
+
       listaFaltas.forEach(f => {
-        csv += `"${f.voluntarioNome}";"${formatarData(f.dataFalta)}";"${f.motivo}";"${f.descricao || ''}";"${f.iraRepor ? 'SIM' : 'NÃO'}";"${f.dataRepor ? formatarData(f.dataRepor) : '--'}";"${f.turnoRepor || '--'}";"${f.status}"\n`;
+        const vol = listaVoluntarios.find(v => v.nome === f.voluntarioNome);
+        const turma = vol?.turma || '--';
+        const statusTexto = f.status === 'cumprido' ? 'REPOSIÇÃO CUMPRIDA' : (f.status === 'pendente' ? 'AGUARDANDO REPOSIÇÃO' : 'SEM REPOSIÇÃO');
+        const freqTexto = f.enviarFrequencia ? `ENVIADO PARA DESCONTO (${f.mesFrequencia || 'Frequência'})` : 'NÃO ENVIADO';
+
+        tabelaHtml += `
+          <tr>
+            <td>${f.voluntarioNome}</td>
+            <td>${turma}</td>
+            <td>${formatarData(f.dataFalta)}</td>
+            <td>${f.motivo}</td>
+            <td>${f.descricao || ''}</td>
+            <td>${f.iraRepor ? 'SIM' : 'NÃO'}</td>
+            <td>${f.dataRepor ? formatarData(f.dataRepor) : (f.iraRepor ? 'A COMBINAR' : '--')}</td>
+            <td>${statusTexto}</td>
+            <td>${freqTexto}</td>
+          </tr>
+        `;
       });
 
-      const blob = new Blob(["\ufeff" + csv], { type: 'text/csv;charset=utf-8;' });
+      tabelaHtml += `
+          </table>
+        </body>
+        </html>
+      `;
+
+      const blob = new Blob([tabelaHtml], { type: 'application/vnd.ms-excel;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `relatorio_faltas_voluntarios_castro_alves_${new Date().toISOString().slice(0,10)}.csv`;
+      a.download = `relatorio_faltas_voluntarios_castro_alves_${new Date().toISOString().slice(0,10)}.xls`;
       a.click();
       URL.revokeObjectURL(url);
     });
