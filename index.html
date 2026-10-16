@@ -1516,57 +1516,35 @@ text-align:center;
   text-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
 }
 
-/* Emblema Interativo 3D no Hero */
-.hero-emblem-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  background: rgba(13, 35, 24, 0.75);
-  border: 1.5px solid rgba(249, 195, 31, 0.4);
-  padding: 6px 16px 6px 6px;
-  border-radius: 9999px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+/* Brasão da Logo 3D em Destaque no Hero (Sem caixas ou escritas) */
+.hero-logo-media {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 2px solid rgba(249, 195, 31, 0.6);
+  box-shadow: 0 0 20px rgba(249, 195, 31, 0.25), 0 8px 24px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  margin: 0 auto 18px;
+  background: #000000;
   cursor: pointer;
-  margin-bottom: 20px;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.25s ease;
   position: relative;
   z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
-.hero-emblem-badge:hover {
-  transform: translateY(-2px) scale(1.02);
+.hero-logo-media:hover {
+  transform: translateY(-2px) scale(1.06);
   border-color: var(--accent);
-  box-shadow: 0 12px 32px -4px rgba(249, 195, 31, 0.25);
+  box-shadow: 0 0 30px rgba(249, 195, 31, 0.45), 0 12px 28px rgba(0, 0, 0, 0.7);
 }
-.hero-emblem-video-thumb {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
+.hero-logo-media video {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border: 2px solid var(--accent);
-  background: #000;
   display: block;
-}
-.hero-emblem-text {
-  text-align: left;
-}
-.hero-emblem-tag {
-  display: block;
-  font-size: 0.68rem;
-  font-weight: 800;
-  color: var(--accent);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  line-height: 1;
-}
-.hero-emblem-call {
-  display: block;
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-top: 3px;
-  line-height: 1.1;
 }
 
 /* Modal da Logo 3D em Alta Resolução */
@@ -1693,15 +1671,11 @@ text-align:center;
     <div class="fi" style="left:55%;animation-delay:1s">🌟</div>
     <div class="fi" style="left:72%;animation-delay:3s">🎨</div>
     <div class="fi" style="left:88%;animation-delay:5s">🍎</div>
-    <!-- Emblema Interativo 3D com Miniatura Animada -->
-    <button class="hero-emblem-badge" id="btnOpenLogoModal" aria-label="Ver animação oficial 3D da logo">
-      <video autoplay loop muted playsinline class="hero-emblem-video-thumb">
+    <!-- Brasão da Logo 3D em Destaque no Hero (Sem caixas ou escritas) -->
+    <button class="hero-logo-media" id="btnOpenLogoModal" aria-label="Brasão Oficial da Escola Municipal Castro Alves em 3D">
+      <video autoplay loop muted playsinline poster="/favicon.png">
         <source src="/midia/logo-animada.mp4" type="video/mp4">
       </video>
-      <div class="hero-emblem-text">
-        <span class="hero-emblem-tag">Identidade Oficial</span>
-        <span class="hero-emblem-call">✨ Ver Animação 3D</span>
-      </div>
     </button>
 
     <h1><span class="shiny">Escola Municipal</span><br><span class="shiny">Castro Alves</span></h1>

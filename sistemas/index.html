@@ -41,7 +41,7 @@
 
     body {
       font-family: 'Outfit', sans-serif;
-      background-color: var(--bg);
+      background-color: #050a07;
       color: var(--text);
       min-height: 100vh;
       display: flex;
@@ -50,96 +50,45 @@
       justify-content: center;
       padding: 1.5rem;
       position: relative;
-      background-image: linear-gradient(180deg, #091610 0%, #0b1a13 50%, #08140e 100%);
+      background-image: 
+        radial-gradient(circle at 25% 50%, rgba(16, 185, 129, 0.08) 0%, transparent 60%),
+        radial-gradient(circle at 75% 30%, rgba(249, 195, 31, 0.06) 0%, transparent 50%),
+        linear-gradient(180deg, #030705 0%, #050a07 50%, #020503 100%);
     }
 
-    /* Layout Duplo: Cartão Multimídia + Formulário */
+    /* Layout Integrado: Logo 3D Pura + Formulário de Acesso */
     .login-frame {
       display: flex;
-      align-items: stretch;
+      align-items: center;
       justify-content: center;
-      gap: 1.5rem;
+      gap: 3.5rem;
       width: 100%;
-      max-width: 860px;
+      max-width: 900px;
       margin: auto;
     }
 
-    /* Cartão Multimídia com a Logo 3D */
-    .media-card {
+    /* Visual 3D Limpo da Logo (Sem caixas, sem molduras, sem textos redundantes) */
+    .brand-hologram {
       flex: 1;
-      max-width: 380px;
-      background: rgba(16, 36, 27, 0.85);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.5rem;
-      box-shadow: var(--shadow-elevation);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      max-width: 360px;
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      animation: sheetEntrance 0.45s var(--ease-out) both;
+      align-items: center;
+      justify-content: center;
       position: relative;
+      animation: sheetEntrance 0.5s var(--ease-out) both;
     }
 
-    .media-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-    }
-
-    .badge-identity {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--gold);
-      background: rgba(249, 195, 31, 0.12);
-      border: 1px solid rgba(249, 195, 31, 0.35);
-      padding: 0.3rem 0.65rem;
-      border-radius: 9999px;
-    }
-
-    .badge-status {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .brand-video {
+    .brand-hologram .brand-video {
       width: 100%;
+      max-width: 340px;
       aspect-ratio: 9 / 16;
-      max-height: 380px;
-      border-radius: 12px;
+      max-height: 460px;
+      border-radius: 20px;
       object-fit: cover;
       display: block;
-      margin: 1rem 0;
-    }
-
-    .media-footer {
-      text-align: center;
-      padding-top: 0.5rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .media-footer h3 {
-      font-family: 'Cinzel', serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #ffffff;
-      line-height: 1.2;
-    }
-
-    .media-footer p {
-      font-family: 'Newsreader', serif;
-      font-style: italic;
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      margin-top: 0.25rem;
+      /* Fundo funde perfeitamente com a página escura */
+      box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.9), 0 0 30px rgba(249, 195, 31, 0.08);
+      border: 1px solid rgba(249, 195, 31, 0.18);
     }
 
     /* Card Administrativo */
@@ -379,22 +328,21 @@
       .login-frame {
         flex-direction: column;
         align-items: center;
-        gap: 1.25rem;
+        gap: 1.5rem;
       }
-      .media-card {
-        max-width: 420px;
-        width: 100%;
-        padding: 1.25rem;
+      .brand-hologram {
+        max-width: 140px;
       }
-      .brand-video {
-        max-height: 220px;
-        aspect-ratio: 16 / 9;
-        object-fit: contain;
+      .brand-hologram .brand-video {
+        max-height: 140px;
+        aspect-ratio: 1 / 1;
+        border-radius: 50%;
+        object-fit: cover;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .login-sheet, .media-card, .btn-primary {
+      .login-sheet, .brand-hologram, .btn-primary {
         animation: none !important;
         transition: none !important;
       }
@@ -404,26 +352,12 @@
 <body>
 
   <div class="login-frame">
-    <!-- Cartão Multimídia Institucional com Vídeo da Logo 3D -->
-    <aside class="media-card" aria-label="Identidade Visual da Escola Municipal Castro Alves">
-      <div class="media-header">
-        <span class="badge-identity">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          Identidade Oficial 3D
-        </span>
-        <span class="badge-status">Planaltina · GO</span>
-      </div>
-
-      <video autoplay loop muted playsinline poster="/favicon.png" class="brand-video" title="Animação oficial da logo da Escola Municipal Castro Alves">
+    <!-- Visual 3D Limpo da Logo (Sem caixas, sem molduras, sem textos) -->
+    <div class="brand-hologram" aria-hidden="true">
+      <video autoplay loop muted playsinline poster="/favicon.png" class="brand-video">
         <source src="/midia/logo-animada.mp4" type="video/mp4">
-        Seu navegador não suporta reprodução de vídeo.
       </video>
-
-      <div class="media-footer">
-        <h3>Escola Municipal Castro Alves</h3>
-        <p>“Educando para a vida.”</p>
-      </div>
-    </aside>
+    </div>
 
     <!-- Painel de Login Administrativo -->
     <main class="login-sheet">
