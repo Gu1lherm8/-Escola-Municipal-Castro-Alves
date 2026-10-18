@@ -158,6 +158,12 @@
       border: 1px solid rgba(245, 158, 11, 0.4);
     }
 
+    .role-portaria {
+      background: rgba(234, 88, 12, 0.2);
+      color: #fb923c;
+      border: 1px solid rgba(234, 88, 12, 0.4);
+    }
+
     .user-email-text {
       color: var(--text);
       max-width: 180px;
@@ -390,6 +396,18 @@
       transform: translateY(-1px);
     }
 
+    .card-portaria .btn-module-open {
+      background: #7c2d12;
+      color: #fed7aa;
+      border: 1px solid #ea580c;
+    }
+
+    .card-portaria .btn-module-open:hover {
+      background: #9a3412;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
     /* Estado de Carregamento Inicial */
     #loadingOverlay {
       position: fixed;
@@ -587,6 +605,38 @@
         </a>
       </article>
 
+      <!-- Módulo Portaria & Pátio (Novo) -->
+      <article class="module-card card-portaria" id="cardPortaria">
+        <div>
+          <div class="module-badge">
+            <span class="badge-indicator" style="background:#ea580c;"></span>
+            <span>Localizador de Emergência · Google Sheets</span>
+          </div>
+          <h2 class="module-title">Portaria & Pátio</h2>
+          <p class="module-summary">Consulta rápida para conferência de alunos, linha do ônibus escolar, endereço e contato imediato com os responsáveis.</p>
+          
+          <ul class="module-capabilities">
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Busca instantânea por nome ou responsável</span>
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Identificação de rotas (04, 10, 24, 30, 44, 03)</span>
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Discagem e WhatsApp com 1 toque no celular</span>
+            </li>
+          </ul>
+        </div>
+
+        <a href="/sistemas/portaria/index.html" class="btn-module-open" id="btnLinkPortaria">
+          <span>Acessar Portaria & Pátio</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </article>
+
     </div>
   </main>
 
@@ -607,6 +657,7 @@
     const cardTransporte = document.getElementById('cardTransporte');
     const cardAEE = document.getElementById('cardAEE');
     const cardVoluntarios = document.getElementById('cardVoluntarios');
+    const cardPortaria = document.getElementById('cardPortaria');
 
     // 1. Aplicação instantânea do perfil salvo na sessão (zero flicker)
     const perfilSalvoStr = sessionStorage.getItem('castro_alves_user');
@@ -655,14 +706,25 @@
         userRoleBadge.classList.add('role-secretaria');
         userRoleBadge.textContent = 'SECRETARIA · TUDO';
         permissionText.innerHTML = 'Você está conectado como <strong>Secretaria Geral</strong>. Todos os módulos estão liberados para consulta e emissão.';
+        cardPortaria.style.display = 'flex';
         cardTransporte.style.display = 'flex';
         cardAEE.style.display = 'flex';
         cardVoluntarios.style.display = 'flex';
       } 
+      else if (role === 'portaria' || role === 'patio') {
+        userRoleBadge.classList.add('role-portaria');
+        userRoleBadge.textContent = 'PORTARIA & PÁTIO';
+        permissionText.innerHTML = 'Você está conectado como <strong>Portaria & Pátio</strong>. Acesso prioritário para a Consulta Rápida de Alunos e Ônibus.';
+        cardPortaria.style.display = 'flex';
+        cardTransporte.style.display = 'none';
+        cardAEE.style.display = 'none';
+        cardVoluntarios.style.display = 'none';
+      }
       else if (role === 'voluntarios') {
         userRoleBadge.classList.add('role-voluntarios');
         userRoleBadge.textContent = 'VOLUNTÁRIOS';
         permissionText.innerHTML = 'Você está conectado como <strong>Coordenação de Voluntários</strong>. Apenas o módulo de frequência e faltas está ativo para seu perfil.';
+        cardPortaria.style.display = 'none';
         cardTransporte.style.display = 'none';
         cardAEE.style.display = 'none';
         cardVoluntarios.style.display = 'flex';
@@ -671,6 +733,7 @@
         userRoleBadge.classList.add('role-aee');
         userRoleBadge.textContent = 'AEE / SALA DE RECURSOS';
         permissionText.innerHTML = 'Você está conectado como <strong>Sala de Recursos (AEE)</strong>. Apenas as carteirinhas de AEE estão liberadas.';
+        cardPortaria.style.display = 'none';
         cardTransporte.style.display = 'none';
         cardAEE.style.display = 'flex';
         cardVoluntarios.style.display = 'none';
@@ -678,7 +741,8 @@
       else if (role === 'transporte') {
         userRoleBadge.classList.add('role-transporte');
         userRoleBadge.textContent = 'TRANSPORTE';
-        permissionText.innerHTML = 'Você está conectado como <strong>Transporte Escolar</strong>. Apenas as carteirinhas de transporte estão liberadas.';
+        permissionText.innerHTML = 'Você está conectado como <strong>Transporte Escolar</strong>. Acesso liberado para carteirinhas e consulta de pátio.';
+        cardPortaria.style.display = 'flex';
         cardTransporte.style.display = 'flex';
         cardAEE.style.display = 'none';
         cardVoluntarios.style.display = 'none';

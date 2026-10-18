@@ -17,11 +17,39 @@
   const path = window.location.pathname.toLowerCase();
   let moduloAtual = 'hub';
   if (path.includes('/transporte')) moduloAtual = 'transporte';
+  else if (path.includes('/portaria')) moduloAtual = 'portaria';
   else if (path.includes('/aee')) moduloAtual = 'aee';
   else if (path.includes('/voluntarios')) moduloAtual = 'voluntarios';
 
   // Base de Conhecimento Imutável
   const CONHECIMENTO = [
+    {
+      id: 'portaria_localizador',
+      modulo: 'portaria',
+      titulo: '🏫 Como usar a Consulta Rápida da Portaria & Pátio?',
+      palavrasChave: ['portaria', 'patio', 'busca', 'pesquisa', 'localizador', 'emergencia', 'onibus'],
+      resumo: 'Digite o nome do aluno para ver na hora a linha do ônibus e ligar para os pais',
+      conteudo: `
+        <p>A tela de Portaria & Pátio foi feita para resolver emergências na saída:</p>
+        <ol style="margin-left: 1.25rem; margin-top: 0.5rem; line-height: 1.5;">
+          <li>Basta digitar as primeiras letras do nome da criança ou do responsável no campo de busca.</li>
+          <li>O sistema mostra imediatamente a <strong>Linha do Ônibus (ex: Linha 10, Linha 04, Linha 30)</strong> e o <strong>Turno</strong>.</li>
+          <li>Toque no botão <strong>"Ligar"</strong> para discar para a mãe ou pai, ou <strong>"WhatsApp"</strong> para abrir conversa direta.</li>
+          <li>Use os botões de filtro no topo para ver todas as crianças de uma determinada linha de ônibus de uma vez só.</li>
+        </ol>
+      `
+    },
+    {
+      id: 'portaria_offline',
+      modulo: 'portaria',
+      titulo: '📶 E se a internet ou Wi-Fi cair no pátio da escola?',
+      palavrasChave: ['offline', 'sem internet', 'wifi', 'caiu', 'dados', 'cache', 'celular'],
+      resumo: 'O sistema continua funcionando offline guardando a lista no celular',
+      conteudo: `
+        <p>Não se preocupe! A tela da Portaria & Pátio salva uma cópia segura dos ~400 estudantes na memória do próprio navegador do seu celular.</p>
+        <p style="margin-top: 6px;">Mesmo que o sinal de internet ou Wi-Fi falhe no meio do pátio, você continua conseguindo pesquisar qualquer aluno e ligar para o responsável sem travar.</p>
+      `
+    },
     {
       id: 'transporte_drive',
       modulo: 'transporte',
@@ -513,6 +541,7 @@
 
         <nav class="guia-pills-bar" id="guiaPills">
           <button class="guia-pill active" data-filtro="todos">Todos</button>
+          <button class="guia-pill" data-filtro="portaria">🏫 Portaria & Pátio</button>
           <button class="guia-pill" data-filtro="transporte">🚌 Transporte</button>
           <button class="guia-pill" data-filtro="aee">♿ Saída AEE</button>
           <button class="guia-pill" data-filtro="voluntarios">📋 Voluntários</button>
@@ -545,7 +574,9 @@
   const proativoTexto = document.getElementById('guiaProativoTexto');
 
   // Ajusta mensagem proativa conforme a tela
-  if (moduloAtual === 'transporte') {
+  if (moduloAtual === 'portaria') {
+    proativoTexto.innerHTML = 'Dúvidas sobre como <strong>localizar uma criança</strong>, conferir a <strong>linha do ônibus</strong> ou ligar para os pais? Consulte o guia rápido!';
+  } else if (moduloAtual === 'transporte') {
     proativoTexto.innerHTML = 'Dúvidas sobre a <strong>pasta "Transporte Escolar"</strong> no Drive ou como colocar as <strong>fotos</strong> dos estudantes? Abra o guia rápido!';
   } else if (moduloAtual === 'aee') {
     proativoTexto.innerHTML = 'Precisa localizar a pasta <strong>"Saída Antecipada AEE"</strong> no Drive ou gerar o <strong>termo de compromisso</strong>? Veja o passo a passo aqui!';

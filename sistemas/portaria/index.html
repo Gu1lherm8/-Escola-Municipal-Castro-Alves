@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Portaria & Pátio · Consulta Rápida | Escola Municipal Castro Alves</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <style>
+    :root {
+      --bg: #07130d;
+      --bg-surface: #0f241a;
+      --bg-surface-raised: #153325;
+      --border: rgba(181, 201, 154, 0.18);
+      --border-accent: rgba(249, 195, 31, 0.35);
+      --gold: #f9c31f;
+      --gold-deep: #c9980e;
+      --text: #f0f6f2;
+      --text-muted: #9bb7a7;
+      --emerald: #00a878;
+      --danger: #ef4444;
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 10px 25px rgba(0, 0, 0, 0.55);
+      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background-image: radial-gradient(circle at 50% 0%, #10261b 0%, #07130d 70%);
+      background-attachment: fixed;
+      padding-bottom: 5rem;
+    }
+
+    /* Topbar */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: rgba(11, 28, 20, 0.94);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .brand-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-emblem {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(249, 195, 31, 0.5);
+      flex-shrink: 0;
+    }
+
+    .brand-emblem img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .brand-text h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+
+    .brand-text span {
+      font-size: 0.72rem;
+      color: var(--gold);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-sync {
+      background: rgba(249, 195, 31, 0.12);
+      border: 1px solid var(--border-accent);
+      color: var(--gold);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s var(--ease);
+    }
+    .btn-sync:hover {
+      background: rgba(249, 195, 31, 0.2);
+    }
+    .btn-sync.spinning svg {
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .btn-back-hub {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-back-hub:hover {
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Container Principal */
+    .main-wrap {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 1rem 1rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* Caixa de Busca com Foco Rápido */
+    .search-card {
+      background: var(--bg-surface);
+      border: 1.5px solid var(--border-accent);
+      border-radius: 16px;
+      padding: 0.85rem 1rem;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .search-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      color: var(--gold);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-field {
+      width: 100%;
+      background: var(--bg-surface-raised);
+      border: 1px solid rgba(181, 201, 154, 0.25);
+      border-radius: 12px;
+      padding: 14px 44px 14px 44px;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 500;
+      outline: none;
+      transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    }
+
+    .search-field:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(249, 195, 31, 0.15);
+    }
+
+    .search-field::placeholder {
+      color: #a3bea8;
+      font-size: 0.95rem;
+    }
+
+    .btn-clear-search {
+      position: absolute;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: var(--text-muted);
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .btn-clear-search:hover {
+      background: rgba(239, 68, 68, 0.3);
+      color: #ffffff;
+    }
+
+    /* Pílulas de Filtro (Fila do Ônibus) */
+    .filter-pills-row {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .filter-pills-row::-webkit-scrollbar { display: none; }
+
+    .pill-btn {
+      white-space: nowrap;
+      background: #0d1e15;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s var(--ease);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .pill-btn:hover {
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .pill-btn.active {
+      background: var(--gold);
+      color: #07130d;
+      border-color: var(--gold);
+      box-shadow: 0 2px 8px rgba(249, 195, 31, 0.3);
+    }
+
+    /* Barra de Estatísticas */
+    .stats-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 0.25rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .stats-bar strong {
+      color: #ffffff;
+    }
+
+    .sync-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: #8fa799;
+    }
+
+    .sync-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10b981;
+    }
+
+    /* Lista de Alunos */
+    .students-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .student-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: border-color 0.2s var(--ease), transform 0.2s var(--ease);
+    }
+
+    .student-card:hover {
+      border-color: rgba(249, 195, 31, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .student-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .student-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: #142e22;
+      border: 1px solid var(--border-accent);
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .student-name-block h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.25;
+      margin-bottom: 4px;
+    }
+
+    .student-tags {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .tag-idade {
+      background: rgba(255, 255, 255, 0.08);
+      color: #d1ded7;
+    }
+
+    .tag-turno-manha {
+      background: rgba(249, 195, 31, 0.15);
+      color: #f9c31f;
+      border: 1px solid rgba(249, 195, 31, 0.3);
+    }
+
+    .tag-turno-tarde {
+      background: rgba(59, 130, 246, 0.15);
+      color: #93c5fd;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    /* Linhas de Ônibus com Cores Vibrantes e Distintas */
+    .bus-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 8px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .bus-linha-04 {
+      background: rgba(234, 88, 12, 0.18);
+      color: #fb923c;
+      border: 1px solid #ea580c;
+    }
+    .bus-linha-10 {
+      background: rgba(37, 99, 235, 0.18);
+      color: #60a5fa;
+      border: 1px solid #2563eb;
+    }
+    .bus-linha-24 {
+      background: rgba(16, 185, 129, 0.18);
+      color: #34d399;
+      border: 1px solid #059669;
+    }
+    .bus-linha-30 {
+      background: rgba(147, 51, 234, 0.18);
+      color: #c084fc;
+      border: 1px solid #9333ea;
+    }
+    .bus-linha-44 {
+      background: rgba(202, 138, 4, 0.18);
+      color: #facc15;
+      border: 1px solid #ca8a04;
+    }
+    .bus-linha-03 {
+      background: rgba(13, 148, 136, 0.18);
+      color: #2dd4bf;
+      border: 1px solid #0d9488;
+    }
+    .bus-padrao {
+      background: rgba(249, 195, 31, 0.14);
+      color: #f9c31f;
+      border: 1px solid rgba(249, 195, 31, 0.4);
+    }
+
+    /* Detalhes Médios */
+    .student-details-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      background: rgba(7, 19, 13, 0.6);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.84rem;
+    }
+
+    .detail-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      color: #c6d6ce;
+    }
+    .detail-label {
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.78rem;
+      min-width: 80px;
+      flex-shrink: 0;
+    }
+    .detail-val {
+      font-weight: 500;
+      color: #ffffff;
+      word-break: break-word;
+    }
+
+    /* Botões de Ação Imediata (Toque Rápido no Pátio) */
+    .card-actions-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .btn-action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: transform 0.15s var(--ease), opacity 0.15s var(--ease);
+    }
+    .btn-action:active {
+      transform: scale(0.97);
+    }
+
+    .btn-call {
+      background: rgba(59, 130, 246, 0.16);
+      border-color: rgba(59, 130, 246, 0.4);
+      color: #93c5fd;
+    }
+    .btn-call:hover {
+      background: rgba(59, 130, 246, 0.25);
+    }
+
+    .btn-wa {
+      background: rgba(37, 211, 102, 0.16);
+      border-color: rgba(37, 211, 102, 0.4);
+      color: #6ee7b7;
+    }
+    .btn-wa:hover {
+      background: rgba(37, 211, 102, 0.25);
+    }
+
+    .btn-view-more {
+      grid-column: span 2;
+      background: transparent;
+      border: 1px dashed var(--border);
+      color: var(--text-muted);
+      font-size: 0.76rem;
+      padding: 6px;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .btn-view-more:hover {
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Modal Completo do Aluno */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 10, 7, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-sheet {
+      width: 100%;
+      max-width: 540px;
+      max-height: 85vh;
+      background: #0d2217;
+      border: 1px solid var(--border-accent);
+      border-radius: 24px 24px 0 0;
+      padding: 1.5rem;
+      box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.85);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      animation: sheetUp 0.25s var(--ease) forwards;
+    }
+
+    @keyframes sheetUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.75rem;
+    }
+
+    .btn-close-sheet {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: var(--text-muted);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    /* Estado Vazio */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-muted);
+    }
+    .empty-state-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Destaque de Busca */
+    mark {
+      background: rgba(249, 195, 31, 0.35);
+      color: #ffffff;
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+
+    @media (min-width: 600px) {
+      .modal-overlay {
+        align-items: center;
+        padding: 1.5rem;
+      }
+      .modal-sheet {
+        border-radius: 20px;
+        max-height: 80vh;
+      }
+      .card-actions-row {
+        grid-template-columns: 1fr 1fr auto;
+      }
+      .btn-view-more {
+        grid-column: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar Fixa -->
+  <header class="topbar">
+    <div class="brand-area">
+      <div class="brand-emblem">
+        <img src="/sistemas/aee/logo oficial da escola.png" alt="Brasão Castro Alves" onerror="this.src='/favicon.png'">
+      </div>
+      <div class="brand-text">
+        <h1>Portaria & Pátio</h1>
+        <span>Localizador de Transporte</span>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <button class="btn-sync" id="btnSyncSheet" title="Sincronizar com a Planilha Oficial do Google Sheets">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        <span>Atualizar</span>
+      </button>
+
+      <a href="/sistemas/hub.html" class="btn-back-hub" title="Voltar ao Menu Principal">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+        <span>Hub</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main class="main-wrap">
+
+    <!-- Caixa de Busca Rápida -->
+    <section class="search-card">
+      <div class="search-input-wrap">
+        <div class="search-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="search-field" 
+          placeholder="Buscar por nome, responsável ou endereço..." 
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          spellcheck="false"
+        >
+        <button id="btnClearSearch" class="btn-clear-search" aria-label="Limpar busca">✕</button>
+      </div>
+
+      <!-- Filtro por Linhas do Ônibus -->
+      <div class="filter-pills-row" id="busPillsRow">
+        <button class="pill-btn active" data-bus="todos">🚌 Todas as Linhas</button>
+        <button class="pill-btn" data-bus="04">Linha 04</button>
+        <button class="pill-btn" data-bus="10">Linha 10</button>
+        <button class="pill-btn" data-bus="24">Linha 24</button>
+        <button class="pill-btn" data-bus="30">Linha 30</button>
+        <button class="pill-btn" data-bus="44">Linha 44</button>
+        <button class="pill-btn" data-bus="03">Linha 03</button>
+      </div>
+
+      <!-- Filtro por Turno -->
+      <div class="filter-pills-row" id="turnoPillsRow" style="padding-top: 2px;">
+        <button class="pill-btn active" data-turno="todos">Todos os Turnos</button>
+        <button class="pill-btn" data-turno="manha">☀️ Manhã</button>
+        <button class="pill-btn" data-turno="tarde">⛅ Tarde</button>
+        <button class="pill-btn" data-turno="pendente">⚠️ Com Pendência</button>
+      </div>
+    </section>
+
+    <!-- Estatísticas / Contador -->
+    <div class="stats-bar">
+      <span id="studentsCounter">Carregando estudantes da base...</span>
+      <div class="sync-status-badge">
+        <span class="sync-dot" id="syncDot"></span>
+        <span id="syncText">Planilha Oficial Conectada</span>
+      </div>
+    </div>
+
+    <!-- Lista de Estudantes -->
+    <section class="students-list" id="studentsList">
+      <div class="empty-state">
+        <div class="empty-state-icon">⏳</div>
+        <p>Conectando ao Google Sheets da Secretaria...</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal Detalhes do Aluno -->
+  <div class="modal-overlay" id="studentModalOverlay">
+    <div class="modal-sheet">
+      <div class="sheet-header">
+        <div>
+          <span style="font-size: 0.72rem; color: var(--gold); font-weight: 700; text-transform: uppercase;">Dossiê de Transporte</span>
+          <h2 id="modalStudentName" style="color: #ffffff; font-size: 1.15rem; font-weight: 800; margin-top: 2px;">Nome do Aluno</h2>
+        </div>
+        <button class="btn-close-sheet" id="btnCloseModal">✕</button>
+      </div>
+
+      <div id="modalStudentBody" style="display:flex; flex-direction:column; gap: 10px;">
+        <!-- Conteúdo preenchido dinamicamente -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // URL Oficial da Planilha em formato CSV (Aba com GID fornecido)
+      const CSV_URL = 'https://docs.google.com/spreadsheets/d/1_0Nr7rt1RClLouJ_g4saqU7JluswzIWf/export?format=csv&gid=1316350613';
+      const CACHE_KEY = 'castro_alves_portaria_alunos_v2';
+      const CACHE_TIME_KEY = 'castro_alves_portaria_timestamp_v2';
+
+      // Estado da Aplicação
+      let alunos = [];
+      let filtroLinha = 'todos';
+      let filtroTurno = 'todos';
+      let termoBusca = '';
+
+      // Elementos do DOM
+      const searchInput = document.getElementById('searchInput');
+      const btnClearSearch = document.getElementById('btnClearSearch');
+      const studentsList = document.getElementById('studentsList');
+      const studentsCounter = document.getElementById('studentsCounter');
+      const busPillsRow = document.getElementById('busPillsRow');
+      const turnoPillsRow = document.getElementById('turnoPillsRow');
+      const btnSyncSheet = document.getElementById('btnSyncSheet');
+      const syncText = document.getElementById('syncText');
+      const modalOverlay = document.getElementById('studentModalOverlay');
+      const btnCloseModal = document.getElementById('btnCloseModal');
+      const modalStudentName = document.getElementById('modalStudentName');
+      const modalStudentBody = document.getElementById('modalStudentBody');
+
+      // Parser Robusto de CSV para lidar com aspas e quebras de linha
+      function parseCSV(text) {
+        const lines = text.split(/\r\n|\n/);
+        const rows = [];
+        for (let line of lines) {
+          if (!line.trim()) continue;
+          const row = [];
+          let insideQuotes = false;
+          let entry = '';
+          for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+            if (char === '"') {
+              if (insideQuotes && line[i + 1] === '"') {
+                entry += '"';
+                i++;
+              } else {
+                insideQuotes = !insideQuotes;
+              }
+            } else if (char === ',' && !insideQuotes) {
+              row.push(entry.trim());
+              entry = '';
+            } else {
+              entry += char;
+            }
+          }
+          row.push(entry.trim());
+          rows.push(row);
+        }
+        return rows;
+      }
+
+      // Converte o CSV bruto nos objetos de Alunos
+      function processarLinhasCSV(rows) {
+        const resultado = [];
+        let cabecalhoAchado = false;
+
+        for (let i = 0; i < rows.length; i++) {
+          const row = rows[i];
+          if (!row || row.length < 5) continue;
+
+          // Procura linha de cabeçalho com matrícula
+          const rowText = row.join(' ').toLowerCase();
+          if (rowText.includes('matrícula') || rowText.includes('matricula')) {
+            cabecalhoAchado = true;
+            continue;
+          }
+
+          if (cabecalhoAchado) {
+            const nome = (row[0] || '').trim();
+            if (!nome || nome.toLowerCase() === 'nome') continue;
+
+            const matricula = (row[1] || '').trim();
+            const dataNascimento = (row[2] || '').trim();
+            const idade = (row[3] || '').trim();
+            const responsavel = (row[4] || '').trim();
+            const telefoneRaw = (row[5] || '').trim();
+            const endereco = (row[6] || '').trim();
+            const linhaOnibus = (row[7] || '').trim();
+            const turno = (row[8] || '').trim();
+            const statusCarteirinha = (row[9] || '').trim();
+            const linkWhatsapp = (row[10] || '').trim();
+            const observacoes = (row[11] || '').trim();
+
+            // Limpeza do Telefone para chamadas diretas
+            const telLimpo = telefoneRaw.replace(/\D/g, '');
+
+            resultado.push({
+              id: 'aluno_' + i,
+              nome,
+              matricula,
+              dataNascimento,
+              idade,
+              responsavel,
+              telefone: telefoneRaw,
+              telefoneLimpo: telLimpo,
+              endereco,
+              linhaOnibus: linhaOnibus || 'A Definir',
+              turno: turno || 'Não informado',
+              statusCarteirinha: statusCarteirinha || 'Pronta',
+              observacoes: observacoes || ''
+            });
+          }
+        }
+        return resultado;
+      }
+
+      // Função de Carregamento Inteligente (Cache Primeiro + Sincronização em Segundo Plano)
+      async function carregarDados(forcar = false) {
+        const cacheSalvo = localStorage.getItem(CACHE_KEY);
+        if (cacheSalvo && !forcar) {
+          try {
+            alunos = JSON.parse(cacheSalvo);
+            renderizarAlunos();
+            syncText.textContent = `Em cache (${alunos.length} alunos)`;
+          } catch (e) {
+            console.warn("Erro ao ler cache:", e);
+          }
+        }
+
+        btnSyncSheet.classList.add('spinning');
+        syncText.textContent = 'Sincronizando com o Drive...';
+
+        try {
+          const resp = await fetch(CSV_URL, { cache: 'no-cache' });
+          if (!resp.ok) throw new Error("Erro HTTP ao baixar CSV: " + resp.status);
+          const csvText = await resp.text();
+          const rows = parseCSV(csvText);
+          const alunosAtualizados = processarLinhasCSV(rows);
+
+          if (alunosAtualizados.length > 0) {
+            alunos = alunosAtualizados;
+            localStorage.setItem(CACHE_KEY, JSON.stringify(alunos));
+            localStorage.setItem(CACHE_TIME_KEY, new Date().toISOString());
+            syncText.textContent = `Ao vivo (${alunos.length} alunos)`;
+            renderizarAlunos();
+          }
+        } catch (err) {
+          console.error("Falha ao atualizar do Google Sheets:", err);
+          if (alunos.length > 0) {
+            syncText.textContent = `Offline (${alunos.length} alunos)`;
+          } else {
+            studentsList.innerHTML = `
+              <div class="empty-state">
+                <div class="empty-state-icon">⚠️</div>
+                <p style="font-weight:700; color:#fff;">Não foi possível carregar a planilha online</p>
+                <p style="font-size:0.84rem; margin-top:4px;">Verifique a internet do dispositivo e tente atualizar novamente.</p>
+              </div>
+            `;
+          }
+        } finally {
+          btnSyncSheet.classList.remove('spinning');
+        }
+      }
+
+      // Determina a classe de estilo da Linha do Ônibus
+      function obterClasseLinha(linha) {
+        const l = linha.toLowerCase();
+        if (l.includes('04') || l.includes('4')) return 'bus-linha-04';
+        if (l.includes('10')) return 'bus-linha-10';
+        if (l.includes('24')) return 'bus-linha-24';
+        if (l.includes('30')) return 'bus-linha-30';
+        if (l.includes('44')) return 'bus-linha-44';
+        if (l.includes('03') || l.includes('3')) return 'bus-linha-03';
+        return 'bus-padrao';
+      }
+
+      // Destaca o termo pesquisado
+      function destacarTexto(texto, termo) {
+        if (!termo || !texto) return texto || '';
+        const regex = new RegExp(`(${termo.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        return texto.replace(regex, '<mark>$1</mark>');
+      }
+
+      // Renderiza os Cards dos Alunos na Tela
+      function renderizarAlunos() {
+        const busca = termoBusca.trim().toLowerCase();
+
+        const filtrados = alunos.filter(a => {
+          // Filtro por Linha do Ônibus
+          if (filtroLinha !== 'todos') {
+            const linhaStr = a.linhaOnibus.toLowerCase();
+            if (!linhaStr.includes(filtroLinha)) return false;
+          }
+
+          // Filtro por Turno
+          if (filtroTurno === 'manha' && !a.turno.toLowerCase().includes('manh')) return false;
+          if (filtroTurno === 'tarde' && !a.turno.toLowerCase().includes('tard')) return false;
+          if (filtroTurno === 'pendente' && (!a.observacoes && a.statusCarteirinha.toLowerCase() === 'pronta')) return false;
+
+          // Filtro por Termo de Busca
+          if (!busca) return true;
+
+          const nomeMatch = a.nome.toLowerCase().includes(busca);
+          const respMatch = a.responsavel.toLowerCase().includes(busca);
+          const endMatch = a.endereco.toLowerCase().includes(busca);
+          const matMatch = a.matricula.toLowerCase().includes(busca);
+          const linhaMatch = a.linhaOnibus.toLowerCase().includes(busca);
+
+          return nomeMatch || respMatch || endMatch || matMatch || linhaMatch;
+        });
+
+        // Atualiza Contador
+        studentsCounter.innerHTML = `Mostrando <strong>${filtrados.length}</strong> de ${alunos.length} estudantes`;
+
+        if (filtrados.length === 0) {
+          studentsList.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-state-icon">🔍</div>
+              <p style="font-weight:700; color:#fff;">Nenhum estudante encontrado</p>
+              <p style="font-size:0.84rem; margin-top:4px;">Verifique o nome digitado ou limpe os filtros de linha/turno.</p>
+            </div>
+          `;
+          return;
+        }
+
+        studentsList.innerHTML = '';
+
+        filtrados.forEach(aluno => {
+          const card = document.createElement('article');
+          card.className = 'student-card';
+
+          const inicial = (aluno.nome[0] || 'A').toUpperCase();
+          const classeLinha = obterClasseLinha(aluno.linhaOnibus);
+          const isTarde = aluno.turno.toLowerCase().includes('tard');
+
+          // Links de Ação
+          let telHref = aluno.telefoneLimpo ? `tel:${aluno.telefoneLimpo}` : '#';
+          let waHref = aluno.telefoneLimpo 
+            ? `https://wa.me/55${aluno.telefoneLimpo}?text=Ol%C3%A1!%20Falamos%20da%20Portaria%20da%20Escola%20Municipal%20Castro%20Alves%20a%20respeito%20de%20${encodeURIComponent(aluno.nome)}.` 
+            : '#';
+
+          card.innerHTML = `
+            <div class="card-top">
+              <div class="student-info">
+                <div class="student-avatar">${inicial}</div>
+                <div class="student-name-block">
+                  <h2>${destacarTexto(aluno.nome, busca)}</h2>
+                  <div class="student-tags">
+                    ${aluno.idade ? `<span class="tag tag-idade">${aluno.idade} anos</span>` : ''}
+                    <span class="tag ${isTarde ? 'tag-turno-tarde' : 'tag-turno-manha'}">
+                      ${isTarde ? '⛅ Tarde' : '☀️ Manhã'}
+                    </span>
+                    ${aluno.observacoes ? `<span class="tag" style="background:rgba(239,68,68,0.18); color:#fca5a5; border:1px solid rgba(239,68,68,0.35);">⚠️ Atenção</span>` : ''}
+                  </div>
+                </div>
+              </div>
+
+              <div class="bus-badge ${classeLinha}">
+                <span>🚌</span>
+                <span>${aluno.linhaOnibus}</span>
+              </div>
+            </div>
+
+            <div class="student-details-grid">
+              <div class="detail-row">
+                <span class="detail-label">Responsável:</span>
+                <span class="detail-val">${destacarTexto(aluno.responsavel, busca) || 'Não informado'}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Endereço:</span>
+                <span class="detail-val" style="font-size:0.8rem;">${destacarTexto(aluno.endereco, busca) || 'Não informado'}</span>
+              </div>
+              ${aluno.observacoes ? `
+                <div class="detail-row" style="color:#fca5a5;">
+                  <span class="detail-label" style="color:#fca5a5;">Aviso:</span>
+                  <span class="detail-val">${aluno.observacoes}</span>
+                </div>
+              ` : ''}
+            </div>
+
+            <div class="card-actions-row">
+              ${aluno.telefoneLimpo ? `
+                <a href="${telHref}" class="btn-action btn-call">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  <span>Ligar</span>
+                </a>
+                <a href="${waHref}" target="_blank" class="btn-action btn-wa">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                  <span>WhatsApp</span>
+                </a>
+              ` : `
+                <div style="grid-column: span 2; text-align:center; font-size:0.78rem; color:#8fa799; padding: 6px;">
+                  Telefone não cadastrado na ficha
+                </div>
+              `}
+              <button class="btn-view-more" data-aluno-id="${aluno.id}">
+                Ver Dossiê Completo ▾
+              </button>
+            </div>
+          `;
+
+          // Evento do botão Ver Dossiê Completo
+          card.querySelector('.btn-view-more').addEventListener('click', () => {
+            abrirModalDossie(aluno);
+          });
+
+          studentsList.appendChild(card);
+        });
+      }
+
+      // Abre Modal com Ficha Detalhada
+      function abrirModalDossie(aluno) {
+        modalStudentName.textContent = aluno.nome;
+        const classeLinha = obterClasseLinha(aluno.linhaOnibus);
+
+        modalStudentBody.innerHTML = `
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 6px;">
+            <div class="bus-badge ${classeLinha}">
+              <span>🚌 Linha: ${aluno.linhaOnibus}</span>
+            </div>
+            <span class="tag ${aluno.turno.toLowerCase().includes('tard') ? 'tag-turno-tarde' : 'tag-turno-manha'}">
+              ${aluno.turno}
+            </span>
+          </div>
+
+          <div style="background:rgba(0,0,0,0.3); border-radius:12px; padding:12px; font-size:0.86rem; line-height:1.6;">
+            <div><strong>Nº Matrícula:</strong> ${aluno.matricula || 'Não informada'}</div>
+            <div><strong>Data Nascimento:</strong> ${aluno.dataNascimento || 'Não informada'} (${aluno.idade || '--'} anos)</div>
+            <div><strong>Nome do Responsável:</strong> ${aluno.responsavel || 'Não informado'}</div>
+            <div><strong>Telefone:</strong> ${aluno.telefone || 'Não informado'}</div>
+            <div><strong>Endereço Completo:</strong> ${aluno.endereco || 'Não informado'}</div>
+            <div><strong>Status da Carteirinha:</strong> ${aluno.statusCarteirinha}</div>
+            ${aluno.observacoes ? `<div style="color:#fca5a5; margin-top:6px;"><strong>Observações:</strong> ${aluno.observacoes}</div>` : ''}
+          </div>
+
+          ${aluno.telefoneLimpo ? `
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:8px;">
+              <a href="tel:${aluno.telefoneLimpo}" class="btn-action btn-call" style="padding:12px;">
+                📞 Ligar para Responsável
+              </a>
+              <a href="https://wa.me/55${aluno.telefoneLimpo}" target="_blank" class="btn-action btn-wa" style="padding:12px;">
+                💬 Chamar no WhatsApp
+              </a>
+            </div>
+          ` : ''}
+        `;
+
+        modalOverlay.classList.add('active');
+      }
+
+      // Eventos de Busca
+      searchInput.addEventListener('input', (e) => {
+        termoBusca = e.target.value;
+        btnClearSearch.style.display = termoBusca ? 'flex' : 'none';
+        renderizarAlunos();
+      });
+
+      btnClearSearch.addEventListener('click', () => {
+        searchInput.value = '';
+        termoBusca = '';
+        btnClearSearch.style.display = 'none';
+        searchInput.focus();
+        renderizarAlunos();
+      });
+
+      // Filtro de Linhas
+      busPillsRow.addEventListener('click', (e) => {
+        const btn = e.target.closest('.pill-btn');
+        if (!btn) return;
+        busPillsRow.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        filtroLinha = btn.dataset.bus;
+        renderizarAlunos();
+      });
+
+      // Filtro de Turno
+      turnoPillsRow.addEventListener('click', (e) => {
+        const btn = e.target.closest('.pill-btn');
+        if (!btn) return;
+        turnoPillsRow.querySelectorAll('.pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        filtroTurno = btn.dataset.turno;
+        renderizarAlunos();
+      });
+
+      // Botão Forçar Atualização
+      btnSyncSheet.addEventListener('click', () => {
+        carregarDados(true);
+      });
+
+      // Fechamento do Modal
+      btnCloseModal.addEventListener('click', () => {
+        modalOverlay.classList.remove('active');
+      });
+
+      modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) modalOverlay.classList.remove('active');
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+          modalOverlay.classList.remove('active');
+        }
+      });
+
+      // Inicialização
+      carregarDados();
+    })();
+  </script>
+
+  <!-- Guia Operacional Permanente dos Sistemas -->
+  <script src="/sistemas/guia-sistemas.js"></script>
+</body>
+</html>

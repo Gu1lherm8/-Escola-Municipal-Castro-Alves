@@ -48,11 +48,22 @@ export async function obterPerfilUsuario(user) {
                         emailLower.includes('secretaria') ||
                         emailLower.includes('direcao');
 
+  let perfilCalculado = 'voluntarios';
+  if (isMasterAdmin) {
+    perfilCalculado = 'secretaria';
+  } else if (emailLower.includes('portaria') || emailLower.includes('patio')) {
+    perfilCalculado = 'portaria';
+  } else if (emailLower.includes('transporte')) {
+    perfilCalculado = 'transporte';
+  } else if (emailLower.includes('aee')) {
+    perfilCalculado = 'aee';
+  }
+
   const perfilPadrao = {
     uid: user.uid,
     email: user.email,
     nome: user.displayName || user.email.split('@')[0],
-    perfil: isMasterAdmin ? 'secretaria' : 'voluntarios',
+    perfil: perfilCalculado,
     ativo: true,
     carregadoEm: new Date().toISOString()
   };
